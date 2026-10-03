@@ -9,6 +9,33 @@
 
 ---
 
+> ## ⚠️ SUPERSEDED IN PART — read the reconciliation first
+>
+> This is the **Pass-1 provisional** record, retained **unmodified below this banner** for provenance.
+> It was written before the FUNUJĒ source corpus was located.
+>
+> **Current record:** [`FUNUJE-UXUI-BRAND-INTERFACE-PULL-001-RECONCILIATION.md`](./FUNUJE-UXUI-BRAND-INTERFACE-PULL-001-RECONCILIATION.md) (Pass 1R)
+>
+> **Withdrawn — do not cite as evidence:**
+> - "No FUNUJĒ source material exists in the connected Drive." — **false.** Folder
+>   `1nbyg-Fq0q1uELNlv-Q4-lDxuDQjSodwi` ("Funujē", 134 files, owner `wrayveart@gmail.com`) was opened
+>   directly by ID. It was missed because it is *shared-with-me*, so name/fullText search and
+>   `corpora=allDrives` enumeration did not surface it.
+> - §12 "no source found" and the all-missing source table.
+> - The truth state **`DECLARED`** used throughout this document. It is retired: it conflated provenance
+>   with evidential status. The reconciliation uses VERIFIED / INFERRED / UNRESOLVED, with `source_origin`
+>   tracked as a separate field.
+>
+> **Reversed in Pass 1R:** the first-surface recommendation. This document recommends **The Signal**;
+> the reconciliation recommends **The Console**, on evidentiary grounds.
+>
+> **Rejected in Pass 1R:** `ZoneShell`, the persistent mini-player, "stroke as the primary elevation
+> signal", and "red glow is state, never ambient" — all agent-origin, none source-grounded.
+>
+> 61 claims from this document were re-adjudicated individually: 34 RETAIN, 19 REVISE, 8 REJECT.
+
+---
+
 ## 0. TRUTH MODEL USED IN THIS DOCUMENT
 
 The work order specifies three labels: VERIFIED / INFERRED / UNRESOLVED, where VERIFIED means

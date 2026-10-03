@@ -1,172 +1,193 @@
 {
-  "$schema_note": "Provisional design-token draft. NOT canonical. Companion to concepts/FUNUJE-UXUI-BRAND-INTERFACE-PULL-001.md",
-  "token_set_id": "funuje-interface-tokens-draft-001",
+  "schema_note": "Provisional FUNUJE interface intelligence. NOT a runtime token set. No value here may be consumed by product code until the conflicts in `conflicts` are resolved by a human decision.",
   "work_order": "FUNUJE-UXUI-BRAND-INTERFACE-PULL-001",
-  "status": "draft",
-  "canonical_acceptance": "pending",
-  "warning": "No FUNUJE source material was found in any connected system. Hex values and family names are DECLARED in the work order; all role assignments are INFERRED by the execution agent; spacing, radius and motion values are UNRESOLVED conventions proposed as starting points only. Do not treat this file as brand canon. Reconcile against 'Funuje Brand Guidelines v001' before use.",
-  "truth_labels": {
-    "DECLARED": "Stated in the work order by the project principal; not corroborated by a brand artifact.",
-    "INFERRED": "Synthesized by the execution agent from multiple declared signals.",
-    "UNRESOLVED": "No evidence exists; value is a proposed convention requiring human decision."
+  "pass": "1R-reconciliation",
+  "generated_on": "2026-10-03",
+  "supersedes": "concepts/funuje-interface-tokens.draft.json @ 469626b",
+  "truth_model": {
+    "truth_state": {
+      "allowed": ["VERIFIED", "INFERRED", "UNRESOLVED"],
+      "removed": ["DECLARED"],
+      "removal_reason": "DECLARED conflated provenance with evidential status. Operator declaration is an origin, not a truth state."
+    },
+    "source_origin": {
+      "note": "Independent of truth_state. Records where a claim came from.",
+      "allowed": ["brand_guidelines_doc", "brand_kit_image", "product_artifact_image", "work_order", "agent_inference", "measurement"]
+    }
   },
-
+  "sources": {
+    "S1": { "name": "FUNUJE Brand Guidelines v001", "drive_id": "1-KMFisxwtTh9Bat5Fea7XfhHMr9yX85eamyKq5iH-X0", "type": "google_doc", "read": "full", "authority": "primary" },
+    "S2": { "name": "funuje Brand Kit v1.0 (May 2024), 8 panels", "drive_id": "1Yxc8vqXbi8huLIt_6f6gbIjnGKs7qvYy", "type": "image", "read": "visual_inspection", "authority": "secondary", "caveat": "hex values transcribed from printed labels; not pixel-sampled" },
+    "S6": { "name": "Funuje Platform Sitemap", "type": "image", "read": "visual_inspection", "authority": "working_document" },
+    "S7": { "name": "User flow / navigation diagram", "type": "image", "read": "visual_inspection", "authority": "working_document" },
+    "S8": { "name": "Landing page mockup", "type": "image", "read": "visual_inspection", "authority": "non_compliant_artifact" },
+    "S9": { "name": "Mr. Lexx / Diggy Nation vault site", "type": "image", "read": "visual_inspection", "authority": "executed_ui_reference" },
+    "S11": { "name": "WRASAL Cinematic Civilization Engine board", "type": "image", "read": "visual_inspection", "authority": "parent_brand_context" },
+    "container": { "folder": "Funuje", "drive_id": "1nbyg-Fq0q1uELNlv-Q4-lDxuDQjSodwi", "owner": "wrayveart@gmail.com", "child_count": 134, "inspected_count": 23 }
+  },
   "color": {
-    "_note": "Hex values DECLARED. Semantic role names INFERRED. Contrast ratios VERIFIED by WCAG 2.x computation against #050505 unless stated.",
-    "palette": {
-      "obsidian-black": { "value": "#050505", "label": "DECLARED" },
-      "graphite-glass": { "value": "#171717", "label": "DECLARED" },
-      "signal-red":     { "value": "#E31B23", "label": "DECLARED" },
-      "warm-cream":     { "value": "#F4E6C8", "label": "DECLARED" },
-      "smoke-gray":     { "value": "#8A8A8A", "label": "DECLARED" },
-      "soft-gold":      { "value": "#C8A34A", "label": "DECLARED" },
-      "cyan-signal":    { "value": "#28D7E8", "label": "DECLARED" },
-      "deep-wine":      { "value": "#5A0B12", "label": "DECLARED" }
+    "_status": "CONTESTED - two incompatible palettes share the same role names. See conflicts.A",
+    "_preferred_set": "guidelines_v001",
+    "guidelines_v001": {
+      "obsidian_black":  { "value": "#050505", "role": "base ground",                                           "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5" },
+      "graphite_glass":  { "value": "#171717", "role": "card / panel surface",                                  "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5 + usage table 'app UI: graphite cards on obsidian'" },
+      "signal_red":      { "value": "#E31B23", "role": "energy, CTA, active state, glow, audio pulse",          "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5" },
+      "warm_cream":      { "value": "#F4E6C8", "role": "primary text on dark; display type on red fields",      "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5" },
+      "smoke_gray":      { "value": "#8A8A8A", "role": "secondary text",                                        "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5" },
+      "soft_gold":       { "value": "#C8A34A", "role": "premium, access points, verification",                  "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5 + usage table 'premium: black + gold + cream'" },
+      "cyan_signal":     { "value": "#28D7E8", "role": "analytics, data, active streaming indicators, dashboard highlights", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5 verbatim; resolves the Pass-1 UNRESOLVED on this token" },
+      "deep_wine":       { "value": "#5A0B12", "role": "depth ground only; never text or UI (1.45:1 on obsidian)", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5 + measurement" }
     },
-    "role": {
-      "_naming_note": "Namespaced to avoid the three-way collision between Signal Red, Cyan Signal and the zone 'The Signal'. See conflict 11.3.",
-      "surface.ground":        { "ref": "obsidian-black", "label": "INFERRED" },
-      "surface.panel":         { "ref": "graphite-glass", "label": "INFERRED", "note": "1.14:1 against ground — invisible by fill alone; requires stroke. See conflict 6.3." },
-      "surface.atmosphere":    { "ref": "deep-wine", "label": "INFERRED", "note": "1.45:1 — surface/gradient only, never text or icon." },
-      "brand.red":             { "ref": "signal-red", "label": "INFERRED", "note": "Fill and accent only. 4.32:1 as text on ground — large text only." },
-      "accent.cyan":           { "ref": "cyan-signal", "label": "UNRESOLVED", "note": "No declared role. Proposed: data/telemetry in The Console and The Lab only. See conflict 11.2." },
-      "accent.gold":           { "ref": "soft-gold", "label": "INFERRED", "note": "Premium, membership, access points." },
-      "text.primary":          { "ref": "warm-cream", "label": "INFERRED", "note": "16.50:1 on ground (AAA)." },
-      "text.secondary":        { "ref": "smoke-gray", "label": "INFERRED", "note": "5.90:1 on ground (AA)." },
-      "text.on-red":           { "ref": "#FFFFFF", "label": "INFERRED", "note": "CORRECTION: warm-cream on signal-red measures 3.82:1 and FAILS WCAG AA for body text. White measures 4.72:1 and passes. See conflict 11.1 — requires human approval." }
+    "brand_kit_v1_0": {
+      "_note": "Recorded for reconciliation. NOT recommended. Lacks gold and cyan, which the verified producer and premium systems depend on; and admits no AA-compliant text colour on its red button.",
+      "signal_red":    { "value": "#FF2A23", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" },
+      "warm_cream":    { "value": "#F4E9D1", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" },
+      "deep_oxblood":  { "value": "#4A0D0F", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" },
+      "charcoal":      { "value": "#111111", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" },
+      "electric_pink": { "value": "#FF5E8A", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" },
+      "burnt_orange":  { "value": "#FF7A1A", "truth_state": "VERIFIED", "source_origin": "brand_kit_image" }
     },
-    "measured_contrast": {
-      "_label": "VERIFIED by computation (WCAG 2.x relative luminance)",
-      "warm-cream_on_obsidian":    { "ratio": 16.50, "grade": "AAA" },
-      "warm-cream_on_graphite":    { "ratio": 14.51, "grade": "AAA" },
-      "cyan-signal_on_obsidian":   { "ratio": 11.62, "grade": "AAA" },
-      "warm-cream_on_deep-wine":   { "ratio": 11.40, "grade": "AAA" },
-      "soft-gold_on_obsidian":     { "ratio": 8.53,  "grade": "AAA" },
-      "smoke-gray_on_obsidian":    { "ratio": 5.90,  "grade": "AA" },
-      "soft-gold_on_deep-wine":    { "ratio": 5.90,  "grade": "AA" },
-      "white_on_signal-red":       { "ratio": 4.72,  "grade": "AA" },
-      "signal-red_on_obsidian":    { "ratio": 4.32,  "grade": "AA-large-only" },
-      "warm-cream_on_signal-red":  { "ratio": 3.82,  "grade": "FAILS-AA-body", "flag": "declared primary CTA — see conflict 11.1" },
-      "deep-wine_on_obsidian":     { "ratio": 1.45,  "grade": "FAIL", "note": "surface-only color" },
-      "graphite_on_obsidian":      { "ratio": 1.14,  "grade": "FAIL", "note": "requires stroke to be perceivable" }
+    "usage_rules": {
+      "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s5 colour usage table",
+      "main_layouts": "black + cream + red",
+      "label": "black + red + gold",
+      "producer_section": "black + graphite + cyan/gold",
+      "artist_profiles": "black-glass UI + red active glow",
+      "premium": "black + gold + cream",
+      "app_ui": "graphite cards on obsidian",
+      "social": "red fields + bold cream type"
     }
   },
-
+  "contrast_measurements": {
+    "truth_state": "VERIFIED", "source_origin": "measurement", "standard": "WCAG 2.2",
+    "thresholds": { "normal_text_AA": 4.5, "large_text_AA": 3.0, "normal_text_AAA": 7.0, "non_text_AA": 3.0, "large_text_definition": ">=24px, or >=18.66px bold" },
+    "guidelines_palette": {
+      "cream_on_red":      { "ratio": 3.82,  "normal_AA": "FAIL", "large_AA": "PASS", "normal_AAA": "FAIL", "non_text": "PASS" },
+      "white_on_red":      { "ratio": 4.72,  "normal_AA": "PASS", "large_AA": "PASS", "normal_AAA": "FAIL", "non_text": "PASS" },
+      "red_on_obsidian":   { "ratio": 4.32,  "normal_AA": "FAIL", "large_AA": "PASS" },
+      "cream_on_obsidian": { "ratio": 16.50, "normal_AA": "PASS", "normal_AAA": "PASS" },
+      "cyan_on_obsidian":  { "ratio": 11.62, "normal_AA": "PASS", "normal_AAA": "PASS" },
+      "gold_on_obsidian":  { "ratio": 8.53,  "normal_AA": "PASS", "normal_AAA": "PASS" },
+      "smoke_on_obsidian": { "ratio": 5.90,  "normal_AA": "PASS", "normal_AAA": "FAIL" },
+      "graphite_on_obsidian": { "ratio": 1.14, "all": "FAIL", "implication": "panel separation cannot rely on fill alone" },
+      "wine_on_obsidian":  { "ratio": 1.45,  "all": "FAIL" }
+    },
+    "brand_kit_palette": {
+      "cream_on_red": { "ratio": 3.11, "normal_AA": "FAIL", "large_AA": "PASS" },
+      "white_on_red": { "ratio": 3.75, "normal_AA": "FAIL", "large_AA": "PASS", "implication": "no AA-normal-compliant label exists for a red primary button in this palette" }
+    },
+    "derived_rule": {
+      "truth_state": "INFERRED", "source_origin": "agent_inference",
+      "basis": "S1 s9 permits 'cream or white' on the primary CTA; measurement selects between them",
+      "rule": "cream on red only at >=24px or >=18.66px bold; white on red at all smaller sizes"
+    }
+  },
   "typography": {
-    "_note": "Family candidates DECLARED. Role assignments INFERRED. No size scale, weight scale, or line-height is declared anywhere — UNRESOLVED.",
-    "role": {
-      "display":  { "candidates": ["Anton", "or similar bold/wide/rounded-geometric heavyweight"], "use": "zone titles, hero statements, drop names, wordmark lockups", "label": "DECLARED", "open_question": "Anton is single-weight with no true italic; confirm whether a multi-weight family is required. See conflict 11.5." },
-      "editorial":{ "candidates": ["Recoleta", "or similarly expressive serif"], "use": "long-form storytelling in The Booth, artist essays, pull quotes, vault annotations", "label": "DECLARED" },
-      "ui":       { "candidates": ["Inter", "Satoshi", "Neue Haas Grotesk", "Sohne", "Helvetica Now", "Space Grotesk", "General Sans", "Archivo"], "use": "all interface chrome, labels, buttons, forms, navigation, body UI", "label": "UNRESOLVED", "open_question": "Eight-candidate shortlist, not a decision. These are not interchangeable and licensing cost varies materially. See conflict 11.4." },
-      "mono":     { "candidates": ["JetBrains Mono", "IBM Plex Mono", "Space Mono"], "use": "metadata, IDs, release codes, analytics, timecodes, BPM/key, catalog numbers", "label": "DECLARED", "note": "Load-bearing. Consistent mono metadata across all nine zones is the strongest single cue that the surfaces belong to one operating system." }
+    "_status": "CONTESTED - see conflicts.C",
+    "display": {
+      "named_face": "Anton",
+      "truth_state": "VERIFIED", "source_origin": "brand_kit_image", "source_evidence": "S2 panel 04 'ANTON - bold, condensed, impactful'",
+      "note": "S1 describes display personality (bold, wide, rounded, geometric, heavyweight, rhythmic, festival-poster, retro-broadcast) but NAMES NO FACE. Anton is sourced solely from S2.",
+      "open_issue": "Anton ships a single weight and no italic; the lowercase wordmark is custom, not set in Anton. Wordmark and display face must be treated as separate assets."
     },
-    "scale": { "label": "UNRESOLVED", "note": "No type scale exists in the source or the work order." }
-  },
-
-  "radius": {
-    "_label": "UNRESOLVED",
-    "_note": "'Rounded' is DECLARED; no value is given. The scale below is a proposed convention only.",
-    "sm": "8px", "md": "12px", "lg": "16px", "xl": "24px", "pill": "9999px"
-  },
-
-  "spacing": {
-    "_label": "UNRESOLVED",
-    "_note": "No spacing information exists in the source or the work order. 8pt base grid proposed as convention, not finding.",
-    "base": "8px",
-    "scale": ["4px", "8px", "12px", "16px", "24px", "32px", "48px", "64px", "96px"]
-  },
-
-  "elevation": {
-    "_label": "INFERRED",
-    "_note": "Derived from the measured 1.14:1 panel/ground contrast: elevation cannot be carried by fill. Stroke is the primary elevation signal; glow is stateful, not ambient.",
-    "0": { "use": "page ground",            "fill": "obsidian-black", "stroke": "none" },
-    "1": { "use": "resting panel / card",   "fill": "graphite-glass", "stroke": "rgba(244,230,200,0.08)" },
-    "2": { "use": "raised / hovered",       "fill": "graphite-glass", "stroke": "rgba(244,230,200,0.12)", "shadow": "soft, large-radius, near-black" },
-    "3": { "use": "active / live / focused","fill": "graphite-glass", "stroke": "red-tinted", "glow": "subtle signal-red" },
-    "4": { "use": "modal / overlay",        "fill": "graphite-glass over scrim", "shadow": "strong", "backdrop": "blur" }
-  },
-
-  "motion": {
-    "_note": "Five motion types DECLARED. Communicative meanings INFERRED. All durations and easings UNRESOLVED — no values are declared anywhere.",
-    "vocabulary": {
-      "pulse": { "communicates": "liveness, heartbeat, attention", "use": "live dots, frequency rings, countdowns, recording state", "label": "INFERRED", "note": "The only acceptable looping animation; everything else resolves." },
-      "slide": { "communicates": "spatial movement between places", "use": "zone transitions, drawers, panel entry, carousel", "label": "INFERRED" },
-      "float": { "communicates": "elevation, hover, availability, tactility", "use": "card hover lift, FAB, tooltip emergence", "label": "INFERRED" },
-      "scan":  { "communicates": "system activity, processing, reading", "use": "loading, upload/analysis in The Lab, search, skeletons", "label": "INFERRED" },
-      "fade":  { "communicates": "appearance/disappearance without spatial claim", "use": "overlays, scrims, cross-dissolve, de-emphasis", "label": "INFERRED" }
+    "editorial": { "named_face": "Recoleta", "truth_state": "VERIFIED", "source_origin": "brand_kit_image", "source_evidence": "S2 panel 04 'elegant, expressive, cultured'" },
+    "body_ui": {
+      "truth_state": "UNRESOLVED",
+      "conflict": "S1 s6 lists seven and OMITS Satoshi; S2 names Satoshi as the single body/UI face",
+      "guidelines_candidates": ["Inter", "Neue Haas Grotesk", "Sohne-style grotesk", "Helvetica Now", "Space Grotesk", "General Sans", "Archivo"],
+      "brand_kit_choice": "Satoshi",
+      "preferred_interpretation": "select from the S1 seven; Space Grotesk or General Sans are closest in character to Satoshi",
+      "human_approval_required": true
     },
-    "pacing": {
-      "_label": "UNRESOLVED",
-      "principle": "DECLARED as 'musical, tactile, controlled'. Proposed: a tempo-derived duration scale so all motion shares one underlying beat.",
-      "micro_interaction": "120-200ms (proposed)",
-      "zone_transition": "400-600ms (proposed)",
-      "easing": "decisive deceleration; no bounce, elastic or overshoot (INFERRED from 'controlled')"
-    },
-    "reduced_motion": {
-      "_label": "INFERRED",
-      "_note": "Nothing is declared. Required expectation stated per work order.",
-      "honor": "prefers-reduced-motion: reduce",
-      "substitutions": { "slide": "fade", "float": "static elevation change", "scan": "static indeterminate state", "pulse": "static dot, no animation", "fade": "shortened or instant" },
-      "rule": "Liveness must survive reduced motion. Every motion-carried meaning requires a static equivalent (color, label, or chip)."
-    }
+    "mono": { "faces": ["JetBrains Mono", "IBM Plex Mono", "Space Mono"], "role": "metadata, IDs, release codes, analytics", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s6" },
+    "scale": { "truth_state": "UNRESOLVED", "note": "no sizes, weights, line-heights or tracking in any source" }
   },
-
-  "motif": {
-    "_note": "Motifs DECLARED. Functions INFERRED. The work order requires function, not appearance.",
-    "red-field":         { "function": "declares brand authority and ownership of a space; the loudest statement available. Scarcity preserves its power", "label": "INFERRED" },
-    "black-glass-panel": { "function": "the container of all system content; signifies 'this is a surface of the OS'", "label": "INFERRED" },
-    "signal-bar":        { "function": "attention and emphasis; the macron over the E as a system mark. Fits active-state indicators, section markers, active nav underline", "label": "INFERRED" },
-    "waveform":          { "function": "signifies an object with sound and duration (release, stem, session); also a progress and scrub affordance", "label": "INFERRED" },
-    "frequency-ring":    { "function": "live, ongoing or cyclical state — broadcasting, loading, tier, progress. Circular counterpart to the waveform", "label": "INFERRED" },
-    "red-dot":           { "function": "binary live/new/unread indicator; the smallest unit of signal. Must mean exactly one thing system-wide", "label": "INFERRED" }
-  },
-
-  "cta": {
-    "_note": "Variants DECLARED except 'quiet', which is INFERRED as necessary for dense maker-facing zones.",
-    "primary":   { "fill": "brand.red", "text": "#FFFFFF", "label": "DECLARED + corrected", "note": "Declared as 'cream/white'. Cream fails AA at body size (3.82:1); white passes (4.72:1). See conflict 11.1." },
-    "secondary": { "fill": "surface.panel", "border": "brand.red", "text": "text.primary", "label": "DECLARED", "note": "Label must be cream/white, not red — red text on panel is 3.80:1." },
-    "premium":   { "accent": "accent.gold", "label": "DECLARED", "note": "membership, VIP, early access, Inner Circle entry points" },
-    "quiet":     { "text": "text.secondary", "label": "INFERRED", "note": "Implied but unstated. Dense dashboards in The Console and The Lab cannot afford three loud button styles. UNRESOLVED." }
-  },
-
   "zones": {
-    "_note": "Names and one-line purposes DECLARED. Everything else in the zone model is INFERRED — see section 4 of the companion document.",
-    "order": ["the-signal", "the-stage", "the-vault", "the-console", "the-lab", "the-drop-room", "the-booth", "the-market", "the-inner-circle"],
-    "the-signal":       { "purpose": "home / discovery",                  "audience": "fan" },
-    "the-stage":        { "purpose": "featured artists / campaigns",      "audience": "fan" },
-    "the-vault":        { "purpose": "archive / catalog / legacy",        "audience": "fan" },
-    "the-console":      { "purpose": "artist / producer dashboard",       "audience": "maker" },
-    "the-lab":          { "purpose": "producer tools / collaboration",    "audience": "maker" },
-    "the-drop-room":    { "purpose": "releases / exclusives",             "audience": "fan", "note": "most state-dependent surface: pre-drop, live, sold-out, post-drop" },
-    "the-booth":        { "purpose": "artist profile / storytelling",     "audience": "fan" },
-    "the-market":       { "purpose": "merch / tickets / bundles",         "audience": "fan" },
-    "the-inner-circle": { "purpose": "membership / VIP access",           "audience": "member", "note": "INFERRED: structurally a permission layer that also has a surface; gates The Drop Room and modifies The Market" }
-  },
-
-  "language": {
-    "_note": "Preferred labels DECLARED. Avoid-list INFERRED from 'avoid generic menu language where stronger FUNUJE language exists'.",
-    "avoid_to_prefer": {
-      "Home": "The Signal",
-      "Dashboard": "The Console",
-      "Archive / Catalog / Library": "The Vault",
-      "Shop / Store": "The Market",
-      "Profile": "The Booth",
-      "Premium / Subscribe / Pro": "The Inner Circle",
-      "Releases / New": "The Drop Room",
-      "Workspace / Studio tools": "The Lab",
-      "Featured": "The Stage",
-      "page / site / menu / tab": "zone / channel / room / deck"
+    "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s9, verbatim",
+    "list": {
+      "the_signal": "home / discovery", "the_stage": "featured artists and campaigns", "the_vault": "archive, catalog, legacy",
+      "the_console": "artist and producer dashboard", "the_lab": "producer tools and collaboration", "the_drop_room": "releases and exclusives",
+      "the_booth": "artist profile and storytelling", "the_market": "merch, tickets, bundles", "the_inner_circle": "membership and VIP"
+    },
+    "nav_substitutions": { "truth_state": "VERIFIED", "map": { "Profile": "The Booth", "Dashboard": "The Console", "Library": "The Vault", "Explore": "The Signal" } },
+    "adoption_reality": {
+      "truth_state": "VERIFIED", "source_origin": "product_artifact_image",
+      "finding": "S6 sitemap, S7 flow and S2 panel 06 all use generic naming (Home, Discover, Release, Studio, Community, Library, Search, Profile). Only S9 uses a zone name (VAULT).",
+      "disposition": "conflicts.B - zone naming preferred for product surface; generic terms retained as routing/analytics keys only"
     }
   },
-
-  "open_questions_blocking_stable_tokens": [
-    "11.1 Primary CTA contrast — cream on red fails WCAG AA (3.82:1). Requires brand approval.",
-    "11.2 Cyan Signal has no declared role. Requires brand approval.",
-    "11.3 'Signal' is overloaded four ways; engineering tokens must be namespaced.",
-    "11.4 UI typeface is an eight-candidate shortlist, not a decision. Requires brand approval.",
-    "11.5 Display face 'Anton or similar' is single-weight. Requires confirmation.",
-    "11.6 No spacing, radius, or motion values exist anywhere.",
-    "11.7 Vault / Drop Room lifecycle undefined — affects data model.",
-    "11.9 No source material was found; all of the above rests on declaration, not evidence."
-  ]
+  "signal_namespace_collision": {
+    "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "severity": "blocking_for_implementation",
+    "referents": ["color.signal-red", "color.signal-cyan", "zone.signal", "motif.signal-bar", "field.signal-id", "brand.signal (sub-brand)", "content-pillar.signal-drops", "sound.red-alert-signal-tone"],
+    "requirement": "unqualified token name `signal` must be prohibited in code; every reference must carry its namespace"
+  },
+  "components": {
+    "card": { "description": "rounded black-glass card with subtle red glow and soft shadows", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s9 verbatim",
+      "radius": { "truth_state": "UNRESOLVED" }, "shadow": { "truth_state": "UNRESOLVED" },
+      "stroke": { "truth_state": "INFERRED", "source_origin": "product_artifact_image", "source_evidence": "faint light edges visible in S2 panels 05/06/08 and S9", "value": { "truth_state": "UNRESOLVED" },
+        "note": "Pass-1 claimed stroke was the PRIMARY elevation signal. REJECTED: S1 specifies glow + shadow and never mentions a stroke. The 1.14:1 measurement proves separation is needed; the source states what provides it." } },
+    "cta_primary":   { "fill": "signal_red", "label": "cream or white", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s9; S2 panel 04 'PLAY NOW' uses white" },
+    "cta_secondary": { "fill": "black glass", "border": "red outline", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s9; S2 panel 04 'DISCOVER'" },
+    "cta_premium":   { "accent": "soft_gold", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc" },
+    "cta_quiet":     { "truth_state": "UNRESOLVED", "note": "no tertiary/ghost variant defined in any source" },
+    "zone_shell":        { "truth_state": "UNRESOLVED", "source_origin": "agent_inference", "disposition": "REJECTED as source-grounded. No source describes persistent chrome; S2 panel 06 shows a conventional 4-item bottom tab bar." },
+    "persistent_player": { "truth_state": "UNRESOLVED", "source_origin": "agent_inference", "disposition": "REJECTED as source-grounded. S2 panel 06 shows a full-screen Now Playing view and no mini-player on Home." }
+  },
+  "glow_model": {
+    "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc",
+    "revision_note": "Pass-1 claimed glow is state-only, never ambient. REVISED: S1 supports two tiers.",
+    "tier_ambient": { "description": "subtle red glow as a default property of black-glass cards", "source_evidence": "S1 s9", "value": { "truth_state": "UNRESOLVED" } },
+    "tier_active":  { "description": "intensified red glow denoting active state", "source_evidence": "S1 usage table 'artist profiles: black-glass UI + red active glow'", "value": { "truth_state": "UNRESOLVED" } }
+  },
+  "motifs": {
+    "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s11",
+    "red_field": "loudest expression of the brand; full-bleed identity moment",
+    "black_glass_panel": "default content container",
+    "signal_bar": { "glyph": "the macron over the E", "function": "loading bar, status indicator, audio pulse, campaign marker", "note": "functional UI primitive, not typography" },
+    "waveform": "texture, divider, transition, audio identity",
+    "frequency_ring": "profile images, verified artists, live sessions, premium releases",
+    "red_dot": "live recording, new drops, active campaigns, exclusive content"
+  },
+  "motion": {
+    "verbs": { "value": ["pulse", "slide", "float", "scan", "fade"], "qualifier": "musical timing", "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s18" },
+    "durations": { "truth_state": "UNRESOLVED" },
+    "easings": { "truth_state": "UNRESOLVED" },
+    "tempo_anchoring": { "truth_state": "UNRESOLVED", "note": "'musical timing' implies BPM-derived durations; no tempo is stated" },
+    "prefers_reduced_motion": { "truth_state": "UNRESOLVED", "severity": "blocking_for_implementation", "note": "the entire motion language is pulse/scan/glow; no fallback is defined in any source" },
+    "sound_design": { "value": ["low bass hum", "vinyl crackle", "radio static", "dancehall kick", "tape-stop", "red-alert signal tones"], "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s18" }
+  },
+  "imagery": {
+    "truth_state": "VERIFIED", "source_origin": "brand_guidelines_doc", "source_evidence": "S1 s10",
+    "direction": ["cinematic", "intimate", "nightlife-aware", "textured", "premium but human", "Caribbean-global", "documentary-real with editorial polish", "rich in melanin detail"],
+    "lighting": ["red edge light", "warm practicals", "blue-hour ambience", "deep black negative space", "soft directional key", "controlled shadow", "atmospheric haze", "reflective glass"],
+    "prohibited": ["fake tropical saturation", "generic beach and palm imagery", "plastic AI skin", "cheap neon overload", "cartoon futurism", "overpolished imagery without human texture"]
+  },
+  "unresolved_tokens": [
+    "spacing scale", "border radius", "elevation offsets/blur/opacity", "glow quantification (both tiers)",
+    "card stroke value", "motion durations and easings", "prefers-reduced-motion policy", "breakpoints",
+    "type scale", "quiet CTA variant", "focus-visible treatment", "Vault to Drop Room lifecycle", "zone transition model"
+  ],
+  "conflicts": {
+    "A": { "subject": "two incompatible palettes under identical role names", "preferred": "guidelines_v001", "confidence": "high", "human_approval_required": true },
+    "B": { "subject": "zone vocabulary vs generic IA in product artifacts", "preferred": "zones for product surface; generic as routing keys only", "confidence": "medium", "human_approval_required": true },
+    "C": { "subject": "body/UI typeface - S1 omits Satoshi, S2 mandates it", "preferred": "select from S1 seven", "confidence": "medium", "human_approval_required": true },
+    "D": { "subject": "three incompatible positioning systems across S1, S2 and S8", "preferred": null, "confidence": null, "human_approval_required": true, "note": "business decision; no design preference offered" },
+    "E": { "subject": "Caribbean cultural OS vs generic streaming clone", "preferred": "S1 governs", "confidence": "high", "human_approval_required": true },
+    "F": { "subject": "access tiers - S1 five layers vs S2 three tiers", "preferred": "S1 five", "confidence": "medium-high", "human_approval_required": true },
+    "G": { "subject": "wordmark defects - S8 renders 'funuju'; S6 drops the macron", "preferred": "defects, correct them", "confidence": "high", "human_approval_required": false },
+    "H": { "subject": "FUNUJE governance relationship to WRASAL", "preferred": null, "confidence": null, "human_approval_required": true, "note": "determines whether this token set is standalone or a WRASAL theme" }
+  },
+  "first_surface_recommendation": {
+    "pass_1": "The Signal",
+    "pass_1R": "The Console",
+    "status": "REVISED",
+    "basis": [
+      "S7 renders Studio as the glowing hub node of the user's own flow diagram",
+      "most completely and consistently specified area across S1 s13, S1 s14 and the S6 Studio branch",
+      "only surface that exercises the verified roles of cyan_signal and soft_gold",
+      "least exposed to conflicts D and E, which are unresolved business decisions"
+    ],
+    "counter_argument": "The Console proves mechanics, not soul. If Pass 2 needs a persuasive brand artifact rather than durable primitives, The Booth is the better choice - S9 shows it half-built and on-brand, and S1 s13 fully specifies its content model.",
+    "recommended_order": ["The Console", "The Booth", "The Signal"]
+  }
 }

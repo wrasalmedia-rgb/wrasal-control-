@@ -1,169 +1,205 @@
 {
   "evidence_id": "FUNUJE-UXUI-BRAND-INTERFACE-PULL-001-source-inspection",
   "work_order": "FUNUJE-UXUI-BRAND-INTERFACE-PULL-001",
-  "project": "FUNUJE",
+  "project": "funuje",
   "recorded_on": "2026-10-03",
-  "recorded_by": "Arena bounded S1 execution agent",
-  "purpose": "Record what was actually inspected when attempting a source-grounded FUNUJE UX/UI/brand interface pull, and what was found absent.",
-  "record_type": "source_inspection_evidence",
+  "recorded_by": "arena-agent",
+  "purpose": "Record what was actually inspected during the FUNUJE brand/interface source pull, and correct the Pass-1 record.",
+  "record_type": "source_inspection",
   "canonical_acceptance": "pending",
-  "note": "This is a non-runtime evidence record. It is not validated by scripts/validate-control-plane.mjs, which only reads work_orders/WRASAL-####.json. It establishes no project facts and no canonical acceptance.",
+  "pass": "1R-reconciliation",
+  "supersedes_self_at": "469626b",
 
-  "result": "blocked",
-  "summary": "Zero FUNUJE source artifacts exist in any connected system. All eight expected reference assets are missing, as is 'Funuje Brand Guidelines v001'. The source-grounded objective could not be satisfied.",
+  "correction_notice": {
+    "severity": "material",
+    "withdrawn_claims": [
+      "No FUNUJE source material exists in the connected Google Drive.",
+      "The 44-file allDrives enumeration was complete.",
+      "All eight expected source assets are missing.",
+      "result: blocked",
+      "expected_sources_status: all missing"
+    ],
+    "root_cause": "The Funuje folder is owned by wrayveart@gmail.com and is shared-with-me, not owned by the authenticated account. It did not appear in corpora=allDrives enumeration and did not match name or fullText search. Pass 1 treated a discovery-method failure as a fact about the corpus.",
+    "standing_lesson": "For shared-with-me Drive content, enumeration and search are unreliable. Direct access by file or folder ID is the only dependable path."
+  },
+
+  "result": "partial",
+  "summary": "FUNUJE source corpus located, opened and inspected. The authoritative brand document was read in full and 23 visual artifacts were inspected as images. Most of the operator-supplied brand system is now VERIFIED rather than asserted. Result is partial, not pass, because inspection surfaced two mutually incompatible design systems inside the same folder and a direct contradiction between the brand document and the product artifacts.",
+
+  "container": {
+    "folder_name": "Funuje",
+    "drive_id": "1nbyg-Fq0q1uELNlv-Q4-lDxuDQjSodwi",
+    "owner": "wrayveart@gmail.com",
+    "trashed": false,
+    "child_count": 134,
+    "enumeration_method": "google_drive.list_files q=\"'1nbyg-Fq0q1uELNlv-Q4-lDxuDQjSodwi' in parents and trashed = false\" fields=files(id,name,size) page_size=70, two pages",
+    "artifacts_inspected": 23
+  },
 
   "inspections": [
     {
-      "id": "drive-full-enumeration",
-      "type": "google_drive_query",
-      "source": "google_drive.list_files q='trashed = false' corpora=allDrives include_items_from_all_drives=true page_size=200",
-      "observed_result": "44 files returned with next_page_token null, indicating a complete enumeration of the connected Drive. No file or folder named or relating to FUNUJE. Dominant content is 'My Favorite Jamaican' business planning from 2024, a 'Pitch Assets' folder, and a 'Google AI Studio' folder.",
+      "id": "folder-direct-open",
+      "type": "google_drive_get_file",
+      "source": "google_drive.get_file id=1nbyg-Fq0q1uELNlv-Q4-lDxuDQjSodwi",
+      "observed_result": "Folder 'Funuje' resolved. Owner wrayveart@gmail.com, not trashed, can_list_children true, 134 children.",
       "result": "pass",
-      "finding": "no_funuje_material"
+      "finding": "corpus_exists"
     },
     {
-      "id": "drive-shared-drives",
-      "type": "google_drive_query",
-      "source": "google_drive.list_drives page_size=100",
-      "observed_result": "0 shared drives accessible to the connected account.",
+      "id": "brand-guidelines-full-read",
+      "type": "google_drive_read_file_text",
+      "source": "google_drive.read_file_text id=1-KMFisxwtTh9Bat5Fea7XfhHMr9yX85eamyKq5iH-X0",
+      "observed_result": "FUNUJE Brand Guidelines v001 exported as text/plain. 21 sections, 16104 bytes, extraction_status success, not truncated.",
       "result": "pass",
-      "finding": "no_shared_drives"
+      "finding": "authoritative_document_recovered"
     },
     {
-      "id": "drive-trash",
-      "type": "google_drive_query",
-      "source": "google_drive.list_files q='trashed = true'",
-      "observed_result": "0 trashed files. The assets were not deleted from the connected account.",
+      "id": "palette-verification",
+      "type": "document_claim_comparison",
+      "source": "S1 section 5 vs work-order canonical inputs",
+      "observed_result": "All eight hex values match the work order exactly with no drift. Section 5 additionally supplies a colour usage table assigning palettes to main layouts, label, producer section, artist profiles, premium, app UI and social.",
       "result": "pass",
-      "finding": "no_trashed_material"
+      "finding": "eight_colours_verified_plus_usage_rules"
     },
     {
-      "id": "drive-name-search-brand",
-      "type": "google_drive_query",
-      "source": "google_drive.search_files query=\"name contains 'Funuj' or name contains 'FUNUJ' or name contains 'funuje'\"",
-      "observed_result": "0 files matched.",
+      "id": "cyan-role-resolution",
+      "type": "document_claim_comparison",
+      "source": "S1 section 5",
+      "observed_result": "Cyan Signal is defined for 'analytics, futuristic data, active streaming indicators, dashboard highlights'. The Pass-1 UNRESOLVED on this token is closed and the Pass-1 inference is confirmed, with scope widened beyond producer-only.",
       "result": "pass",
-      "finding": "absent"
+      "finding": "pass1_inference_confirmed"
     },
     {
-      "id": "drive-name-search-guidelines",
-      "type": "google_drive_query",
-      "source": "google_drive.search_files query=\"name contains 'Brand Guidelines' or name contains 'Brand Bible' or name contains 'wordmark' or name contains 'v001'\"",
-      "observed_result": "0 files matched. 'Funuje Brand Guidelines v001' does not exist in the connected Drive.",
+      "id": "zone-verification",
+      "type": "document_claim_comparison",
+      "source": "S1 section 9",
+      "observed_result": "All nine zones and their purposes verified verbatim. Nav substitutions verified: Profile to Booth, Dashboard to Console, Library to Vault, Explore to Signal.",
       "result": "pass",
-      "finding": "absent"
+      "finding": "nine_zones_verified"
     },
     {
-      "id": "drive-fulltext-search",
-      "type": "google_drive_query",
-      "source": "google_drive.search_files query=\"fullText contains 'Funuje' or fullText contains 'FUNUJ' or fullText contains 'Feel The Frequency'\"",
-      "observed_result": "1 file matched: 'Studio M' (10HAr8dKdTG_vrmWXodqfcVgPlolRiAKge4nL5kmZ2Rc).",
-      "result": "pass",
-      "finding": "one_candidate_requiring_verification"
+      "id": "typography-partial-match",
+      "type": "document_claim_comparison",
+      "source": "S1 section 6",
+      "observed_result": "Mono list verified exactly. Body list is seven faces and OMITS Satoshi. No display face is named anywhere in S1; only personality attributes are given. Anton and Recoleta do not appear in S1 at all.",
+      "result": "partial",
+      "finding": "typography_contested"
     },
     {
-      "id": "drive-fulltext-match-verification",
-      "type": "google_drive_read",
-      "source": "google_drive.read_file_text file_id=10HAr8dKdTG_vrmWXodqfcVgPlolRiAKge4nL5kmZ2Rc",
-      "observed_result": "Full document read (6,975 bytes, extraction_status success, not truncated). Content is a six-phase business plan to establish 'Studio M' as a photo and video production studio under 'Oasis M'. Contains no FUNUJE reference, no brand system, no interface material. Drive's tokenized full-text matching produced a false positive.",
+      "id": "brand-kit-visual-inspection",
+      "type": "image_visual_inspection",
+      "source": "Drive 1Yxc8vqXbi8huLIt_6f6gbIjnGKs7qvYy, 8 panels",
+      "observed_result": "Panel 04 specifies SIGNAL RED #FF2A23, WARM CREAM #F4E9D1, DEEP OXBLOOD #4A0D0F, ELECTRIC PINK #FF5E8A, BURNT ORANGE #FF7A1A, CHARCOAL #111111, and names ANTON, Recoleta and Satoshi. These conflict with S1 on both palette and body typeface. Panel 05 defines tiers FREE/PREMIUM/STUDIO. Panel 06 shows four mobile screens with a Home/Search/Library/Profile tab bar.",
       "result": "pass",
-      "finding": "false_positive_not_a_funuje_source"
+      "finding": "second_incompatible_design_system",
+      "method_caveat": "Hex values transcribed from the panel's printed labels. Pixel sampling was not performed: the sandbox has no outbound network to Drive (curl returns HTTP 000) and Pillow is not installed."
     },
     {
-      "id": "notion-targeted-search",
-      "type": "notion_query",
-      "source": "notion.search query='FUNUJ' page_size=50",
-      "observed_result": "0 results.",
+      "id": "wordmark-asset-inspection",
+      "type": "image_visual_inspection",
+      "source": "Drive 18TqnGwaQ32zzWg4Zmg7J_pCOoZRj9yRN, 1eTZp1ywmvyBLh4ooLYnEwA3UXtO1hNVL, 14T35U_d3UvOywZgIozN2ZSoIl_grQwuI, 1ajtmsDMkrRNCc1N5FfJ1DrpJFmrM6hc5",
+      "observed_result": "Lowercase and uppercase wordmarks, cream on red field, heavyweight geometric sans with the macron set as a detached bar rather than a diacritic. Two waveform-struck variants confirm Waveform as an identity-level motif. Letterform analysis indicates the wordmark is custom or heavily modified and is not a setting of Anton.",
       "result": "pass",
-      "finding": "absent"
+      "finding": "expected_assets_5_6_7_satisfied"
     },
     {
-      "id": "notion-full-enumeration",
-      "type": "notion_query",
-      "source": "notion.search unfiltered, sorted by last_edited_time descending, page_size=100",
-      "observed_result": "Workspace contains only unmodified Notion starter content: data sources 'Company Home', 'Creative Projects', 'Content Calendar', 'Document Hub', and placeholder pages 'Project 1', 'Project 2', 'Project 3'. No brand or interface material of any kind.",
+      "id": "platform-ia-inspection",
+      "type": "image_visual_inspection",
+      "source": "IMG_6211 sitemap, IMG_6210 user flow",
+      "observed_result": "Sitemap uses Home, Discover, Release, Studio, Community, Library with detailed sub-branches including Studio: Upload Music, My Releases, Analytics, Audience, Rights Management, Payouts. The flow diagram renders Studio as the glowing highlighted hub node. Neither uses the nine zone names. The sitemap title drops the macron ('Funuje Platform Sitemap').",
       "result": "pass",
-      "finding": "no_funuje_material"
+      "finding": "product_ia_contradicts_zone_instruction"
     },
     {
-      "id": "linear-teams",
-      "type": "linear_query",
-      "source": "linear.get_teams limit=50",
-      "observed_result": "1 team: 'Wrasal' (key WRA).",
-      "result": "pass",
-      "finding": "no_funuje_team"
+      "id": "landing-page-inspection",
+      "type": "image_visual_inspection",
+      "source": "IMG_6212",
+      "observed_result": "Red hero panel. Wordmark misspelt as 'funuju'. Headline 'Own Your Music. Reach Your Fans. No Middlemen.' with CTA 'Start Releasing Free'. Red reads coral/salmon, not #E31B23. Body face is a light humanist sans, not the brand display face.",
+      "result": "fail",
+      "finding": "non_compliant_artifact"
     },
     {
-      "id": "linear-projects",
-      "type": "linear_query",
-      "source": "linear.get_projects limit=50",
-      "observed_result": "12 projects, none FUNUJE. Portfolio includes 'PATWACITY - City of Patois', 'RED DRAWZ - Pre-production v2.2', 'STINGWRAY(TM) - Brand Genesis', 'WRASAL Visual DNA Library(TM)', 'WRASAL Personal OS v001 - Gravity Engine', 'WRASAL Creation Myth', and others. Note: an adjacent brand-genesis discipline and a canonical 'Visual DNA Library' already exist in this portfolio.",
+      "id": "executed-ui-inspection",
+      "type": "image_visual_inspection",
+      "source": "IMG_9686",
+      "observed_result": "Mr. Lexx / Diggy Nation responsive site. Nav HOME / VAULT / ARTISTS / DIGGY NATION. Red-rim-lit portrait, cream display name, glowing red CTA, FEATURED RELEASES cards with red play buttons. Closest artifact in the corpus to on-brand executed UI, and the only one retaining a zone name.",
       "result": "pass",
-      "finding": "no_funuje_project"
+      "finding": "partial_zone_vocabulary_survival"
     },
     {
-      "id": "repository-inspection",
-      "type": "repository_inspection",
-      "source": "filesystem walk of /home/user/wrasal-control-, git log, grep -ri 'funuj|frequency|signal'",
-      "observed_result": "Repository is wrasal-control-, an S2/S3 portfolio-control surface. README states it is implementation-neutral and 'does not contain product or runtime code for the listed projects'. projects.yml records wrasal, wrayve, dust, yute - no funuje. No FUNUJE reference anywhere in the tree. No runtime product surface available for Phase 4 application.",
+      "id": "parent-brand-context",
+      "type": "image_visual_inspection",
+      "source": "WRASAL Cinematic Civilization Engine board",
+      "observed_result": "Places FUNUJE as the Music + Artist Development layer of WRASAL. WRASAL's own visual language is obsidian, warm ivory, muted gold, signal amber, deep emerald. S1 never mentions WRASAL. A code screenshot in the folder uses #1C1C21 and #C6A85C, which are WRASAL-family values, not FUNUJE palette.",
       "result": "pass",
-      "finding": "no_runtime_product_repository"
+      "finding": "governance_relationship_undefined"
     },
     {
-      "id": "contrast-computation",
-      "type": "computation",
-      "source": "node script implementing WCAG 2.x relative luminance and contrast ratio over the eight declared hex values",
-      "observed_result": "18 pairings computed. Material findings: warm-cream #F4E6C8 on signal-red #E31B23 = 3.82:1, which FAILS WCAG AA for body text (4.5:1 required) - this is the work order's declared primary CTA. White on signal-red = 4.72:1 (passes AA). signal-red as text on obsidian #050505 = 4.32:1 (large text only). graphite-glass #171717 on obsidian #050505 = 1.14:1 (panel invisible by fill alone; requires stroke). deep-wine #5A0B12 on obsidian = 1.45:1 (surface-only color). cyan-signal #28D7E8 on obsidian = 11.62:1 (highest-contrast accent available).",
+      "id": "contrast-measurement",
+      "type": "computed_measurement",
+      "source": "WCAG 2.2 relative luminance, computed locally",
+      "observed_result": "Guidelines palette: cream on red 3.82:1 (AA normal FAIL, AA large PASS, AAA FAIL, non-text PASS); white on red 4.72:1 (AA normal PASS); red on obsidian 4.32:1; cream on obsidian 16.50:1; cyan on obsidian 11.62:1; gold on obsidian 8.53:1; smoke on obsidian 5.90:1; graphite on obsidian 1.14:1; wine on obsidian 1.45:1. Brand Kit palette: cream on red 3.11:1 and white on red 3.75:1, so no AA-normal-compliant label exists for a red primary button in that palette.",
       "result": "pass",
-      "finding": "measured_accessibility_defect_in_declared_cta"
+      "finding": "guidelines_palette_measurably_more_accessible_at_primary_cta"
     }
   ],
 
   "expected_sources_status": {
-    "brand_bible_interface_dna_board": "missing",
-    "platform_homepage_feel_the_frequency": "missing",
-    "user_control_panel_dashboard": "missing",
-    "collections_commerce_page": "missing",
-    "primary_uppercase_wordmark_on_red_field": "missing",
-    "waveform_wordmark": "missing",
-    "lowercase_wordmark": "missing",
-    "artist_branded_sound_system_environmental_image": "missing",
-    "funuje_brand_guidelines_v001": "missing",
-    "funuje_drive_folders": "missing"
+    "brand_guidelines_document": "found_and_read_in_full",
+    "brand_kit_specification": "found_and_inspected",
+    "primary_wordmark_on_red": "found_and_inspected",
+    "waveform_wordmark": "found_and_inspected",
+    "lowercase_wordmark": "found_and_inspected",
+    "colour_specification": "found_in_two_conflicting_versions",
+    "typography_specification": "found_in_two_conflicting_versions",
+    "component_and_ui_direction": "found_and_inspected",
+    "platform_information_architecture": "found_and_inspected_but_contradicts_brand_document",
+    "not_inspected": "1 of 8 photo-output.HEIC files; IMG_6190-6218 series sampled but not exhausted; 111 of 134 folder children not individually opened"
   },
 
-  "leading_hypothesis": {
-    "statement": "The connected Google account is probably not the one holding the FUNUJE material.",
-    "basis": "The connected Drive holds 44 files owned across myfavouritejamaican@gmail.com, caostherebel@gmail.com and wrayrasal@gmail.com, dominated by 2024 'My Favorite Jamaican' business planning. The Linear workspace, by contrast, holds current and active WRASAL portfolio work under wrayveart@gmail.com. The identity mismatch suggests FUNUJE assets live in a Drive account that is not currently connected.",
-    "label": "INFERRED",
-    "cheapest_test": "Connect the Google account that holds the FUNUJE Drive folder and re-run Phase 1."
+  "claim_reconciliation_summary": {
+    "claims_readjudicated": 61,
+    "retain": 34,
+    "revise": 19,
+    "reject": 8,
+    "notable_rejections": [
+      "ZoneShell persistent chrome component - agent-origin, no source support",
+      "persistent mini-player - agent-origin, evidence weakly points the other way",
+      "stroke as primary elevation signal - S1 specifies glow and shadow instead",
+      "red glow as state-only - S1 supports a two-tier ambient plus active model",
+      "zone vocabulary as built reality - product artifacts use generic naming"
+    ],
+    "notable_promotions": [
+      "all eight palette hex values to VERIFIED",
+      "Cyan Signal role to VERIFIED, closing a Pass-1 UNRESOLVED",
+      "all nine zones and purposes to VERIFIED",
+      "motifs with functions to VERIFIED",
+      "motion verbs to VERIFIED"
+    ],
+    "reversal": "first-surface recommendation changed from The Signal to The Console on evidentiary grounds"
   },
+
+  "conflicts_open": ["A palette", "B zone vocabulary", "C body typeface", "D positioning", "E category", "F access tiers", "G wordmark defects", "H WRASAL governance"],
+  "human_approval_required_for": ["A", "B", "C", "D", "E", "F", "H"],
 
   "artifacts_produced": [
-    "concepts/FUNUJE-UXUI-BRAND-INTERFACE-PULL-001.md",
+    "concepts/FUNUJE-UXUI-BRAND-INTERFACE-PULL-001-RECONCILIATION.md",
     "concepts/funuje-interface-tokens.draft.json",
     "evidence/FUNUJE-UXUI-BRAND-INTERFACE-PULL-001-source-inspection.json"
   ],
 
   "authority_envelope_compliance": {
-    "invented_missing_source_assets": false,
+    "invented_source_assets": false,
     "fabricated_brand_approval": false,
-    "overrode_source_identity_with_external_trends": false,
     "created_new_brand_direction": false,
-    "implemented_ui_in_unprovided_repository": false,
-    "claimed_runtime_verification_without_runtime_access": false,
-    "consulted_external_ui_inspiration": false,
-    "note": "No external design reference was consulted. All non-observed material is labeled DECLARED (work-order-stated), INFERRED, or UNRESOLVED. Nothing is labeled VERIFIED except facts directly observed through tool inspection and the contrast computation."
+    "implemented_runtime_ui": false,
+    "invented_tokens": false,
+    "claimed_runtime_verification": false,
+    "replaced_prior_pull": false,
+    "note": "Pass-1 concept document left unmodified at 469626b and reconciled claim by claim rather than overwritten. 13 token groups left explicitly UNRESOLVED rather than filled with plausible values."
   },
 
-  "canonical_state_impact": {
-    "projects_yml": "unchanged - no funuje project fact established",
-    "work_orders": "unchanged - no WRASAL work-order record created",
-    "priorities_yml": "unchanged",
-    "dependencies_yml": "unchanged",
-    "status_vocabulary": "unchanged",
-    "canonical_acceptance_promotion": "not performed"
-  },
+  "canonical_state_impact": "none. No project, priority or dependency record was altered. work_orders/ enforces filename ^WRASAL-\\d{4}\\.json$ and projects.yml has no funuje entry, so this work order cannot be registered as a first-class control-plane record without a schema change.",
 
-  "next_action": "Connect the Google account that holds the FUNUJE Drive folder and 'Funuje Brand Guidelines v001', then re-run Phase 1. Everything in the companion concept record is currently grounded in work-order declaration rather than source evidence."
+  "next_action": "Obtain human decisions on conflicts A, B, C, D, E, F and H. D, E and H are business and governance decisions outside the authority of a design pass. On resolution, issue Pass 2 bounded surface application for The Console."
 }
