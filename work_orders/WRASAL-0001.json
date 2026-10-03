@@ -1,0 +1,43 @@
+{
+  "work_order_id": "WRASAL-0001",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0002",
+  "recorded_on": "2026-10-03",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Establish the initial WRASAL portfolio-control repository structure.",
+  "success_condition": "The repository contains a minimal, inspectable portfolio-control scaffold capable of representing projects, work orders, decisions, evidence, and dependencies without implementing project-specific runtime behavior.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "commit": null,
+    "pull_request": null,
+    "merge": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0001-executor-final-report",
+      "type": "executor_report",
+      "attribution": "Arena external execution worker",
+      "source": "WRASAL-0001 final report in conversation",
+      "observed_result": "Executor reported PASS after creating scaffold files, preserving supplied project facts, validating YAML, documenting S2/S3 purpose, avoiding runtime code, and producing an inspectable diff.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0001-control-review",
+      "type": "control_review",
+      "attribution": "WRAY",
+      "source": "WRASAL-0002 work-order message",
+      "observed_result": "WRAY judged WRASAL-0001 implementation and verification as PASS while keeping canonical acceptance pending because commit, PR, review, merge, and explicit promotion were not evidenced.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "repository_control_scaffold": "changed in working tree under WRASAL-0001 authority",
+    "wrasal_runtime_world_state": "none",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "Persist WRASAL-0001 as the first work-order record if authorized."
+}
