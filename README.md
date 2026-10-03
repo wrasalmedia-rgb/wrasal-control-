@@ -78,3 +78,13 @@ The validator checks the control-plane YAML/JSON scaffold and work-order records
 - `WRASAL_SPECIMEN_INDEX_v001.json` and `specimens/`: ten calibration briefs and audit records.
 
 The source archive was supplied as task context but is not currently stored in this checkout. The document therefore preserves provenance confidence and does not promote inferred synthesis to canon.
+
+## WRASAL Visual DNA execution bridge
+
+`WRASAL_VISUAL_DNA_EXECUTION_BRIDGE_v001` is the intent-to-production planning boundary. It compiles a WorldSpec/SceneSpec-style intent into image, object, and architectural execution plans while preserving shared world, cultural, temporal, material, lighting, camera, and negative-DNA constraints. It produces no pixels and does not modify canon.
+
+```sh
+npm run bridge:visual-dna
+```
+
+Plans include a downstream conformance-manifest template so execution remains coupled to evidence and review.

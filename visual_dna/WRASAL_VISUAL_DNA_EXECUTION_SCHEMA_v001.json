@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wrasal.local/schema/visual-dna-execution-v001.json",
+  "title": "WRASAL Visual DNA Execution Intent v001",
+  "type": "object",
+  "required": ["intent_id", "request", "subject_class", "environment", "cultural_context", "temporal_state"],
+  "properties": {
+    "intent_id": {"type": "string", "minLength": 1},
+    "request": {"type": "string", "minLength": 1},
+    "subject_class": {"type": "string", "minLength": 1},
+    "environment": {"type": "string", "minLength": 1},
+    "cultural_context": {"type": "string", "minLength": 1},
+    "temporal_state": {"type": "string", "minLength": 1},
+    "users_and_function": {"type": "string"},
+    "active_obsolete_building": {"type": "string"},
+    "visual_intent": {"type": "string"},
+    "specimen_id": {"type": "string"},
+    "execution_modes": {"type": "array", "items": {"enum": ["image", "object", "architecture"]}, "minItems": 1},
+    "materials": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}}
+  },
+  "additionalProperties": false
+}

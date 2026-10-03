@@ -1,0 +1,18 @@
+{
+  "intent_id": "WRASAL-INTENT-ARCHIVAL-LAB",
+  "request": "Show a WRASAL archival laboratory containing a recovered Caribbean cultural artifact.",
+  "subject_class": "recovered cultural artifact under laboratory examination",
+  "environment": "WRASAL archive laboratory with a calibration bench, accession storage, and controlled handling area",
+  "cultural_context": "A specific Caribbean community's naming, language, custodianship, and memory practices must be visible through operation and archive context, never through generic pattern shorthand.",
+  "temporal_state": "Recovered object carries uncertain provenance; current examination sits beside an obsolete fixture and a planned digitization workflow.",
+  "users_and_function": "Archivist and materials technician identify, stabilize, and document the object.",
+  "active_obsolete_building": "Active accession scan; obsolete handling cradle; new non-invasive imaging station being assembled.",
+  "visual_intent": "Evidence of a living archive where cultural memory and precision technical care coexist.",
+  "specimen_id": "10",
+  "execution_modes": ["image", "object", "architecture"],
+  "materials": {
+    "image": ["engineered_polymer", "smoked_glass"],
+    "object": ["ceramic", "precision_composite", "frosted_optical_surface"],
+    "architecture": ["ceramic", "precision_composite"]
+  }
+}
