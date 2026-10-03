@@ -7,11 +7,13 @@
   "scripts": {
     "validate:control-plane": "node scripts/validate-control-plane.mjs",
     "test:control-plane-validator": "node tests/control-plane-validator.test.mjs",
-    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run test:visual-dna-conformance && npm run test:visual-dna-execution",
+    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run test:visual-dna-conformance && npm run test:visual-dna-execution && npm run test:visual-artifact-resolver",
     "conformance:visual-dna": "node scripts/wrasal-visual-dna-conformance.mjs --input visual_dna/conformance-fixtures --report evidence/WRASAL-visual-dna-conformance.json --strict",
     "test:visual-dna-conformance": "node tests/visual-dna-conformance.test.mjs",
     "bridge:visual-dna": "node scripts/wrasal-visual-dna-execution-bridge.mjs --input visual_dna/execution-fixtures/WRASAL-INTENT-ARCHIVAL-LAB.json --output /tmp/wrasal-execution-plans.json",
-    "test:visual-dna-execution": "node tests/visual-dna-execution-bridge.test.mjs"
+    "test:visual-dna-execution": "node tests/visual-dna-execution-bridge.test.mjs",
+    "resolve:visual-artifact": "node scripts/wrasal-visual-dna-execution-bridge.mjs --input visual_dna/execution-fixtures/WRASAL-INTENT-ARCHIVAL-LAB.json --output /tmp/wrasal-bridge-plans.json && node scripts/wrasal-visual-artifact-resolver.mjs --input /tmp/wrasal-bridge-plans.json --providers provider-neutral,generic-image-model,blender --output /tmp/wrasal-artifact-plans.json --invariance-report /tmp/wrasal-invariance.json",
+    "test:visual-artifact-resolver": "node tests/visual-artifact-resolver.test.mjs"
   },
   "dependencies": {
     "js-yaml": "4.3.2"

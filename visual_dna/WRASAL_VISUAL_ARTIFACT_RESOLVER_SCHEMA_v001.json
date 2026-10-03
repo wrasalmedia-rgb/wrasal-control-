@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wrasal.local/schema/visual-artifact-resolver-v001.json",
+  "title": "WRASAL Visual Artifact Resolver v001 output",
+  "type": "object",
+  "required": ["schema_version", "no_provider_canon", "resolutions", "cross_renderer_invariance", "governance"],
+  "properties": {
+    "schema_version": {"const": "WRASAL_VISUAL_ARTIFACT_RESOLVER_v001"},
+    "no_provider_canon": {"const": true},
+    "source_bridge_schema": {"const": "WRASAL_VISUAL_DNA_EXECUTION_BRIDGE_v001"},
+    "provider_adapters": {"type": "array", "items": {"type": "string"}},
+    "resolutions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resolution"}},
+    "cross_renderer_invariance": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["source_plan_id", "invariant", "invariant_hashes"], "properties": {"source_plan_id": {"type": "string"}, "invariant": {"enum": ["pass", "fail"]}, "invariant_hashes": {"type": "array", "items": {"type": "object", "required": ["provider", "hash"]}}}, "additionalProperties": true}},
+    "governance": {"type": "object", "required": ["provider_output_is_evidence_not_canon", "provider_specific_material_behavior_is_not_automatically_promoted", "conformance_required_after_render"], "properties": {"provider_output_is_evidence_not_canon": {"const": true}, "provider_specific_material_behavior_is_not_automatically_promoted": {"const": true}, "conformance_required_after_render": {"const": true}}}
+  },
+  "$defs": {
+    "resolution": {"type": "object", "required": ["artifact_plan_id", "source_plan_id", "provider", "execution_kind", "no_provider_canon", "world_invariants", "technical_parameters", "adapter_payload", "conformance_handoff"], "properties": {"artifact_plan_id": {"type": "string"}, "source_plan_id": {"type": "string"}, "provider": {"type": "string"}, "execution_kind": {"enum": ["image", "object", "architecture"]}, "no_provider_canon": {"const": true}, "world_invariants": {"type": "object"}, "technical_parameters": {"type": "object"}, "adapter_payload": {"type": "object"}, "conformance_handoff": {"type": "object"}}, "additionalProperties": true}
+  },
+  "additionalProperties": true
+}
