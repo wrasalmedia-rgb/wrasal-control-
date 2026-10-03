@@ -1,0 +1,33 @@
+{
+  "work_order_id": "WRASAL-9999",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0005",
+  "recorded_on": "2026-10-03",
+  "recorded_by": "validation fixture",
+  "objective": "Exercise rejection of a work-order record that conflates implementation result with acceptance vocabulary.",
+  "success_condition": "Validator rejects implementation_result values outside the declared vocabulary.",
+  "execution_status": "passed",
+  "implementation_result": "accepted",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "commit": null,
+    "pull_request": null,
+    "merge": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "invalid-status-fixture",
+      "type": "validator_fixture",
+      "attribution": "WRASAL-0005",
+      "source": "tests/fixtures/invalid/WRASAL-9999-invalid-status.json",
+      "observed_result": "This fixture intentionally uses implementation_result accepted, which is outside the declared implementation_result vocabulary.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "fixture": "invalid by design"
+  },
+  "next_candidate": "none"
+}

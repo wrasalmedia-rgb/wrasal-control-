@@ -1,0 +1,15 @@
+{
+  "name": "wrasal-control",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Repository-pinned validation tooling for WRASAL portfolio-control records.",
+  "type": "module",
+  "scripts": {
+    "validate:control-plane": "node scripts/validate-control-plane.mjs",
+    "test:control-plane-validator": "node tests/control-plane-validator.test.mjs",
+    "test": "npm run validate:control-plane && npm run test:control-plane-validator"
+  },
+  "dependencies": {
+    "js-yaml": "4.3.2"
+  }
+}

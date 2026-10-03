@@ -1,0 +1,42 @@
+{
+  "vocabulary_id": "work-order-status-vocabulary-v1",
+  "authority": "WRASAL-0002",
+  "purpose": "Distinguish executor work state and results from canonical acceptance without defining a workflow engine.",
+  "fields": {
+    "execution_status": {
+      "allowed": [
+        "requested",
+        "executing",
+        "blocked",
+        "passed",
+        "failed"
+      ],
+      "meaning": "Operational state or outcome reported by execution and verification evidence; not canonical acceptance."
+    },
+    "implementation_result": {
+      "allowed": [
+        "unknown",
+        "pass",
+        "fail",
+        "blocked"
+      ],
+      "meaning": "Executor implementation result for the bounded work order."
+    },
+    "verification_result": {
+      "allowed": [
+        "unknown",
+        "pass",
+        "fail",
+        "blocked"
+      ],
+      "meaning": "Observed verification result for stated acceptance criteria."
+    },
+    "canonical_acceptance": {
+      "allowed": [
+        "pending",
+        "accepted"
+      ],
+      "meaning": "Control-layer acceptance state; executor PASS does not set this field to accepted."
+    }
+  }
+}
