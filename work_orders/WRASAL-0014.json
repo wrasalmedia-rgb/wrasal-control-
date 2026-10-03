@@ -1,0 +1,56 @@
+{
+  "work_order_id": "WRASAL-0014",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0014",
+  "recorded_on": "2026-10-03",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Establish the WRASAL Visual Production Pilot control surface for one archival laboratory intent across image, object, and architecture manifestations.",
+  "success_condition": "The pilot compiles the real intent through the execution bridge and artifact resolver, inventories external rendered artifact manifests, runs conformance, records human review and override density, separates canonical/execution/observational evidence, and refuses to claim completion when render evidence is missing.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "implementation_entrypoint": "scripts/wrasal-visual-production-pilot.mjs",
+    "pilot_documentation": "visual_dna/WRASAL_VISUAL_PRODUCTION_PILOT_v001.md",
+    "pilot_schema": "visual_dna/WRASAL_VISUAL_PRODUCTION_PILOT_SCHEMA_v001.json",
+    "pilot_fixture": "visual_dna/pilot/WRASAL-0014",
+    "pull_request": null,
+    "merge": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0014-pilot-orchestration",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "npm run pilot:visual-production",
+      "observed_result": "The archival laboratory intent compiled through the bridge and resolver; provider invariance passed; the pilot correctly reported review because no external rendered artifact manifests were supplied.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0014-no-fabricated-evidence",
+      "type": "implementation_review",
+      "attribution": "Arena external execution worker",
+      "source": "scripts/wrasal-visual-production-pilot.mjs and pilot fixture",
+      "observed_result": "Missing image, object, and architecture renders produce incomplete_or_review rather than a false production pass.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0014-override-diagnostic",
+      "type": "implementation_review",
+      "attribution": "Arena external execution worker",
+      "source": "pilot report schema and overrides template",
+      "observed_result": "The pilot records execution decisions, human interventions, reasons, suspected system layers, and override density as diagnostic evidence rather than a quality score.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "visual_dna_v001": "unchanged and architecturally frozen",
+    "execution_bridge": "consumed by pilot; unchanged",
+    "artifact_resolver": "consumed by pilot; unchanged",
+    "production_evidence": "pilot scaffold created; actual provider renders pending",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "Supply real provider renders and artifact observation manifests, complete human review, and archive the first full-loop result before proposing any v002 change."
+}

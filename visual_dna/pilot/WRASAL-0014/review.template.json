@@ -1,0 +1,13 @@
+{
+  "status": "pending",
+  "reviewer": null,
+  "human_interpretation": {
+    "intent_preservation": "pending",
+    "function_recognizable_without_implementation_details": "pending",
+    "world_recognizable_without_metadata": "pending",
+    "notes": ""
+  },
+  "artifacts_reviewed": [],
+  "failures": [],
+  "recommendation": "Do not propose v002 from a single artifact or provider preference."
+}

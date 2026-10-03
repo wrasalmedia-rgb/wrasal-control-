@@ -1,0 +1,10 @@
+{
+  "execution_decisions": 0,
+  "interventions": [],
+  "intervention_schema": {
+    "decision": "what was manually changed",
+    "reason": "why",
+    "suspected_layer": "world_spec | visual_dna | execution_bridge | artifact_resolver | provider_adapter | conformance_harness",
+    "repeated": false
+  }
+}
