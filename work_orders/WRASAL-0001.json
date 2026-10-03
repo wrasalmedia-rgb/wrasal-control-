@@ -11,7 +11,7 @@
   "verification_result": "pass",
   "canonical_acceptance": "pending",
   "references": {
-    "commit": null,
+    "commit": "d56d91a5d8042d53fec9ba9ad8e6fd3300d1771b",
     "pull_request": null,
     "merge": null,
     "canonical_acceptance_record": null
@@ -31,6 +31,15 @@
       "attribution": "WRAY",
       "source": "WRASAL-0002 work-order message",
       "observed_result": "WRAY judged WRASAL-0001 implementation and verification as PASS while keeping canonical acceptance pending because commit, PR, review, merge, and explicit promotion were not evidenced.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0003-git-durability",
+      "type": "git_commit_reference",
+      "attribution": "Arena external execution worker",
+      "source": "local git commit on arena/01a100a8-wrasal-control",
+      "observed_result": "WRASAL-0001/0002 verified control-plane state was committed to Git.",
+      "reference": "d56d91a5d8042d53fec9ba9ad8e6fd3300d1771b",
       "result": "pass"
     }
   ],

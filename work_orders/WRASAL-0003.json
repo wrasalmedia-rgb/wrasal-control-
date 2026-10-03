@@ -1,0 +1,37 @@
+{
+  "work_order_id": "WRASAL-0003",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0003",
+  "recorded_on": "2026-10-03",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Make the verified WRASAL control-plane state durable in Git and record the resulting immutable Git reference without granting canonical acceptance.",
+  "success_condition": "The verified WRASAL-0001/0002 control-plane state has a Git commit reference, the reference is recorded in repository control data, and canonical acceptance remains pending.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "verified_control_state_commit": "d56d91a5d8042d53fec9ba9ad8e6fd3300d1771b",
+    "durability_record_commit": null,
+    "pull_request": null,
+    "merge": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0003-local-git-commit",
+      "type": "git_commit_reference",
+      "attribution": "Arena external execution worker",
+      "source": "git commit on branch arena/01a100a8-wrasal-control",
+      "observed_result": "Commit d56d91a5d8042d53fec9ba9ad8e6fd3300d1771b anchors the verified WRASAL-0001/0002 control scaffold and provenance records in local Git history.",
+      "reference": "d56d91a5d8042d53fec9ba9ad8e6fd3300d1771b",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "repository_git_history": "local Git commit created on arena/01a100a8-wrasal-control",
+    "wrasal_runtime_world_state": "none",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "If authorized, push the durability commits to the remote branch or open a PR without changing canonical acceptance."
+}
