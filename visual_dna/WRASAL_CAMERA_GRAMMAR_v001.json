@@ -1,0 +1,110 @@
+{
+  "schema_version": "WRASAL_CAMERA_GRAMMAR_v001",
+  "baseline": "Phase One medium-format aesthetic; precise optical rendering; controlled low-key realism",
+  "lens_roles": {
+    "24mm": {
+      "purpose": "architecture / environmental scale",
+      "distance": "close-to-medium spatial witness",
+      "dof": "moderate at f/8–f/16",
+      "distortion": "level camera; correct verticals; no face close-ups"
+    },
+    "35mm": {
+      "purpose": "human-environment relationship",
+      "distance": "observational proximity",
+      "dof": "moderate, subject separation without isolation",
+      "distortion": "tolerate only as motivated proximity"
+    },
+    "50mm": {
+      "purpose": "neutral observation",
+      "distance": "medium",
+      "dof": "context-dependent, default f/5.6–f/8",
+      "distortion": "low; default perspective"
+    },
+    "85mm": {
+      "purpose": "portrait / identity anchor",
+      "distance": "respectful portrait distance",
+      "dof": "selective f/1.8–f/4",
+      "distortion": "low; retain contextual anchor"
+    },
+    "100mm_macro": {
+      "purpose": "material / skin / technical specimen",
+      "distance": "close measured station",
+      "dof": "managed, often f/8–f/16 focus-stacked when needed",
+      "distortion": "minimal"
+    },
+    "135mm": {
+      "purpose": "compressed observation / archival distance",
+      "distance": "far",
+      "dof": "selective compression",
+      "distortion": "low; avoid voyeuristic framing"
+    }
+  },
+  "modes": {
+    "A_archival_documentation": {
+      "camera": "tripod medium format",
+      "lenses": [
+        "50mm",
+        "85mm"
+      ],
+      "aperture": "f/5.6–f/11",
+      "composition": "measured frontal or three-quarter",
+      "light": "even controlled low-key",
+      "density": "high evidence"
+    },
+    "B_cinematic_portrait": {
+      "camera": "medium format",
+      "lenses": [
+        "85mm",
+        "50mm"
+      ],
+      "aperture": "f/1.8–f/4",
+      "composition": "face plus lived context",
+      "light": "soft key, cool edge, localized warm reflection",
+      "density": "medium"
+    },
+    "C_technical_specimen": {
+      "camera": "macro station",
+      "lenses": [
+        "100mm_macro",
+        "50mm"
+      ],
+      "aperture": "f/8–f/16",
+      "composition": "datum aligned",
+      "light": "raking, polarized control",
+      "density": "very high"
+    },
+    "D_architectural_documentation": {
+      "camera": "large-format discipline",
+      "lenses": [
+        "24mm"
+      ],
+      "aperture": "f/8–f/16",
+      "composition": "strict perspective and verticals",
+      "light": "natural/controlled daylight",
+      "density": "high spatial evidence"
+    },
+    "E_forensic_diagnostic": {
+      "camera": "fixed diagnostic station",
+      "lenses": [
+        "35mm",
+        "50mm"
+      ],
+      "aperture": "f/8–f/11",
+      "composition": "sectional, indexed, measured",
+      "light": "flat-to-low-key motivated",
+      "density": "maximum metadata"
+    },
+    "F_cultural_performance": {
+      "camera": "mobile medium format",
+      "lenses": [
+        "35mm",
+        "50mm",
+        "85mm"
+      ],
+      "aperture": "f/2.8–f/5.6",
+      "composition": "bodies in relation and movement",
+      "light": "motivated practicals, restrained atmosphere",
+      "density": "medium-high human evidence"
+    }
+  }
+}

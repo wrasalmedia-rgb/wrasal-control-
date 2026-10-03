@@ -1,0 +1,90 @@
+{
+  "schema_version": "WRASAL_VISUAL_TOKENS_v001",
+  "status": "operational draft",
+  "provenance": {
+    "explicit_brief_rules": "CANON",
+    "cross_system_synthesis": "INFERRED"
+  },
+  "colors": {
+    "void_black": {
+      "value": "#0A0A0C",
+      "role": "environmental foundation",
+      "allowed_states": [
+        "shadow",
+        "inactive field"
+      ]
+    },
+    "surface_black": {
+      "value": "#111113",
+      "role": "coated structural surface",
+      "allowed_states": [
+        "housing",
+        "panel",
+        "mass"
+      ]
+    },
+    "primary_information": {
+      "value": "#FFFFFF",
+      "role": "essential legibility",
+      "allowed_states": [
+        "active text",
+        "measurement",
+        "critical mark"
+      ]
+    },
+    "archival_information": {
+      "value": "#888888",
+      "role": "historical or secondary record",
+      "allowed_states": [
+        "archive label",
+        "inactive metadata"
+      ]
+    },
+    "wrasal_gold": {
+      "value": "#F6C236",
+      "role": "active, selected, valuable, ceremonial, high priority",
+      "allowed_states": [
+        "selection",
+        "priority",
+        "ceremonial state"
+      ]
+    },
+    "signal_red": {
+      "value": "#B5121C",
+      "role": "boundary, warning, transition, abnormal",
+      "allowed_states": [
+        "alarm",
+        "transition",
+        "boundary"
+      ]
+    },
+    "diagnostic_steel_blue": {
+      "value": "steel blue",
+      "role": "construction, diagnostics, technical activity",
+      "allowed_states": [
+        "calibration",
+        "build",
+        "diagnostic"
+      ]
+    }
+  },
+  "typography": {
+    "institutional": "Syne",
+    "technical": "JetBrains Mono",
+    "rule": "Use only where physically or operationally attached; never as image compensation."
+  },
+  "state_rules": [
+    "Accents are state signals, not decorative palette.",
+    "Neutral material and void field carry most of the frame.",
+    "Remove all accents and type: underlying image must remain WRASAL."
+  ],
+  "quality_gates": [
+    "independent plausibility",
+    "visible function",
+    "manufacturing evidence",
+    "physical light/material response",
+    "human specificity",
+    "cultural context",
+    "temporal residue"
+  ]
+}

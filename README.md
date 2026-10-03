@@ -67,3 +67,14 @@ npm run validate:control-plane -- --report evidence/WRASAL-0005-validation.json
 ```
 
 The validator checks the control-plane YAML/JSON scaffold and work-order records. It is S3 tooling only; it is not WRASAL runtime/product code and does not promote canonical acceptance.
+
+## WRASAL Visual DNA
+
+`visual_dna/` contains the versioned WRASAL Visual DNA operating system and its machine-readable grammar. The system is deliberately kept as control-plane/reference data rather than runtime code:
+
+- `WRASAL_VISUAL_DNA_v001.md`: canonical and inferred rules, grammar, environments, human/cultural/temporal systems, prompt architecture, negative DNA, and audit.
+- `WRASAL_VISUAL_DNA_SCHEMA_v001.json`: schema for a future modular DNA record.
+- `WRASAL_VISUAL_TOKENS_v001.json`, camera/material/lighting/negative grammar JSON: reusable modules.
+- `WRASAL_SPECIMEN_INDEX_v001.json` and `specimens/`: ten calibration briefs and audit records.
+
+The source archive was supplied as task context but is not currently stored in this checkout. The document therefore preserves provenance confidence and does not promote inferred synthesis to canon.

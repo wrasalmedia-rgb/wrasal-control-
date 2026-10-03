@@ -1,0 +1,107 @@
+{
+  "schema_version": "WRASAL_MATERIAL_GRAMMAR_v001",
+  "materials": {
+    "matte_anodized_aluminum": {
+      "response": "broad low-gain response; precise edge rolloff",
+      "evidence": [
+        "blast direction",
+        "fasteners",
+        "rubbed edges"
+      ],
+      "wear": "contact polish and handling marks",
+      "light": "large soft source plus cool rim",
+      "reject": [
+        "mirror finish",
+        "liquid CGI sheen"
+      ]
+    },
+    "dark_PVD_titanium": {
+      "response": "deep neutral specular; tight highlight",
+      "evidence": [
+        "machined transitions",
+        "contact polish"
+      ],
+      "wear": "edge and touch polish",
+      "light": "narrow controlled highlight",
+      "reject": [
+        "black plastic appearance"
+      ]
+    },
+    "carbon_fiber": {
+      "response": "directional weave only when structurally exposed",
+      "evidence": [
+        "resin edge",
+        "bonded seam"
+      ],
+      "wear": "chipped clearcoat and repair",
+      "light": "grazing",
+      "reject": [
+        "decorative pasted weave"
+      ]
+    },
+    "smoked_glass": {
+      "response": "depth and internal reflection",
+      "evidence": [
+        "fingerprints",
+        "gasket",
+        "edge thickness"
+      ],
+      "wear": "handling residue",
+      "light": "side/back",
+      "reject": [
+        "opaque floating black rectangle"
+      ]
+    },
+    "frosted_optical_surface": {
+      "response": "diffuse transmission",
+      "evidence": [
+        "housing",
+        "seal",
+        "calibration boundary"
+      ],
+      "wear": "localized handling",
+      "light": "restrained internal state light",
+      "reject": [
+        "neon panel glow"
+      ]
+    },
+    "engineered_polymer": {
+      "response": "honest fine texture; low-medium sheen",
+      "evidence": [
+        "mould line",
+        "clip",
+        "parting line"
+      ],
+      "wear": "scuffs and stress whitening",
+      "light": "soft broad",
+      "reject": [
+        "toy finish"
+      ]
+    },
+    "ceramic": {
+      "response": "dense diffuse body; controlled glaze",
+      "evidence": [
+        "mould/join",
+        "edge chip"
+      ],
+      "wear": "chips and handling",
+      "light": "raking or natural",
+      "reject": [
+        "weightless shell"
+      ]
+    },
+    "precision_composite": {
+      "response": "layered bonded load-bearing appearance",
+      "evidence": [
+        "cut edge",
+        "fastener",
+        "repair patch"
+      ],
+      "wear": "abrasion and patching",
+      "light": "directional grazing",
+      "reject": [
+        "impossible seamless geometry"
+      ]
+    }
+  }
+}

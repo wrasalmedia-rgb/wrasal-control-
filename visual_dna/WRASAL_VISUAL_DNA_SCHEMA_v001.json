@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wrasal.local/schema/visual-dna-v001.json",
+  "title": "WRASAL Visual DNA v001 modular system",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provenance",
+    "modules",
+    "quality_gates"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "WRASAL_VISUAL_DNA_SCHEMA_v001"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_status",
+        "canonical_marker",
+        "inferred_marker"
+      ],
+      "properties": {
+        "source_status": {
+          "type": "string"
+        },
+        "canonical_marker": {
+          "const": "CANON"
+        },
+        "inferred_marker": {
+          "const": "INFERRED"
+        }
+      },
+      "additionalProperties": false
+    },
+    "modules": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "purpose",
+          "rules"
+        ],
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "text",
+                "status"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "CANON",
+                    "INFERRED"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "variables": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reject": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

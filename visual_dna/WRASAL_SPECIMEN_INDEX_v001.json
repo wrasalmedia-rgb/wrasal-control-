@@ -1,0 +1,299 @@
+{
+  "schema_version": "WRASAL_SPECIMEN_INDEX_v001",
+  "purpose": "Calibration specimens, not campaign images.",
+  "audit_scale": {
+    "criteria": [
+      "discovered",
+      "engineered",
+      "functional",
+      "human",
+      "futuristic_not_cyberpunk",
+      "material_realism",
+      "cultural_specificity",
+      "wrasal_continuity"
+    ],
+    "pass_rule": "each criterion >=1; total >=13/16; any 0 is fail"
+  },
+  "specimens": [
+    {
+      "id": "01",
+      "name": "WRASAL laboratory",
+      "class": "environment",
+      "archive_id": "WR-LAB-001",
+      "brief": "A calibration bench with active KORA-7, retired fixture, service tags, and one operator documenting a material test.",
+      "camera_and_mode": "50mm, f/8, archival/technical, low-key, cool diagnostic blue only at active test node.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "02",
+      "name": "WRASAL technical instrument",
+      "class": "object",
+      "archive_id": "WR-INS-K7-014",
+      "brief": "KORA-7 Datum Instrument, Rev C, 286x94x42mm, anodized aluminum and PVD titanium, datum rail, serial plate, contact polish, replaceable battery door.",
+      "camera_and_mode": "100mm macro, f/11, raking light, measured three-quarter, no floating UI.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "03",
+      "name": "WRASAL production terminal",
+      "class": "object",
+      "archive_id": "WR-TERM-T04-021",
+      "brief": "TAKE/04 cinematic production terminal, Rev F, physical toggles, smoked glass, cable strain relief, gaffer residue, current and superseded routing sheets.",
+      "camera_and_mode": "50mm, f/5.6, studio rack context, white labels, gold only on selected route.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "04",
+      "name": "WRASAL architectural environment",
+      "class": "space",
+      "archive_id": "WR-ARC-004",
+      "brief": "Buildable raw concrete and travertine research courtyard, botanicals, drainage, realistic shallow water, one human scale anchor, service access visible.",
+      "camera_and_mode": "24mm, f/11, strict perspective, natural late-day light, no luxury staging.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "05",
+      "name": "WRASAL human portrait",
+      "class": "human",
+      "archive_id": "WR-HUM-005",
+      "brief": "A specific operator with stable SCCT identity anchors, real pores and melanin variation, asymmetry, practical workwear, looking toward a calibrated instrument in use.",
+      "camera_and_mode": "85mm, f/2.8, soft key/cool edge/local warm reflection, context retained.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "06",
+      "name": "WRASAL cultural performance scene",
+      "class": "event",
+      "archive_id": "WR-CUL-006",
+      "brief": "A community performance in a real cultural space: musicians, audience, sound routing, locally meaningful naming/language/context, clothing with believable physics.",
+      "camera_and_mode": "35mm, f/4, motivated practicals, movement and relationship over costume spectacle.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "07",
+      "name": "WRASAL archival/forensic image",
+      "class": "record",
+      "archive_id": "WR-ARC-007",
+      "brief": "Indexed evidence photograph of a decommissioned control module: accession card, capped port, dust shadow, former mount, comparison datum, uncertainty recorded.",
+      "camera_and_mode": "50mm, f/11, forensic flat light, high information density, archival gray metadata.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "08",
+      "name": "WRASAL time-memory artifact",
+      "class": "record",
+      "archive_id": "WR-TIM-008",
+      "brief": "One fixed architectural datum shown as material state stack for 2012/2018/2024/2026/2032 through revision plates, removed mounts, vegetation, and planned construction—not nostalgia filter.",
+      "camera_and_mode": "35mm locked viewpoint, f/8, layered but optically plausible presentation.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "09",
+      "name": "WRASAL vehicle technical documentation",
+      "class": "object",
+      "archive_id": "WR-VEH-009",
+      "brief": "Serviceable vehicle subsystem with load path, access panel, fasteners, tire/contact evidence, revision plate, operator scale, and diagnostic point.",
+      "camera_and_mode": "24mm documentation plus 100mm detail, neutral measured light, no concept-car impossible surfaces.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    },
+    {
+      "id": "10",
+      "name": "WRASAL unknown recovered artifact",
+      "class": "object",
+      "archive_id": "WR-REC-010",
+      "brief": "Recovered object on chain-of-custody table; function uncertain, partial operation, repair evidence, provenance gaps, calibrated scale, careful uncertainty labels.",
+      "camera_and_mode": "85mm or 100mm macro, low-key forensic light, no invented mythology or decorative glow.",
+      "required_evidence": [
+        "function",
+        "manufacture",
+        "use or maintenance",
+        "revision or temporal residue",
+        "human scale or operator relationship"
+      ],
+      "negative_checks": [
+        "generic cyberpunk",
+        "detached interface",
+        "synthetic material response",
+        "decorative culture",
+        "logo/type/accent dependency"
+      ],
+      "audit": {
+        "status": "not_rendered",
+        "scores": null,
+        "failures": [],
+        "correction": null
+      }
+    }
+  ]
+}

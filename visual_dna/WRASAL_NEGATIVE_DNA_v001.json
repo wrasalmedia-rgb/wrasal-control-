@@ -1,0 +1,60 @@
+{
+  "schema_version": "WRASAL_NEGATIVE_DNA_v001",
+  "rejections": [
+    {
+      "id": "generic_cyberpunk",
+      "reject": "neon noir city, rain-as-style, hacker clutter",
+      "why": "WRASAL is operational, historical, and infrastructural rather than cyberpunk mood dressing"
+    },
+    {
+      "id": "generic_sci_fi",
+      "reject": "unidentified futuristic object",
+      "why": "function, provenance, and construction must be legible"
+    },
+    {
+      "id": "neon_excess",
+      "reject": "multiple saturated emissive colors",
+      "why": "state accents lose semantic meaning"
+    },
+    {
+      "id": "hud_clutter",
+      "reject": "floating arbitrary HUD, meaningless glyphs",
+      "why": "interfaces need physical or operational anchors"
+    },
+    {
+      "id": "cgi_human",
+      "reject": "plastic skin, perfect symmetry, beauty smoothing",
+      "why": "human evidence and identity-lock fail"
+    },
+    {
+      "id": "sterile_minimalism",
+      "reject": "unoccupied pristine white/black product void",
+      "why": "maintenance, use, and history disappear"
+    },
+    {
+      "id": "luxury_advertising",
+      "reject": "unearned premium gloss, lifestyle emptiness",
+      "why": "surface replaces function and social reality"
+    },
+    {
+      "id": "decorative_afrofuturism",
+      "reject": "generic tribal patterns, glowing masks, costume clichés",
+      "why": "culture becomes applied decoration rather than lived context"
+    },
+    {
+      "id": "impossible_machine",
+      "reject": "floating parts, unserviceable seams, gravity violations",
+      "why": "manufacturability and credibility fail"
+    },
+    {
+      "id": "post_processing",
+      "reject": "overprocessed HDR, fake grain, excessive bloom",
+      "why": "optical evidence is falsified"
+    },
+    {
+      "id": "generic_ai_aesthetic",
+      "reject": "smooth concept-art surfaces and adjective-only spectacle",
+      "why": "discovered world is replaced by image-generation residue"
+    }
+  ]
+}

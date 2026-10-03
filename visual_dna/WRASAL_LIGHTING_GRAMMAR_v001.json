@@ -1,0 +1,57 @@
+{
+  "schema_version": "WRASAL_LIGHTING_GRAMMAR_v001",
+  "baseline": "controlled low-key illumination with physically motivated sources",
+  "patterns": [
+    {
+      "id": "controlled_low_key",
+      "purpose": "reveal form without spectacle",
+      "sources": [
+        "large soft key",
+        "negative fill",
+        "cool edge when motivated"
+      ],
+      "behavior": "black stays black; shadow retains material falloff"
+    },
+    {
+      "id": "cool_edge_local_warm",
+      "purpose": "separate human/object from dark field",
+      "sources": [
+        "cool rim",
+        "localized warm practical/reflection"
+      ],
+      "behavior": "warmth belongs to a source or material; never global grade"
+    },
+    {
+      "id": "diagnostic_state",
+      "purpose": "report operational condition",
+      "sources": [
+        "restrained internal emitter or indicator"
+      ],
+      "behavior": "steel blue construction, gold selection, red warning only"
+    },
+    {
+      "id": "architectural_daylight",
+      "purpose": "show mass, water, vegetation, scale",
+      "sources": [
+        "sun/skylight/realistic bounce"
+      ],
+      "behavior": "strict exposure; real shadows and reflections"
+    },
+    {
+      "id": "forensic_flat",
+      "purpose": "evidence and comparison",
+      "sources": [
+        "broad measured source"
+      ],
+      "behavior": "minimum drama; maximize surface and state information"
+    }
+  ],
+  "reject": [
+    "excessive bloom",
+    "global neon",
+    "unmotivated rim light",
+    "HDR halos",
+    "fake film grain",
+    "black crushed beyond material reading"
+  ]
+}
