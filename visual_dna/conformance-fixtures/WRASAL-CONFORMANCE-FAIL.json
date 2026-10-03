@@ -1,0 +1,21 @@
+{
+  "artifact_id": "WRASAL-CONFORMANCE-FAIL",
+  "specimen_id": "10",
+  "observations": {
+    "independent_plausibility": {"status": "violated", "evidence": "Object is presented as spectacle with no credible setting."},
+    "visible_function": {"status": "not_observed", "evidence": "No function was established."},
+    "manufacturing_evidence": {"status": "violated", "evidence": "Floating seamless parts have no service access."},
+    "material_realism": {"status": "violated", "evidence": "Synthetic black plastic and bloom obscure surface response."},
+    "human_specificity": {"status": "not_observed", "evidence": "No human subject."},
+    "cultural_context": {"status": "violated", "evidence": "Generic decorative motif was used as cultural shorthand."},
+    "temporal_residue": {"status": "not_observed", "evidence": "No use, revision, or maintenance evidence."},
+    "interface_physics": {"status": "violated", "evidence": "Detached holographic labels float around the object."},
+    "futuristic_not_cyberpunk": {"status": "violated", "evidence": "Image relies on neon noir convention."},
+    "human_scale": {"status": "not_observed", "evidence": "No scale anchor."}
+  },
+  "blind_test": {"logo": true, "typography": true, "metadata": true, "coordinates": true, "gold_red_indicators": true, "evaluator_result": "fail", "rationale": "Without metadata the artifact is generic concept art."},
+  "negative_flags": ["generic_cyberpunk", "hud_clutter", "decorative_afrofuturism", "impossible_machine", "post_processing"],
+  "cultural_review": {"status": "fail", "evidence": "Generic motif is the only cultural cue.", "cliche_flags": ["decorative_pattern", "glowing_mask"]},
+  "technical_review": {"status": "fail", "evidence": "Labels have no physical or operational anchor."},
+  "unsupported_decisions": ["unexplained geometry", "unmotivated glow"]
+}

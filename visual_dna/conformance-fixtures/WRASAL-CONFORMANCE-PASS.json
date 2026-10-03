@@ -1,0 +1,35 @@
+{
+  "artifact_id": "WRASAL-CONFORMANCE-PASS",
+  "specimen_id": "02",
+  "source_type": "rendered_calibration_specimen",
+  "observations": {
+    "independent_plausibility": {"status": "satisfied", "evidence": "Instrument has a coherent bench context, scale, service access, and independent use."},
+    "visible_function": {"status": "satisfied", "evidence": "Datum rail, battery door, and calibration target explain the major forms."},
+    "manufacturing_evidence": {"status": "satisfied", "evidence": "Fasteners, machined transitions, serial plate, and contact polish are visible."},
+    "material_realism": {"status": "satisfied", "evidence": "Aluminum has broad response; titanium has tight highlights; frosted optic transmits light."},
+    "human_specificity": {"status": "satisfied", "evidence": "Operator hand and skin retain pores, asymmetry, and believable contact."},
+    "cultural_context": {"status": "satisfied", "evidence": "Naming and workshop context are specific to the documented WRASAL production community, not ornament."},
+    "temporal_residue": {"status": "satisfied", "evidence": "Retired Rev B fixture and maintenance label establish previous version and use."},
+    "interface_physics": {"status": "satisfied", "evidence": "Steel-blue diagnostic indicator is mounted in the actual calibration optic and reports test state."},
+    "futuristic_not_cyberpunk": {"status": "satisfied", "evidence": "Advanced optical calibration is shown through a serviceable instrument, with no neon-noir styling."},
+    "human_scale": {"status": "satisfied", "evidence": "Operator hand, bench height, and instrument dimensions provide scale."}
+  },
+  "inferred_observations": {
+    "cross_system_continuity": {"status": "satisfied", "evidence": "Material, documentation, and maintenance logic can coexist with WRASAL environments."},
+    "operational_environment": {"status": "satisfied", "evidence": "Bench shows user, purpose, active test, retired fixture, and maintenance record."},
+    "memory_stack": {"status": "satisfied", "evidence": "Revision and wear encode time without a nostalgia filter."}
+  },
+  "blind_test": {
+    "logo": true,
+    "typography": true,
+    "metadata": true,
+    "coordinates": true,
+    "gold_red_indicators": true,
+    "evaluator_result": "pass",
+    "rationale": "Without marks, labels, and accents, the physically used instrument, optical behavior, maintenance evidence, and low-key construction still read as WRASAL."
+  },
+  "negative_flags": [],
+  "cultural_review": {"status": "pass", "evidence": "Context is carried by naming, operators, and use rather than generic symbolism.", "cliche_flags": []},
+  "technical_review": {"status": "pass", "evidence": "Every visible diagnostic and technical mark has an object anchor and operational purpose."},
+  "unsupported_decisions": []
+}

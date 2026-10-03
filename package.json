@@ -7,7 +7,9 @@
   "scripts": {
     "validate:control-plane": "node scripts/validate-control-plane.mjs",
     "test:control-plane-validator": "node tests/control-plane-validator.test.mjs",
-    "test": "npm run validate:control-plane && npm run test:control-plane-validator"
+    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run test:visual-dna-conformance",
+    "conformance:visual-dna": "node scripts/wrasal-visual-dna-conformance.mjs --input visual_dna/conformance-fixtures --report evidence/WRASAL-visual-dna-conformance.json --strict",
+    "test:visual-dna-conformance": "node tests/visual-dna-conformance.test.mjs"
   },
   "dependencies": {
     "js-yaml": "4.3.2"
