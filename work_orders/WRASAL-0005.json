@@ -11,7 +11,7 @@
   "verification_result": "pass",
   "canonical_acceptance": "pending",
   "references": {
-    "implementation_commit": null,
+    "implementation_commit": "51479edc89a62a42b5908dba13669edbaa7f18f1",
     "validation_evidence": "evidence/WRASAL-0005-validation.json",
     "dependency_manifest": "package.json",
     "dependency_lock": "package-lock.json",
@@ -42,6 +42,15 @@
       "attribution": "Arena external execution worker",
       "source": "npm run test:control-plane-validator",
       "observed_result": "Validator accepted the current control plane and rejected invalid status and invalid project-schema fixtures.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0005-implementation-commit",
+      "type": "git_commit_reference",
+      "attribution": "Arena external execution worker",
+      "source": "local git commit on arena/01a100a8-wrasal-control",
+      "observed_result": "WRASAL-0005 pinned validator implementation was committed locally.",
+      "reference": "51479edc89a62a42b5908dba13669edbaa7f18f1",
       "result": "pass"
     }
   ],
