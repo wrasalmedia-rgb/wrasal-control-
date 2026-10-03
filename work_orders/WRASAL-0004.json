@@ -15,8 +15,8 @@
     "remote_url": "https://github.com/wrasalmedia-rgb/wrasal-control-.git",
     "remote_branch": "arena/01a100a8-wrasal-control",
     "remote_ref": "refs/heads/arena/01a100a8-wrasal-control",
-    "verified_remote_commit": "ad5cd87cc7114b962aeff430a81014c7cbfa4d8d",
-    "durability_record_commit": null,
+    "verified_remote_commit": "c303a0e107016999f8d98ac0d338a287ff7d46f0",
+    "durability_record_commit": "c303a0e107016999f8d98ac0d338a287ff7d46f0",
     "pull_request": null,
     "merge": null,
     "canonical_acceptance_record": null
@@ -37,6 +37,24 @@
       "source": "git ls-remote --heads origin arena/01a100a8-wrasal-control",
       "observed_result": "origin refs/heads/arena/01a100a8-wrasal-control resolved to ad5cd87cc7114b962aeff430a81014c7cbfa4d8d after push.",
       "reference": "ad5cd87cc7114b962aeff430a81014c7cbfa4d8d",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0004-record-commit",
+      "type": "git_commit_reference",
+      "attribution": "Arena external execution worker",
+      "source": "local git commit on arena/01a100a8-wrasal-control",
+      "observed_result": "WRASAL-0004 remote durability record was committed locally before remote push verification.",
+      "reference": "c303a0e107016999f8d98ac0d338a287ff7d46f0",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0004-record-push-verification",
+      "type": "git_remote_reference",
+      "attribution": "Arena external execution worker",
+      "source": "git push origin arena/01a100a8-wrasal-control and git ls-remote --heads origin arena/01a100a8-wrasal-control",
+      "observed_result": "After pushing the WRASAL-0004 record commit, origin refs/heads/arena/01a100a8-wrasal-control resolved to c303a0e107016999f8d98ac0d338a287ff7d46f0.",
+      "reference": "c303a0e107016999f8d98ac0d338a287ff7d46f0",
       "result": "pass"
     }
   ],
