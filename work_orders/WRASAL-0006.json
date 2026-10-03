@@ -17,7 +17,7 @@
     "remote_ref": "refs/heads/arena/01a100a8-wrasal-control",
     "remote_head_before": "258487111aba799ea8f77c0c9223f0279bc2ca96",
     "verified_wrasal_0005_remote_commit": "500f0e0257c71fe5d54937391601d7ce7d3342d2",
-    "durability_record_commit": null,
+    "durability_record_commit": "f93d8f2b0880182477bff5ce7c8b89a7237e7d8a",
     "pull_request": null,
     "merge": null,
     "canonical_acceptance_record": null
@@ -56,6 +56,15 @@
       "attribution": "Arena external execution worker",
       "source": "gh pr list --head arena/01a100a8-wrasal-control --state all --json number,state,url",
       "observed_result": "No pull requests were found for the branch.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0006-record-commit",
+      "type": "git_commit_reference",
+      "attribution": "Arena external execution worker",
+      "source": "local git commit on arena/01a100a8-wrasal-control",
+      "observed_result": "WRASAL-0006 remote durability record was committed locally before final remote push verification.",
+      "reference": "f93d8f2b0880182477bff5ce7c8b89a7237e7d8a",
       "result": "pass"
     }
   ],
