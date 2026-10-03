@@ -37,3 +37,33 @@ Absence of a field means this control repository has no recorded fact for that f
 `priorities.yml` and `dependencies.yml` are empty collections until a work order establishes records.
 
 This scaffold is not a source of project-specific runtime behavior.
+
+## Control-plane validation
+
+WRASAL S3 validation uses repository-pinned Node dependencies recorded in `package.json` and `package-lock.json`.
+
+Install pinned dependencies:
+
+```sh
+npm ci
+```
+
+Validate current control-plane records:
+
+```sh
+npm run validate:control-plane
+```
+
+Run validator tests, including invalid fixture rejection:
+
+```sh
+npm test
+```
+
+Write machine-readable validation evidence:
+
+```sh
+npm run validate:control-plane -- --report evidence/WRASAL-0005-validation.json
+```
+
+The validator checks the control-plane YAML/JSON scaffold and work-order records. It is S3 tooling only; it is not WRASAL runtime/product code and does not promote canonical acceptance.

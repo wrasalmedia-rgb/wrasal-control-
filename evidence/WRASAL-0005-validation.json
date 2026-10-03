@@ -1,0 +1,1798 @@
+{
+  "validator": {
+    "name": "wrasal-control-plane-validator",
+    "repository_pinned": true,
+    "dependency_manifest": "package.json",
+    "dependency_lock": "package-lock.json"
+  },
+  "result": "pass",
+  "summary": {
+    "checks": 354,
+    "passed": 354,
+    "failed": 0
+  },
+  "checked_files": [
+    "dependencies.yml",
+    "priorities.yml",
+    "projects.yml",
+    "work_orders",
+    "work_orders/WRASAL-0001.json",
+    "work_orders/WRASAL-0003.json",
+    "work_orders/WRASAL-0004.json",
+    "work_orders/WRASAL-0005.json",
+    "work_orders/status-vocabulary.json"
+  ],
+  "checks": [
+    {
+      "name": "file.exists",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "yaml.parse",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.schema",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.non_empty",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.id",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.schema",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.allowed_keys",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.state",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.repo",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrasal.objective",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.id",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.schema",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.allowed_keys",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.state",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.repo",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.wrayve.objective",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.id",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.schema",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.allowed_keys",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.state",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.repo",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.dust.parent",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.id",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.schema",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.allowed_keys",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.state",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.repo",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "projects.yute.organization",
+      "file": "projects.yml",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "priorities.yml",
+      "result": "pass"
+    },
+    {
+      "name": "yaml.parse",
+      "file": "priorities.yml",
+      "result": "pass"
+    },
+    {
+      "name": "priorities.schema",
+      "file": "priorities.yml",
+      "result": "pass"
+    },
+    {
+      "name": "priorities.allowed_keys",
+      "file": "priorities.yml",
+      "result": "pass"
+    },
+    {
+      "name": "priorities.array",
+      "file": "priorities.yml",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "dependencies.yml",
+      "result": "pass"
+    },
+    {
+      "name": "yaml.parse",
+      "file": "dependencies.yml",
+      "result": "pass"
+    },
+    {
+      "name": "dependencies.schema",
+      "file": "dependencies.yml",
+      "result": "pass"
+    },
+    {
+      "name": "dependencies.allowed_keys",
+      "file": "dependencies.yml",
+      "result": "pass"
+    },
+    {
+      "name": "dependencies.array",
+      "file": "dependencies.yml",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "json.parse",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.schema",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.allowed_keys",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.vocabulary_id",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.authority",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.purpose",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.fields",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.required_fields",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.no_extra_fields",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.schema",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed_keys",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.execution_status.meaning",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.schema",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed_keys",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.implementation_result.meaning",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.schema",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed_keys",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.verification_result.meaning",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.schema",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.allowed_keys",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.allowed",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.allowed.value",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "status_vocabulary.canonical_acceptance.meaning",
+      "file": "work_orders/status-vocabulary.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_orders.directory",
+      "file": "work_orders",
+      "result": "pass"
+    },
+    {
+      "name": "work_orders.non_empty",
+      "file": "work_orders",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "json.parse",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.allowed_keys",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate.present",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.id.matches_filename",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.date",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.commit",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.pull_request",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.merge",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.canonical_acceptance_record",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.allowed_keys",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.id",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.type",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.attribution",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.source",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.observed_result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.allowed_keys",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.id",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.type",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.attribution",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.source",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.observed_result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.allowed_keys",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.id",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.type",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.attribution",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.source",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.observed_result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.reference",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result.vocabulary",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.schema",
+      "file": "work_orders/WRASAL-0001.json",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "json.parse",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.schema",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.allowed_keys",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate.present",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.id.matches_filename",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.date",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.vocabulary",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.vocabulary",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.vocabulary",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.vocabulary",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.schema",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.verified_control_state_commit",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.durability_record_commit",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.pull_request",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.merge",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.canonical_acceptance_record",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.schema",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.schema",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.allowed_keys",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.id",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.type",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.attribution",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.source",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.observed_result",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.reference",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result.vocabulary",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.schema",
+      "file": "work_orders/WRASAL-0003.json",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "json.parse",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.allowed_keys",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate.present",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.id.matches_filename",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.date",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.remote_name",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.remote_url",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.remote_branch",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.remote_ref",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.verified_remote_commit",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.durability_record_commit",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.pull_request",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.merge",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.canonical_acceptance_record",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.allowed_keys",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.id",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.type",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.attribution",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.source",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.observed_result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.allowed_keys",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.id",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.type",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.attribution",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.source",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.observed_result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.reference",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.allowed_keys",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.id",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.type",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.attribution",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.source",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.observed_result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.reference",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.allowed_keys",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.id",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.type",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.attribution",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.source",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.observed_result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.result",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.reference",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.3.result.vocabulary",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.schema",
+      "file": "work_orders/WRASAL-0004.json",
+      "result": "pass"
+    },
+    {
+      "name": "file.exists",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "json.parse",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.allowed_keys",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate.present",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.id.matches_filename",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.work_order_id",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.project",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.record_authority",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_by",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.objective",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.success_condition",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.next_candidate",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.recorded_on.date",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.execution_status.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.implementation_result.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.verification_result.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_acceptance.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.implementation_commit",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.validation_evidence",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.dependency_manifest",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.dependency_lock",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.pull_request",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.merge",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.references.canonical_acceptance_record",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.allowed_keys",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.id",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.type",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.attribution",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.source",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.observed_result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.0.result.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.allowed_keys",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.id",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.type",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.attribution",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.source",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.observed_result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.1.result.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.allowed_keys",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.id",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.type",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.attribution",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.source",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.observed_result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.evidence.2.result.vocabulary",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    },
+    {
+      "name": "work_order.canonical_state_impact.schema",
+      "file": "work_orders/WRASAL-0005.json",
+      "result": "pass"
+    }
+  ],
+  "errors": []
+}
