@@ -1,0 +1,93 @@
+{
+  "work_order_id": "WRASAL-0010",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0010",
+  "recorded_on": "2026-10-03",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Merge GitHub PR #1 into main after reconfirming that the PR head is exactly the head reviewed and approved under WRASAL-0008.",
+  "success_condition": "PR #1 is merged into main, the resulting main reference is independently verified, merge evidence is recorded, and canonical_acceptance remains pending.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "remote_name": "origin",
+    "remote_url": "https://github.com/wrasalmedia-rgb/wrasal-control-.git",
+    "remote_branch": "main",
+    "remote_ref": "refs/heads/main",
+    "reviewed_head": "67773cc383592e7aca501b7f5683c326a91cca89",
+    "main_head_before_merge": "ff1cb984a398ea1e82133f0e552768007bf852ae",
+    "merge_commit": "0c8674a2d423631dc9791ab582b411216604c47a",
+    "resulting_main_head": "0c8674a2d423631dc9791ab582b411216604c47a",
+    "merge_timestamp_utc": "2026-10-03T09:24:42Z",
+    "merge_actor": "wrasalmedia-rgb via gh CLI in Arena sandbox session arena/01a10112-wrasal-control",
+    "pull_request": "https://github.com/wrasalmedia-rgb/wrasal-control-/pull/1",
+    "merge": "0c8674a2d423631dc9791ab582b411216604c47a",
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0010-effective-authority",
+      "type": "github_repo_query",
+      "attribution": "Arena external execution worker",
+      "source": "gh api repos/wrasalmedia-rgb/wrasal-control- (permissions) and gh api .../branches/main (protection)",
+      "observed_result": "Execution environment authenticated as wrasalmedia-rgb with admin permission; main unprotected; project authority granted by WRASAL-0010; effective_authority = project_authority INTERSECT execution_environment_authority permitted the merge.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0010-pre-merge-head-confirmation",
+      "type": "github_pr_query",
+      "attribution": "Arena external execution worker",
+      "source": "gh pr view 1 --json headRefOid,baseRefName,state and git fetch origin pull/1/head",
+      "observed_result": "PR #1 was OPEN with base main and head OID 67773cc383592e7aca501b7f5683c326a91cca89, matching the WRASAL-0008 reviewed head exactly via both the GitHub API and an independent git fetch of refs/pull/1/head; last head commit dated 2026-10-03T08:40:45Z, prior to the WRASAL-0008 review, confirming the PR had not changed since review.",
+      "reference": "67773cc383592e7aca501b7f5683c326a91cca89",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0010-pre-merge-validation",
+      "type": "validator_run",
+      "attribution": "Arena external execution worker",
+      "source": "npm ci && npm test on git archive export of 67773cc383592e7aca501b7f5683c326a91cca89",
+      "observed_result": "Repository-pinned control-plane validator passed with 459 checks and validator self-tests passed against an exact export of the reviewed head; no CI checks were required by the environment.",
+      "reference": "67773cc383592e7aca501b7f5683c326a91cca89",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0010-draft-to-ready",
+      "type": "github_pr_state_change",
+      "attribution": "Arena external execution worker",
+      "source": "gh pr ready 1",
+      "observed_result": "PR #1 was in draft state, which GitHub refuses to merge; it was marked ready for review as a merge-execution mechanic. Head OID, base, and implementation were unchanged by this action, reconfirmed immediately afterwards as 67773cc383592e7aca501b7f5683c326a91cca89.",
+      "reference": "67773cc383592e7aca501b7f5683c326a91cca89",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0010-merge-execution",
+      "type": "github_pr_merge",
+      "attribution": "Arena external execution worker",
+      "source": "gh pr merge 1 --merge --match-head-commit 67773cc383592e7aca501b7f5683c326a91cca89",
+      "observed_result": "PR #1 merged into main at 2026-10-03T09:24:42Z by wrasalmedia-rgb using a merge commit, with --match-head-commit pinning the merge to the reviewed head; GitHub reports state MERGED and merge commit 0c8674a2d423631dc9791ab582b411216604c47a.",
+      "reference": "0c8674a2d423631dc9791ab582b411216604c47a",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0010-main-verification",
+      "type": "git_remote_reference",
+      "attribution": "Arena external execution worker",
+      "source": "git fetch origin main; git rev-parse origin/main; git cat-file -p origin/main; git merge-base --is-ancestor",
+      "observed_result": "Independent git fetch showed origin/main advanced from ff1cb984a398ea1e82133f0e552768007bf852ae to 0c8674a2d423631dc9791ab582b411216604c47a, a GitHub-signed merge commit whose parents are ff1cb984a398ea1e82133f0e552768007bf852ae and 67773cc383592e7aca501b7f5683c326a91cca89; the reviewed head is an ancestor of origin/main.",
+      "reference": "0c8674a2d423631dc9791ab582b411216604c47a",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "repository_remote_branch": "refs/heads/main updated on origin from ff1cb984a398ea1e82133f0e552768007bf852ae to merge commit 0c8674a2d423631dc9791ab582b411216604c47a containing the reviewed head",
+    "wrasal_runtime_world_state": "none",
+    "project_semantics": "unchanged",
+    "status_vocabulary": "unchanged",
+    "pull_request": "merged",
+    "merge": "performed",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "WRASAL-0011 — CANONICAL ACCEPTANCE: a separate S5 decision on whether the merged repository state becomes recognized WRASAL canon."
+}
