@@ -1,0 +1,81 @@
+{
+  "provider": "HEYGEN",
+  "contract_id": "heygen-video-generate/declared-v1",
+  "verification_state": "UNVERIFIED_IN_THIS_ENVIRONMENT",
+  "verification_note": "This file records what WRAYVE BELIEVES the HeyGen contract to be. It has not been confirmed against a live HeyGen account from this environment. The adapter performs a live preflight before every real execution and refuses to proceed if the contract cannot be confirmed. WRAYVE never substitutes assumed behaviour for observed behaviour.",
+  "credentials": [
+    {
+      "name": "HEYGEN_API_KEY",
+      "transport": "x-api-key request header",
+      "storage": "server-side environment variable only; never sent to the browser"
+    }
+  ],
+  "base_url": "https://api.heygen.com",
+  "endpoints": [
+    {
+      "id": "preflight",
+      "method": "GET",
+      "path": "/v2/avatars",
+      "purpose": "Confirm credentials are valid and the account exposes the avatar catalogue the compile step depends on.",
+      "confirmed": false
+    },
+    {
+      "id": "generate",
+      "method": "POST",
+      "path": "/v2/video/generate",
+      "purpose": "Submit a generation job.",
+      "declared_request_shape": {
+        "video_inputs": [
+          {
+            "character": { "type": "avatar", "avatar_id": "<provider binding>", "avatar_style": "normal" },
+            "voice": { "type": "text", "input_text": "<SceneSpec.dialogue>", "voice_id": "<provider binding>" },
+            "background": { "type": "color", "value": "<provider binding>" }
+          }
+        ],
+        "dimension": { "width": 1280, "height": 720 },
+        "title": "<SceneSpec.title>"
+      },
+      "declared_response_shape": { "data": { "video_id": "string" }, "error": "null | object" },
+      "confirmed": false
+    },
+    {
+      "id": "status",
+      "method": "GET",
+      "path": "/v1/video_status.get?video_id={provider_job_id}",
+      "purpose": "Poll job state and retrieve the output URL.",
+      "declared_response_shape": {
+        "data": {
+          "status": "pending | processing | completed | failed",
+          "video_url": "string | absent",
+          "duration": "number | absent",
+          "error": "object | null"
+        }
+      },
+      "confirmed": false
+    }
+  ],
+  "required_response_fields": [
+    "generate.data.video_id",
+    "status.data.status"
+  ],
+  "fields_wrayve_will_not_infer": [
+    "provider_model",
+    "provider_model_version",
+    "provider_timestamp",
+    "output_duration_seconds"
+  ],
+  "unmapped_scene_fields": [
+    "environment",
+    "wardrobe",
+    "performance_direction",
+    "camera_direction",
+    "voice_direction",
+    "duration_seconds"
+  ],
+  "unmapped_scene_fields_note": "WRAYVE holds these as creative intent. The declared HeyGen avatar-video contract exposes no confirmed parameter for them, so the adapter refuses to silently drop or re-interpret them: it records them as carried-but-unexecuted direction on the GenerationEvent.",
+  "required_provider_binding": [
+    "heygen_avatar_id",
+    "heygen_voice_id"
+  ],
+  "required_provider_binding_note": "An avatar_id/voice_id is a HeyGen-side identity artefact. WRAYVE will not invent one. Until an operator records a verified binding in SETTINGS, real HeyGen execution is refused at the adapter boundary."
+}

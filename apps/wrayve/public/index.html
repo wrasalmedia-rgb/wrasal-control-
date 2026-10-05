@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WRAYVE — WRASAL Identity Execution System</title>
+<link rel="stylesheet" href="/styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230a0a0c'/><circle cx='8' cy='8' r='3.2' fill='none' stroke='%23c8a24a'/></svg>" />
+</head>
+<body>
+  <div class="console">
+    <aside class="rail">
+      <div class="mark">
+        <div class="mark-glyph" aria-hidden="true"><span></span></div>
+        <div class="mark-text">
+          <h1>WRAYVE</h1>
+          <p>WRASAL Identity Execution System</p>
+        </div>
+      </div>
+
+      <nav id="nav">
+        <button class="nav-item is-active" data-view="identity"><span class="idx">01</span>IDENTITY</button>
+        <button class="nav-item" data-view="scenes"><span class="idx">02</span>SCENES</button>
+        <button class="nav-item" data-view="executions"><span class="idx">03</span>EXECUTIONS</button>
+        <button class="nav-item" data-view="provenance"><span class="idx">04</span>PROVENANCE</button>
+        <button class="nav-item" data-view="settings"><span class="idx">05</span>SETTINGS</button>
+      </nav>
+
+      <div class="rail-foot">
+        <div class="principle">
+          WRASAL does not generate a person.<br />
+          WRASAL governs how an identity is represented.
+        </div>
+        <div class="integrity" id="integrity-strip">LEDGER —</div>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <header class="stage-head">
+        <div id="breadcrumb" class="breadcrumb">IDENTITY</div>
+        <div class="head-meta">
+          <span class="chip" id="mode-chip">MODE —</span>
+          <span class="chip" id="provider-chip">PROVIDER —</span>
+          <button class="ghost" id="refresh">RESYNC</button>
+        </div>
+      </header>
+      <div id="view" class="view"></div>
+    </main>
+
+    <aside class="ledger">
+      <div class="ledger-head">
+        <h2>EVENT LEDGER</h2>
+        <span class="ledger-sub">append-only · not editable</span>
+      </div>
+      <ol id="ledger-list" class="ledger-list"></ol>
+    </aside>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

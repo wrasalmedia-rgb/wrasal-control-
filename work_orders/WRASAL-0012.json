@@ -1,0 +1,78 @@
+{
+  "work_order_id": "WRASAL-0012",
+  "project": "WRAYVE",
+  "record_authority": "WRASAL-0012",
+  "recorded_on": "2026-10-05",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Build the WRAYVE identity-authority and execution vertical slice (Arena Build Specification v0.1) as a self-contained prototype under apps/wrayve, proving the loop IDENTITY -> AUTHORITY -> APPROVAL -> SCENE -> PROVIDER EXECUTION -> MEDIA -> PROVENANCE -> FREEBUFF HANDOFF without allowing any external provider to become the identity authority.",
+  "success_condition": "A single test identity moves through every stage of the loop with each transition recorded, auditable and truthful; provider execution is reachable only through IdentityExecutionAdapter; absent provider contracts are reported at the adapter boundary rather than fabricated; automated tests cover specification test scenarios 01-08 and the provider-swap architectural test.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "specification": "WRAYVE Arena Build Specification v0.1 as supplied in the originating Arena session",
+    "implementation_path": "apps/wrayve",
+    "domain_core_path": "apps/wrayve/src/core",
+    "adapter_boundary_path": "apps/wrayve/src/adapters/identity-execution-adapter.js",
+    "declared_provider_contract": "apps/wrayve/src/adapters/heygen-contract.json",
+    "test_path": "apps/wrayve/tests",
+    "branch": "arena/01a10c77-wrasal-control",
+    "runtime_dependencies": "none; Node >= 20.11 standard library only",
+    "control_plane_impact": "none",
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0012-vertical-slice-tests",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "node --test \"tests/**/*.test.mjs\" executed in apps/wrayve",
+      "observed_result": "31 tests passed, 0 failed. Coverage includes specification test scenarios 01-08 (AUTHORIZED, no-approval DENIED, political DENIED, sexualized DENIED, inactive snapshot DENIED, SIMULATED execution, HeyGen execution recording provider=HEYGEN with non-null provider_job_id against a transport double, and provider failure recorded as FAILED with an auditable failure event).",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-provider-contract-discipline",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "apps/wrayve/tests/provider-contract.test.mjs",
+      "observed_result": "With no HEYGEN_API_KEY and no provider binding present, real execution is refused at the adapter boundary with code PROVIDER_CONTRACT_UNAVAILABLE and an itemised list of missing contract elements; the run is recorded as FAILED with simulated=false and output_reference=null, never as a simulated success. A provider response lacking the declared required field data.video_id is rejected rather than assigned a synthesised provider_job_id. The declared HeyGen contract is recorded with verification_state UNVERIFIED_IN_THIS_ENVIRONMENT and every endpoint marked confirmed=false.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-architectural-separation",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "apps/wrayve/tests/architecture.test.mjs",
+      "observed_result": "HeyGen was unregistered entirely from the adapter registry and the application continued to complete the full loop through a different adapter with identical Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck reason set, provenance chain shape and GenerationEvent field set. Static assertions confirm that no file under src/core (excluding config.js, which names environment variables) mentions any provider, that the browser bundle contains no provider endpoint or credential header, and that a serialised SceneSpec contains no provider-specific parameters.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-end-to-end-loop",
+      "type": "http_api_run",
+      "attribution": "Arena external execution worker",
+      "source": "Running server at 0.0.0.0:4173; POST /api/executions, /approve, /execute, /record-review, /freebuff and GET /api/provenance/GENEVENT-0001",
+      "observed_result": "A seeded WRAY-001 identity produced provenance chain IDENTITY WRAY-001 ACTIVE -> SNAPSHOT SNAP-0001 v0.1 ACTIVE -> POLICY POLICY-0001 BOUND -> SCENE SCENE-0001 READY -> AUTHORITY EXEC-0001 AUTHORIZED/APPROVED -> PROVIDER MOCK SIMULATED EXECUTION COMPLETED -> GENERATION GENEVENT-0001 SIM-19C04DD257ED COMPLETED -> OUTPUT MEDIA-0001 PRIVATE -> FREEBUFF FBHANDOFF-0001 SIMULATED. The Freebuff payload carries certified=false and an explicit non-certification statement.",
+      "reference": "GENEVENT-0001",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-control-plane-unaffected",
+      "type": "validator_run",
+      "attribution": "Arena external execution worker",
+      "source": "npm ci && npm test at repository root",
+      "observed_result": "Repository-pinned control-plane validation passed with 567 checks and validator self-tests passed after the apps/wrayve addition; no control-plane record semantics were changed by this work order.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "control_plane_records": "unchanged except for the addition of this work-order record",
+    "projects_yml": "unchanged",
+    "status_vocabulary": "unchanged",
+    "repository_scope": "apps/wrayve added as a bounded prototype implementation; the repository was previously implementation-neutral and the root README now records this deviation explicitly",
+    "wrasal_runtime_world_state": "none",
+    "wrayve_product_semantics": "prototype only; not canon",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "WRASAL-0013 — verify the declared HeyGen contract against a live account and promote heygen-contract.json endpoints from confirmed=false to confirmed=true, or record the observed divergence."
+}

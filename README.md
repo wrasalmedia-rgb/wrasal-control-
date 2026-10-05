@@ -9,7 +9,20 @@ This repository is an S2/S3 control surface for coordinating portfolio work reco
 - S2 coordination: records work orders, dependencies, priorities, and routing context.
 - S3 control/verification: records decisions and evidence used to verify acceptance without treating execution artifacts as project runtime state.
 
-This repository is implementation-neutral. It does not contain product or runtime code for the listed projects.
+This repository is implementation-neutral with one recorded exception: `apps/wrayve/`. It otherwise does not contain product or runtime code for the listed projects.
+
+## Recorded exception: `apps/wrayve/`
+
+`apps/wrayve/` holds the WRAYVE identity-authority and execution vertical slice built under
+work order `WRASAL-0012`. It is a bounded prototype, not canon, and its presence here is a
+deliberate deviation from implementation neutrality rather than a change of policy.
+
+- It is self-contained: no runtime dependencies, no build step, no coupling to the control-plane records.
+- It does not read, write or validate anything under `projects.yml`, `work_orders/`, `decisions/` or `evidence/`.
+- Root `npm test` continues to run control-plane validation only. The slice has its own `npm test`.
+- `canonical_acceptance` for `WRASAL-0012` is `pending`.
+
+See `apps/wrayve/README.md`.
 
 ## Current scaffold
 
