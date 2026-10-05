@@ -2,8 +2,10 @@ import { EventLog } from './event-log.js';
 import { project } from './projection.js';
 import { authorityCheck, policySummary } from './authority.js';
 import { buildFreebuffPayload, deliverToMockFreebuff } from './freebuff.js';
+import { buildArtifactRecord, REFERENCE_CLASS } from './artifact.js';
 import {
   AUTHORITY_STATUS,
+  BINDING_STATUS,
   EVENT,
   EXECUTION_MODE,
   IDENTITY_STATUS,
@@ -63,6 +65,7 @@ export class WrayveService {
       generation: this.state.generationEvents.size,
       media: this.state.media.size,
       handoff: this.state.handoffs.size,
+      binding: this.state.bindings.size,
     };
   }
 
@@ -284,6 +287,97 @@ export class WrayveService {
 
   listScenes() {
     return [...this.state.scenes.values()];
+  }
+
+  // ------------------------------------------- WRASAL-0014 ProviderBinding
+
+  /**
+   * The formal join between a Representation Identity (IdentitySnapshot) and a
+   * Provider Identity (whatever the renderer calls the subject).
+   *
+   * This exists so that `provider subject id` never has to masquerade as
+   * `WRASAL identity`. A binding is DECLARED when an operator asserts it and
+   * only becomes VERIFIED when WRASAL has observed the provider confirm it.
+   */
+  declareProviderBinding({
+    identity_snapshot_id,
+    provider,
+    provider_object_type,
+    provider_subject_id,
+    label = null,
+    actor = 'operator',
+  }) {
+    const snapshot = this.getSnapshot(identity_snapshot_id);
+    if (!provider) throw new ValidationError('provider is required for a provider binding');
+    if (!provider_subject_id) {
+      throw new ValidationError('provider_subject_id is required; WRAYVE never invents a provider identifier');
+    }
+
+    const binding = {
+      id: this.#nextId('binding', 'BINDING'),
+      identity_snapshot_id: snapshot.id,
+      identity_id: snapshot.identity_id,
+      provider,
+      provider_object_type: provider_object_type ?? UNKNOWN,
+      provider_subject_id,
+      label,
+      binding_status: BINDING_STATUS.DECLARED,
+      declared_by: actor,
+      declared_at: this.clock(),
+      verified_at: null,
+      evidence_ref: null,
+    };
+    this.#emit(EVENT.PROVIDER_BINDING_DECLARED, { binding }, { actor, subject: binding.id });
+    return this.state.bindings.get(binding.id);
+  }
+
+  /**
+   * Promote a binding to VERIFIED. Requires an evidence reference — an
+   * assertion alone can never produce a VERIFIED binding.
+   */
+  verifyProviderBinding(bindingId, { evidence_ref, actor = 'operator' } = {}) {
+    const binding = this.getProviderBinding(bindingId);
+    if (!evidence_ref) {
+      throw new ValidationError(
+        'a provider binding cannot be marked VERIFIED without an evidence reference',
+        { binding_id: binding.id, required: 'evidence_ref' },
+      );
+    }
+    this.#emit(
+      EVENT.PROVIDER_BINDING_VERIFIED,
+      { binding_id: binding.id, binding_status: BINDING_STATUS.VERIFIED, evidence_ref },
+      { actor, subject: binding.id },
+    );
+    return this.getProviderBinding(bindingId);
+  }
+
+  revokeProviderBinding(bindingId, { reason = '', actor = 'operator' } = {}) {
+    const binding = this.getProviderBinding(bindingId);
+    this.#emit(
+      EVENT.PROVIDER_BINDING_REVOKED,
+      { binding_id: binding.id, binding_status: BINDING_STATUS.REVOKED, reason },
+      { actor, subject: binding.id },
+    );
+    return this.getProviderBinding(bindingId);
+  }
+
+  getProviderBinding(id) {
+    const binding = this.state.bindings.get(id);
+    if (!binding) throw new NotFoundError(`provider binding ${id} not found`);
+    return binding;
+  }
+
+  /** Active binding for a snapshot/provider pair, if any. */
+  bindingFor(snapshotId, provider) {
+    return [...this.state.bindings.values()].find(
+      (binding) => binding.identity_snapshot_id === snapshotId
+        && binding.provider === provider
+        && binding.binding_status !== BINDING_STATUS.REVOKED,
+    ) ?? null;
+  }
+
+  listProviderBindings() {
+    return [...this.state.bindings.values()];
   }
 
   // ------------------------------------------------------- 07 ExecutionRequest
@@ -582,9 +676,21 @@ export class WrayveService {
   /** Provider-neutral order. Contains creative intent, never governance state. */
   #buildOrder(requestId) {
     const { request, identity, snapshot, scene } = this.resolveContext(requestId);
+    const binding = this.bindingFor(snapshot.id, request.provider);
     return Object.freeze({
       execution_request_id: request.id,
       mode: request.execution_mode,
+      // The Provider Identity, carried explicitly and never conflated with the
+      // Canonical or Representation Identity above it.
+      provider_binding: binding
+        ? Object.freeze({
+          id: binding.id,
+          provider: binding.provider,
+          provider_object_type: binding.provider_object_type,
+          provider_subject_id: binding.provider_subject_id,
+          binding_status: binding.binding_status,
+        })
+        : null,
       subject: Object.freeze({
         label: identity.canonical_name,
         snapshot_id: snapshot.id,
@@ -615,6 +721,25 @@ export class WrayveService {
     const { request, snapshot, scene } = this.resolveContext(requestId);
     const completedAt = this.clock();
 
+    // WRASAL-0014: what WRASAL possesses is computed from the adapter's
+    // declared reference class and the evidence ladder — never asserted.
+    const artifactInput = result.artifact ?? {
+      reference_class: result.output_reference
+        ? REFERENCE_CLASS.PROVIDER_REFERENCE
+        : REFERENCE_CLASS.ARTIFACT_UNAVAILABLE,
+      reference: result.output_reference ?? null,
+      media_type: result.output_media_type ?? null,
+      content_hash: null,
+      expires_at: null,
+    };
+    const artifact = buildArtifactRecord({
+      ...artifactInput,
+      evidence: {
+        observed_response: true,
+        provider_reported_completion: result.execution_status === 'COMPLETED',
+      },
+    });
+
     let mediaRecord = null;
     if (result.output_reference) {
       mediaRecord = {
@@ -624,6 +749,7 @@ export class WrayveService {
         media_type: result.output_media_type,
         visibility: VISIBILITY.PRIVATE,
         simulated: result.simulated,
+        artifact,
         created_at: completedAt,
       };
       this.#emit(EVENT.MEDIA_GENERATED, { media: mediaRecord }, { actor, subject: requestId });
@@ -653,6 +779,8 @@ export class WrayveService {
       output_media_id: mediaRecord?.id ?? null,
       output_media_type: result.output_media_type ?? UNKNOWN,
       output_duration_seconds: result.output_duration_seconds ?? null,
+      artifact,
+      provider_binding: order.provider_binding,
       execution_status: 'COMPLETED',
       // Provider-reported facts, recorded verbatim and never interpreted.
       provider_surface: result.provider_surface ?? UNKNOWN,
@@ -721,6 +849,12 @@ export class WrayveService {
       output_media_id: null,
       output_media_type: UNKNOWN,
       output_duration_seconds: null,
+      artifact: buildArtifactRecord({
+        reference_class: REFERENCE_CLASS.ARTIFACT_UNAVAILABLE,
+        reference: null,
+        evidence: { observed_response: stage !== 'validate' },
+      }),
+      provider_binding: order.provider_binding,
       execution_status: 'FAILED',
       failure,
       unresolved_contract_fields: [],

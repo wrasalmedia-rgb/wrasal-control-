@@ -125,6 +125,20 @@ export const SCENE_CONTEXT = Object.freeze({
 
 export const SCENE_CONTEXT_KEYS = Object.freeze(Object.keys(SCENE_CONTEXT));
 
+/**
+ * ProviderBinding status (WRASAL-0014).
+ *
+ * The formal join between a Representation Identity (IdentitySnapshot) and a
+ * Provider Identity (whatever an external renderer happens to call the subject).
+ * DECLARED means an operator asserted it. VERIFIED means WRASAL observed the
+ * provider confirm it. Those are not the same claim and are never merged.
+ */
+export const BINDING_STATUS = Object.freeze({
+  DECLARED: 'DECLARED',
+  VERIFIED: 'VERIFIED',
+  REVOKED: 'REVOKED',
+});
+
 /** §21 append-only event vocabulary. */
 export const EVENT = Object.freeze({
   IDENTITY_CREATED: 'IDENTITY_CREATED',
@@ -133,6 +147,9 @@ export const EVENT = Object.freeze({
   SNAPSHOT_DEACTIVATED: 'SNAPSHOT_DEACTIVATED',
   POLICY_CREATED: 'POLICY_CREATED',
   SCENE_CREATED: 'SCENE_CREATED',
+  PROVIDER_BINDING_DECLARED: 'PROVIDER_BINDING_DECLARED',
+  PROVIDER_BINDING_VERIFIED: 'PROVIDER_BINDING_VERIFIED',
+  PROVIDER_BINDING_REVOKED: 'PROVIDER_BINDING_REVOKED',
   EXECUTION_REQUESTED: 'EXECUTION_REQUESTED',
   AUTHORITY_CHECKED: 'AUTHORITY_CHECKED',
   APPROVAL_GRANTED: 'APPROVAL_GRANTED',

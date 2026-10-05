@@ -171,3 +171,79 @@ endpoint or credential.
 No likeness scanner, no takedown system, no biometric database, no marketplace, no social
 layer, no full Freebuff, no native renderer, no tokens, no agents, no multi-user permissions,
 no analytics. The objective is to prove the core loop.
+
+## Artifact custody and the evidence ladder (WRASAL-0014)
+
+WRASAL-0013 found that the provider's documented output URL is **presigned and
+expiring**. A provenance chain that stores only that URL silently decays from
+"here is the generated video" into "here is evidence that there was a video" —
+while still looking like the former. WRASAL-0014 makes that difference
+explicit and machine-checkable.
+
+**The invariant:**
+
+> An evidence record must never imply durable possession of an artifact when
+> WRASAL only possesses an expiring provider reference.
+
+It is enforced by `assertNoFalsePossessionClaim()` in `src/core/artifact.js`,
+called before any Freebuff payload is emitted.
+
+### Six reference classes
+
+| Class | Possession | Durability | Holds bytes | Evidence ceiling |
+| --- | --- | --- | --- | --- |
+| `PROVIDER_REFERENCE` | NONE | UNKNOWN | no | EXECUTED |
+| `PRESIGNED_REFERENCE` | NONE | EXPIRING | no | EXECUTED |
+| `DURABLE_ARTIFACT` | REFERENCE_ONLY | DURABLE | no | EXECUTED |
+| `CONTENT_HASH` | REFERENCE_ONLY | UNKNOWN | no | VERIFIED |
+| `ARCHIVED_ARTIFACT` | BYTES_HELD | DURABLE | **yes** | ARCHIVED |
+| `ARTIFACT_UNAVAILABLE` | NONE | UNKNOWN | no | OBSERVED |
+
+### The evidence ladder
+
+`UNKNOWN → DOCUMENTED → OBSERVED → EXECUTED → VERIFIED → ARCHIVED`
+
+From `OBSERVED` upward the burden is strictly cumulative:
+`observed_response` → `+provider_reported_completion` → `+content_hash` →
+`+durable_possession`.
+
+`DOCUMENTED` deliberately sits **off** that chain. Reading a document is a
+different and weaker *kind* of evidence than watching the system behave; a
+live observation must never be gated on someone having filed a documentation
+reference, as that would rank "the docs say so" above "we saw it happen".
+
+> **Provider documentation is not provider truth.** A documented field
+> establishes `DOCUMENTED`. It can never establish `EXECUTED`.
+
+The practical contrast: a local simulated run reaches `ARCHIVED`, because
+WRASAL wrote and hashed the bytes itself. A *completed* real provider run
+returning a presigned URL is capped at `EXECUTED`, with possession `NONE`.
+Possession is not authenticity — the archived simulated artefact is still
+labelled `SIMULATED EXECUTION`.
+
+### Three identities, never collapsed
+
+> **Providers render representations. WRASAL governs identity.**
+
+| Identity | Record | Question it answers |
+| --- | --- | --- |
+| Canonical | `Identity` | Who is this person inside WRASAL? |
+| Representation | `IdentitySnapshot` | Which version is authorized to be represented? |
+| Provider | `ProviderBinding` | What does an external renderer happen to call them? |
+
+`ProviderBinding{provider, provider_object_type, provider_subject_id,
+binding_status, verified_at, evidence_ref}` is append-only and joins a
+snapshot to a provider subject. `binding_status` is `DECLARED` when an
+operator asserts it and only becomes `VERIFIED` when WRASAL has observed the
+provider confirm it — `verifyProviderBinding()` refuses without an
+`evidence_ref`. `HEYGEN_AVATAR_ID` therefore bootstraps a **DECLARED** binding
+and never a verified one. A binding is revoked by appending, never deleted.
+
+This gives provider portability without identity fragmentation. The dangerous
+mistake — treating a HeyGen `avatar_id` as a WRASAL identity — is structurally
+unavailable.
+
+### Not built on purpose
+
+No archival downloader. Modelling the epistemic state correctly comes first;
+deciding what WRASAL *does* about expiring references is WRASAL-0015.

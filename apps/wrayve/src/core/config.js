@@ -23,9 +23,37 @@ export function loadConfig(env = process.env) {
     background_color: env.HEYGEN_BACKGROUND_COLOR?.trim() || null,
   };
 
+  /**
+   * WRASAL-0014: an environment variable is an operator ASSERTION about a
+   * provider identity. It bootstraps a DECLARED binding and can never, by
+   * itself, produce a VERIFIED one — that requires observing the provider.
+   * This is the only place a provider name may appear outside the adapter
+   * layer, because config's job is to name environment variables.
+   */
+  const declaredProviderBindings = [];
+  if (binding.heygen_avatar_id) {
+    declaredProviderBindings.push({
+      provider: 'HEYGEN',
+      provider_object_type: 'avatar_id',
+      provider_subject_id: binding.heygen_avatar_id,
+      label: 'Declared from HEYGEN_AVATAR_ID',
+      source: 'environment:HEYGEN_AVATAR_ID',
+    });
+  }
+  if (binding.heygen_voice_id) {
+    declaredProviderBindings.push({
+      provider: 'HEYGEN',
+      provider_object_type: 'voice_id',
+      provider_subject_id: binding.heygen_voice_id,
+      label: 'Declared from HEYGEN_VOICE_ID',
+      source: 'environment:HEYGEN_VOICE_ID',
+    });
+  }
+
   return {
     appRoot,
     dataDir,
+    declaredProviderBindings,
     eventLogFile: path.join(dataDir, 'events.jsonl'),
     mediaDir: path.join(dataDir, 'media'),
     port: Number(env.PORT ?? 4173),

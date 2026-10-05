@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { VISIBILITY } from './vocabulary.js';
+import { hashBytes } from './artifact.js';
 
 /**
  * Local private asset store.
@@ -23,14 +24,19 @@ export class MediaStore {
   writeSimulatedPlaceholder({ execution_request_id, job_id, scene_title, identity_label, snapshot_version, dialogue }) {
     const fileName = `${job_id}.svg`;
     const filePath = path.join(this.directory, fileName);
-    fs.writeFileSync(filePath, simulationSvg({
+    const bytes = Buffer.from(simulationSvg({
       job_id, scene_title, identity_label, snapshot_version, dialogue, execution_request_id,
     }), 'utf8');
+    fs.writeFileSync(filePath, bytes);
     return {
       reference: `wrasal-local://media/${fileName}`,
       file_name: fileName,
       visibility: VISIBILITY.PRIVATE,
       media_type: 'image/svg+xml',
+      // WRASAL wrote these bytes, so it can hash them. This is the one path in
+      // the system that legitimately reaches ARCHIVED on the evidence ladder.
+      content_hash: hashBytes(bytes),
+      byte_length: bytes.length,
     };
   }
 

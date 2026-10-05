@@ -5,6 +5,7 @@ import { MockExecutionAdapter } from '../src/adapters/mock-adapter.js';
 import { HeyGenAdapter } from '../src/adapters/heygen-adapter.js';
 import { RunwayAdapter } from '../src/adapters/runway-adapter.js';
 import { PROVIDER } from '../src/adapters/providers.js';
+import { hashBytes } from '../src/core/artifact.js';
 
 /** Deterministic clock so recorded timestamps are assertable. */
 export function fixedClock(startIso = '2026-01-01T00:00:00.000Z') {
@@ -19,7 +20,15 @@ export function memoryMediaStore() {
     written,
     writeSimulatedPlaceholder(input) {
       written.push(input);
-      return { reference: `wrasal-local://media/${input.job_id}.svg`, file_name: `${input.job_id}.svg`, visibility: 'PRIVATE', media_type: 'image/svg+xml' };
+      const bytes = Buffer.from(`SIMULATED:${input.job_id}:${input.execution_request_id}`, 'utf8');
+      return {
+        reference: `wrasal-local://media/${input.job_id}.svg`,
+        file_name: `${input.job_id}.svg`,
+        visibility: 'PRIVATE',
+        media_type: 'image/svg+xml',
+        content_hash: hashBytes(bytes),
+        byte_length: bytes.length,
+      };
     },
     resolve: () => null,
   };

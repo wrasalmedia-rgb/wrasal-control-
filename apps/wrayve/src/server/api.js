@@ -44,6 +44,14 @@ export function buildRoutes({ service, config }) {
 
     route('POST', /^\/api\/executions\/([^/]+)\/archive$/, ([id], body) => service.archive(id, body)),
 
+    route('POST', /^\/api\/provider-bindings$/, (_params, body) => service.declareProviderBinding(body)),
+
+    route('POST', /^\/api\/provider-bindings\/([^/]+)\/verify$/, ([id], body) =>
+      service.verifyProviderBinding(id, body)),
+
+    route('POST', /^\/api\/provider-bindings\/([^/]+)\/revoke$/, ([id], body) =>
+      service.revokeProviderBinding(id, body)),
+
     route('GET', /^\/api\/provenance\/([^/]+)$/, ([id]) => service.provenanceChain(id)),
 
     route('POST', /^\/api\/freebuff\/([^/]+)$/, ([id], body) => service.createFreebuffHandoff(id, body)),
@@ -64,6 +72,8 @@ export function fullState(service, config) {
         ...snapshot,
         policy: service.policyFor(snapshot.id),
         policy_history: service.policyHistoryFor(snapshot.id),
+        provider_bindings: service.listProviderBindings()
+          .filter((binding) => binding.identity_snapshot_id === snapshot.id),
       })),
       active_snapshot_id: service.activeSnapshotFor(identity.id)?.id ?? null,
     })),
@@ -71,6 +81,7 @@ export function fullState(service, config) {
     requests,
     generation_events: service.listGenerationEvents(),
     handoffs: service.listHandoffs(),
+    provider_bindings: service.listProviderBindings(),
     events: service.events({ limit: 400 }),
     integrity: service.integrity(),
     providers: service.registry.describe(),

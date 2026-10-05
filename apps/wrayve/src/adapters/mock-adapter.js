@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { IdentityExecutionAdapter, emptyProviderResult } from './identity-execution-adapter.js';
+import { REFERENCE_CLASS } from '../core/artifact.js';
 
 /**
  * §9/§24 MockExecutionAdapter — SIMULATION MODE.
@@ -103,6 +104,23 @@ export class MockExecutionAdapter extends IdentityExecutionAdapter {
         dialogue: order.scene.dialogue,
       });
       result.output_reference = asset.reference;
+      // WRASAL wrote and hashed these bytes itself, so this is genuine
+      // possession — the only path in the system that reaches ARCHIVED.
+      result.artifact = {
+        reference_class: REFERENCE_CLASS.ARCHIVED_ARTIFACT,
+        reference: asset.reference,
+        media_type: asset.media_type,
+        content_hash: asset.content_hash,
+        expires_at: null,
+      };
+    } else {
+      result.artifact = {
+        reference_class: REFERENCE_CLASS.ARTIFACT_UNAVAILABLE,
+        reference: null,
+        media_type: null,
+        content_hash: null,
+        expires_at: null,
+      };
     }
 
     return result;

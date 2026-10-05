@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { IdentityExecutionAdapter, emptyProviderResult } from './identity-execution-adapter.js';
 import { ProviderContractError, ProviderExecutionError } from '../core/errors.js';
+import { REFERENCE_CLASS } from '../core/artifact.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const CONTRACT = JSON.parse(fs.readFileSync(path.join(here, 'heygen-contract.json'), 'utf8'));
@@ -461,8 +462,26 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     result.provider_surface = context.compiled?.surface ?? this.surface ?? 'UNKNOWN';
     result.provider_deprecation = context.provider_deprecation ?? raw?.__deprecation ?? null;
 
-    // The documented output URL is PRESIGNED and therefore expiring. Saying so
-    // is a fact about the reference, not a claim about the media.
+    // WRASAL-0013 finding: the documented output URL is PRESIGNED, therefore
+    // expiring. WRASAL never possesses it. WRASAL-0014 records that as the
+    // artefact's reference class rather than as an adjective on a string.
+    result.artifact = data.video_url
+      ? {
+        reference_class: REFERENCE_CLASS.PRESIGNED_REFERENCE,
+        reference: data.video_url,
+        media_type: 'video/mp4',
+        content_hash: null,
+        // HeyGen does not document an expiry timestamp on the presigned URL.
+        // UNKNOWN expiry is recorded as null, never guessed.
+        expires_at: null,
+      }
+      : {
+        reference_class: REFERENCE_CLASS.ARTIFACT_UNAVAILABLE,
+        reference: null,
+        media_type: null,
+        content_hash: null,
+        expires_at: null,
+      };
     result.output_reference_durability = data.video_url ? 'PRESIGNED_EXPIRING' : 'UNKNOWN';
 
     return result;

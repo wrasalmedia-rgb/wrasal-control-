@@ -1,0 +1,125 @@
+{
+  "work_order_id": "WRASAL-0014",
+  "project": "WRAYVE",
+  "record_authority": "WRASAL-0014",
+  "recorded_on": "2026-10-05",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Model the epistemic state of generated output correctly so that a provenance record can never imply durable possession of an artifact when WRASAL only possesses an expiring provider reference. Formalize six artifact reference classes, a six-rung evidence ladder, and ProviderBinding as a first-class entity joining IdentitySnapshot to a provider subject id, without redesigning WRAYVE, without adding a provider, and without building an archival downloader.",
+  "success_condition": "The possession invariant is enforced in code and refuses a false-possession record at the outbound boundary; all six reference classes and all six evidence-ladder rungs are modelled with distinct, test-asserted burdens; ProviderBinding exists as an append-only entity whose status can only reach VERIFIED with an evidence reference; a local simulated run reaches ARCHIVED while a documented provider run cannot exceed EXECUTED, and that contrast is visible in the console; the architecture regression still passes with the core domain naming no provider.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "origin_finding": "WRASAL-0013 established that the documented provider output URL is presigned and expiring",
+    "predecessor_acceptance": "decisions/WRASAL-0013-ACCEPTANCE.md",
+    "evidence_ladder_module": "apps/wrayve/src/core/evidence-ladder.js",
+    "artifact_module": "apps/wrayve/src/core/artifact.js",
+    "freebuff_module": "apps/wrayve/src/core/freebuff.js",
+    "service_module": "apps/wrayve/src/core/service.js",
+    "test_suite": "apps/wrayve/tests/durability.test.mjs",
+    "freebuff_schema_before": "wrasal.freebuff.record/v0.1",
+    "freebuff_schema_after": "wrasal.freebuff.record/v0.2",
+    "branch": "arena/01a10c77-wrasal-control",
+    "archival_downloader": null,
+    "new_provider_added": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "E-0014-01",
+      "type": "invariant",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/artifact.js",
+      "observed_result": "assertNoFalsePossessionClaim() refuses four distinct classes of false record: possession asserted without a granting reference class, an evidence level above the class ceiling, ARCHIVED claimed without a content hash, and an EXPIRING reference claimed as possession. It is called before any Freebuff payload is emitted.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-02",
+      "type": "model",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/artifact.js",
+      "observed_result": "All six reference classes are modelled with explicit possession, durability, possession flag, evidence ceiling and an operator-readable statement. The possession flag is test-asserted to follow the possession level, so no class can silently claim bytes it does not hold.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-03",
+      "type": "model",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/evidence-ladder.js",
+      "observed_result": "UNKNOWN to DOCUMENTED to OBSERVED to EXECUTED to VERIFIED to ARCHIVED, each rung carrying a distinct cumulative burden from OBSERVED upward. claim() returns the highest fully-satisfied rung and names what is missing for the next.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-04",
+      "type": "design_correction",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/tests/durability.test.mjs",
+      "observed_result": "The first implementation made documentation_reference a cumulative prerequisite for every higher rung, which meant a live observed response could not be credited unless someone had also filed a documentation reference. That ranked 'the docs say so' above 'we watched it happen', inverting the ladder's purpose. The test caught it; DOCUMENTED was moved off the cumulative chain as a weaker, different KIND of evidence.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-05",
+      "type": "entity",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/service.js",
+      "observed_result": "ProviderBinding exists as an append-only entity joining IdentitySnapshot to {provider, provider_object_type, provider_subject_id} with status DECLARED, VERIFIED or REVOKED. verifyProviderBinding() refuses to promote to VERIFIED without an evidence_ref. declareProviderBinding() refuses a missing provider_subject_id rather than inventing one. Revocation appends rather than deletes; the chain stays intact.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-06",
+      "type": "boundary",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/config.js",
+      "observed_result": "HEYGEN_AVATAR_ID and HEYGEN_VOICE_ID bootstrap DECLARED bindings only. An environment variable is an operator assertion and can never, by itself, produce a VERIFIED binding. config.js remains the only non-adapter file permitted to name a provider, because its job is to name environment variables.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-07",
+      "type": "contrast",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/tests/durability.test.mjs",
+      "observed_result": "A local simulated run reaches ARCHIVED with a sha256 content hash because WRASAL wrote and hashed the bytes itself. A completed provider run returning a presigned URL is capped at EXECUTED with possession NONE, durability EXPIRING and a null content hash. Possession is demonstrated to be a separate claim from authenticity: the archived artefact is still labelled SIMULATED.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-08",
+      "type": "handoff",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/freebuff.js",
+      "observed_result": "Freebuff payload raised to wrasal.freebuff.record/v0.2 carrying artifact_custody {reference_class, possession, durability, wrasal_holds_artifact, content_hash, expires_at, statement} and evidence {level, burden_met, ceiling_for_reference_class, missing_for_next_level, simulated}. Still mode SIMULATED, certified false. The custody statement spells out, when WRASAL does not hold the artefact, that the record evidences a generation occurred and does not guarantee retrievability.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-09",
+      "type": "test",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve",
+      "observed_result": "node --test over the suite: 56 tests, 56 pass, 0 fail, up from 37. The \u00a728 architecture regression remains green and caught a HeyGen mention that had leaked into a core doc comment during this work order.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0014-10",
+      "type": "scope_discipline",
+      "attribution": "WRASAL",
+      "source": "work order constraints",
+      "observed_result": "No archival downloader was built. No provider was added. No credential was fabricated. No binding was marked VERIFIED. The work order models the epistemic state and stops there, as instructed.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "possession_model": "new \u2014 six artifact reference classes (PROVIDER_REFERENCE, PRESIGNED_REFERENCE, DURABLE_ARTIFACT, CONTENT_HASH, ARCHIVED_ARTIFACT, ARTIFACT_UNAVAILABLE) each carrying explicit possession, durability and an evidence ceiling",
+    "evidence_model": "new \u2014 six-rung ladder UNKNOWN \u2192 DOCUMENTED \u2192 OBSERVED \u2192 EXECUTED \u2192 VERIFIED \u2192 ARCHIVED with cumulative burdens from OBSERVED upward; DOCUMENTED deliberately off the cumulative chain as a weaker kind of evidence",
+    "invariant_enforced": "an evidence record can no longer imply durable possession when WRASAL holds only an expiring provider reference; refused at the outbound Freebuff boundary with FALSE_POSSESSION_CLAIM",
+    "identity_model": "ProviderBinding added as a first-class append-only entity joining IdentitySnapshot to a provider subject id; Canonical Identity, Representation Identity and Provider Identity are now three distinct records and are never collapsed",
+    "wrayve_domain_model": "otherwise unchanged \u2014 Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck, Approval, ExecutionRequest, Provenance and the adapter interface were not redesigned",
+    "generation_event_fields_added": "artifact (full custody record) and provider_binding; output_reference_durability retained from WRASAL-0013",
+    "event_vocabulary_added": "PROVIDER_BINDING_DECLARED, PROVIDER_BINDING_VERIFIED, PROVIDER_BINDING_REVOKED",
+    "freebuff_schema": "raised from wrasal.freebuff.record/v0.1 to v0.2 with artifact_custody and evidence blocks; still mode SIMULATED, certified false",
+    "ui_surface": "Identity screen gains a provider-bindings table with DECLARED/VERIFIED/REVOKED status; Provenance screen gains an artefact-custody panel that banners an expiring reference as not-possessed",
+    "heygen_status": "unchanged \u2014 still an adapter, still DOCUMENTED_NOT_OBSERVED, still no credential and no verified binding",
+    "wrasal_runtime_world_state": "none",
+    "canonical_acceptance_promotion": "WRASAL-0013 promoted to accepted via decisions/WRASAL-0013-ACCEPTANCE.md"
+  },
+  "next_candidate": "WRASAL-0015 \u2014 artifact retention: given that the epistemic model is now correct, decide and implement what WRASAL actually does about expiring references (retrieve-and-archive policy, retention windows, re-verification of ARCHIVED artefacts against their hashes)."
+}

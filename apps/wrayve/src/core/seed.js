@@ -53,3 +53,42 @@ export function seedIfEmpty(service) {
 
   return true;
 }
+
+/**
+ * Bootstrap ProviderBindings asserted by the environment.
+ *
+ * Every binding created here is DECLARED. None is VERIFIED. An operator
+ * putting an identifier in an env var is an assertion that a provider
+ * represents this snapshot — it is not evidence that the provider agrees.
+ * Promotion to VERIFIED requires an observed provider response.
+ *
+ * Provider-neutral by construction: this reads whatever the config layer
+ * declares and never names a provider itself.
+ */
+export function bootstrapProviderBindings(service, declarations = []) {
+  const snapshots = service.listIdentities()
+    .map((identity) => service.activeSnapshotFor(identity.id))
+    .filter(Boolean);
+  if (snapshots.length === 0) return [];
+
+  const target = snapshots[0];
+  const created = [];
+  for (const declaration of declarations) {
+    const existing = service.listProviderBindings().find(
+      (binding) => binding.identity_snapshot_id === target.id
+        && binding.provider === declaration.provider
+        && binding.provider_object_type === declaration.provider_object_type
+        && binding.provider_subject_id === declaration.provider_subject_id,
+    );
+    if (existing) continue;
+    created.push(service.declareProviderBinding({
+      identity_snapshot_id: target.id,
+      provider: declaration.provider,
+      provider_object_type: declaration.provider_object_type,
+      provider_subject_id: declaration.provider_subject_id,
+      label: declaration.label ?? null,
+      actor: 'wrasal.control',
+    }));
+  }
+  return created;
+}

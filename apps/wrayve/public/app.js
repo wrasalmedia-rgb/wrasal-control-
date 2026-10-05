@@ -167,6 +167,13 @@ function viewIdentity() {
       </div>
 
       <div class="panel">
+        <p class="section-title">Provider bindings — how renderers refer to this snapshot</p>
+        <p class="note">A provider identifier is <strong>not</strong> a WRASAL identity. These are external names for the snapshot above, held at arm's length. <span class="mono">DECLARED</span> means an operator asserted the binding. <span class="mono">VERIFIED</span> means WRASAL observed the provider confirm it.</p>
+        <div class="spacer"></div>
+        ${bindingsTable(snapshot)}
+      </div>
+
+      <div class="panel">
         <p class="section-title">Snapshot history — never overwritten</p>
         <table class="data">
           <thead><tr><th>VERSION</th><th>ID</th><th>STATUS</th><th>CREATED</th></tr></thead>
@@ -215,6 +222,24 @@ function viewIdentity() {
       </div>
     </div>
   </div>`;
+}
+
+function bindingsTable(snapshot) {
+  const bindings = snapshot?.provider_bindings ?? [];
+  if (bindings.length === 0) {
+    return '<p class="note">No provider binding is declared for this snapshot. WRAYVE will refuse real execution rather than invent a provider identifier.</p>';
+  }
+  return h`
+    <table class="data">
+      <thead><tr><th>PROVIDER</th><th>OBJECT TYPE</th><th>PROVIDER SUBJECT ID</th><th>STATUS</th><th>EVIDENCE</th></tr></thead>
+      <tbody>${bindings.map((binding) => h`<tr>
+        <td>${esc(binding.provider)}</td>
+        <td class="mono">${esc(binding.provider_object_type)}</td>
+        <td class="mono">${esc(binding.provider_subject_id)}</td>
+        <td><span class="state ${binding.binding_status === 'VERIFIED' ? 'ok' : binding.binding_status === 'REVOKED' ? 'deny' : 'gold'}">${esc(binding.binding_status)}</span></td>
+        <td class="mono small">${esc(binding.evidence_ref ?? '—')}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
 }
 
 function policyLines(policy) {
@@ -452,6 +477,32 @@ function viewProvenance() {
   <div id="chain-slot">${chainPlaceholder(selectedId)}</div>`;
 }
 
+/**
+ * WRASAL-0014. What WRASAL actually holds, stated plainly.
+ * An operator must be able to tell "here is the video" from
+ * "here is evidence that there was a video" at a glance.
+ */
+function artifactCustodyPanel(event) {
+  const artifact = event.artifact;
+  if (!artifact) return '';
+  const held = artifact.wrasal_holds_artifact;
+  const expiring = artifact.durability === 'EXPIRING';
+  return h`
+    <div class="spacer"></div>
+    <p class="section-title">Artefact custody</p>
+    ${expiring ? '<div class="banner deny">EXPIRING PROVIDER REFERENCE — WRASAL DOES NOT HOLD THIS ARTEFACT</div>' : ''}
+    <div class="grid-3">
+      <dl class="kv"><dt>Reference class</dt><dd><span class="state ${held ? 'ok' : 'gold'}">${esc(artifact.reference_class)}</span></dd></dl>
+      <dl class="kv"><dt>Possession</dt><dd class="mono">${esc(artifact.possession)}</dd></dl>
+      <dl class="kv"><dt>Durability</dt><dd class="mono">${esc(artifact.durability)}</dd></dl>
+      <dl class="kv"><dt>Evidence level</dt><dd><span class="state ${artifact.evidence_level === 'ARCHIVED' ? 'ok' : 'gold'}">${esc(artifact.evidence_level)}</span></dd></dl>
+      <dl class="kv"><dt>Ceiling for class</dt><dd class="mono">${esc(artifact.evidence_ceiling_for_class)}</dd></dl>
+      <dl class="kv"><dt>Content hash</dt><dd class="mono small">${esc(artifact.content_hash ?? 'NONE')}</dd></dl>
+    </div>
+    <p class="note">${esc(artifact.possession_statement)}</p>
+    ${artifact.missing_for_next_level?.length ? h`<p class="note"><strong>To rise one rung on the evidence ladder, WRASAL still needs:</strong> ${esc(artifact.missing_for_next_level.join(', '))}</p>` : ''}`;
+}
+
 function chainPlaceholder(id) {
   queueMicrotask(() => loadChain(id));
   return h`<div class="empty">LOADING CHAIN ${esc(id)}</div>`;
@@ -500,6 +551,7 @@ function renderChain(chain) {
           <dl class="kv"><dt>Provider timestamp</dt><dd class="mono">${esc(event.provider_timestamp ?? 'null')}</dd></dl>
           <dl class="kv"><dt>Status</dt><dd><span class="state ${stateClass(event.execution_status)}">${esc(event.execution_status)}</span></dd></dl>
         </div>
+        ${artifactCustodyPanel(event)}
         ${event.unresolved_contract_fields?.length ? h`
           <p class="note"><strong>Not returned by the provider — recorded as UNKNOWN/null rather than inferred:</strong><br />${esc(event.unresolved_contract_fields.join(', '))}</p>` : ''}
         ${event.carried_but_unexecuted?.length ? h`

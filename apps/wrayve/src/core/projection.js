@@ -18,6 +18,7 @@ export function project(records) {
     generationEvents: new Map(),
     media: new Map(),
     handoffs: new Map(),
+    bindings: new Map(),
   };
 
   for (const record of records) {
@@ -63,6 +64,36 @@ export function project(records) {
       case EVENT.SCENE_CREATED:
         state.scenes.set(p.scene.id, { ...p.scene });
         break;
+
+      case EVENT.PROVIDER_BINDING_DECLARED:
+        state.bindings.set(p.binding.id, { ...p.binding });
+        break;
+
+      case EVENT.PROVIDER_BINDING_VERIFIED: {
+        const binding = state.bindings.get(p.binding_id);
+        if (binding) {
+          state.bindings.set(p.binding_id, {
+            ...binding,
+            binding_status: p.binding_status,
+            verified_at: record.recorded_at,
+            evidence_ref: p.evidence_ref ?? null,
+          });
+        }
+        break;
+      }
+
+      case EVENT.PROVIDER_BINDING_REVOKED: {
+        const binding = state.bindings.get(p.binding_id);
+        if (binding) {
+          state.bindings.set(p.binding_id, {
+            ...binding,
+            binding_status: p.binding_status,
+            revoked_at: record.recorded_at,
+            revocation_reason: p.reason ?? null,
+          });
+        }
+        break;
+      }
 
       case EVENT.EXECUTION_REQUESTED:
         state.requests.set(p.request.id, { ...p.request });

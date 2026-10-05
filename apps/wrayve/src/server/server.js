@@ -8,7 +8,7 @@ import { EventLog } from '../core/event-log.js';
 import { MediaStore } from '../core/media-store.js';
 import { WrayveService } from '../core/service.js';
 import { buildDefaultRegistry } from '../adapters/registry.js';
-import { seedIfEmpty } from '../core/seed.js';
+import { seedIfEmpty, bootstrapProviderBindings } from '../core/seed.js';
 import { buildRoutes, notFound } from './api.js';
 import { WrayveError } from '../core/errors.js';
 
@@ -32,6 +32,7 @@ export function createApp(env = process.env) {
   const service = new WrayveService({ eventLog, registry, mediaStore });
 
   if (config.seed) seedIfEmpty(service);
+  bootstrapProviderBindings(service, config.declaredProviderBindings);
 
   const routes = buildRoutes({ service, config });
 

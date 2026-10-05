@@ -86,6 +86,9 @@ export function emptyProviderResult() {
     execution_status: 'UNKNOWN',
     simulated: false,
     raw_provider_payload: null,
+    // WRASAL-0014: what WRASAL actually possesses, as opposed to what it can
+    // currently point at. See core/artifact.js.
+    artifact: null,
     unresolved_contract_fields: [],
   };
 }

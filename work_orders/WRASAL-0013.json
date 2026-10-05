@@ -9,7 +9,7 @@
   "execution_status": "blocked",
   "implementation_result": "pass",
   "verification_result": "blocked",
-  "canonical_acceptance": "pending",
+  "canonical_acceptance": "accepted",
   "references": {
     "outcome": "HEYGEN_BLOCKED",
     "contract_artifact": "apps/wrayve/src/adapters/heygen-contract.json",
@@ -18,12 +18,12 @@
     "evidence_artifact": "evidence/HEYGEN-CONTRACT-001.json",
     "adapter_path": "apps/wrayve/src/adapters/heygen-adapter.js",
     "branch": "arena/01a10c77-wrasal-control",
-    "blocker_1": "CREDENTIAL_UNAVAILABLE — no HEYGEN_API_KEY in the server environment",
-    "blocker_2": "NETWORK_EGRESS_BLOCKED — TLS to every heygen.com host severed by the sandbox egress allowlist",
+    "blocker_1": "CREDENTIAL_UNAVAILABLE \u2014 no HEYGEN_API_KEY in the server environment",
+    "blocker_2": "NETWORK_EGRESS_BLOCKED \u2014 TLS to every heygen.com host severed by the sandbox egress allowlist",
     "provider_documentation_root": "https://developers.heygen.com/llms.txt",
     "legacy_sunset_date": "2026-10-31",
     "domain_model_changes": "none",
-    "canonical_acceptance_record": null
+    "canonical_acceptance_record": "decisions/WRASAL-0013-ACCEPTANCE.md"
   },
   "evidence": [
     {
@@ -120,13 +120,13 @@
   "canonical_state_impact": {
     "heygen_contract_verification_state": "changed from UNVERIFIED_IN_THIS_ENVIRONMENT to DOCUMENTED_NOT_OBSERVED; no element reached VERIFIED",
     "heygen_api_surface_selection": "deliberately left unselected; an operator must set HEYGEN_API_SURFACE after confirming which surface their account answers on",
-    "wrayve_domain_model": "unchanged — Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck, Approval, ExecutionRequest, GenerationEvent, Provenance and Freebuff handoff were not modified",
+    "wrayve_domain_model": "unchanged \u2014 Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck, Approval, ExecutionRequest, GenerationEvent, Provenance and Freebuff handoff were not modified",
     "wrayve_adapter_layer": "HeyGenAdapter revised to be contract-driven, dual-surface and surface-gated; one service-layer fix forwards the opaque adapter handle into normalization so provider-reported facts are not lost between calls",
-    "generation_event_fields_added": "provider_surface, provider_deprecation, output_reference_durability — all provider-reported or UNKNOWN, none inferred",
+    "generation_event_fields_added": "provider_surface, provider_deprecation, output_reference_durability \u2014 all provider-reported or UNKNOWN, none inferred",
     "required_provider_binding": "reduced from [heygen_avatar_id, heygen_voice_id] to [heygen_avatar_id] on documented v3 voice fallback",
     "control_plane_records": "unchanged except for the addition of this work-order record and evidence/HEYGEN-CONTRACT-001.json",
     "wrasal_runtime_world_state": "none",
     "canonical_acceptance_promotion": "not performed"
   },
-  "next_candidate": "WRASAL-0014 — unblock live verification by adding api.heygen.com to the execution environment's egress allowlist and supplying HEYGEN_API_KEY through secure secret storage, then re-run WRASAL-0013 to promote contract elements from DOCUMENTED_NOT_OBSERVED to VERIFIED or record the observed divergence. Secondary: durable output archival, since the documented video_url is presigned and expiring and a Freebuff record holding only that URL will eventually dereference to nothing."
+  "next_candidate": "WRASAL-0014 \u2014 unblock live verification by adding api.heygen.com to the execution environment's egress allowlist and supplying HEYGEN_API_KEY through secure secret storage, then re-run WRASAL-0013 to promote contract elements from DOCUMENTED_NOT_OBSERVED to VERIFIED or record the observed divergence. Secondary: durable output archival, since the documented video_url is presigned and expiring and a Freebuff record holding only that URL will eventually dereference to nothing."
 }
