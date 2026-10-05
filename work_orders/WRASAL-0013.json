@@ -1,0 +1,132 @@
+{
+  "work_order_id": "WRASAL-0013",
+  "project": "WRAYVE",
+  "record_authority": "WRASAL-0013",
+  "recorded_on": "2026-10-05",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Verify the declared HeyGen provider contract against a real authenticated HeyGen account, replacing UNVERIFIED_IN_THIS_ENVIRONMENT with verified evidence wherever the provider actually confirms the behavior, without redesigning WRAYVE, without modifying the domain model, and without selecting an API version or inventing any endpoint, field or identifier on assumption.",
+  "success_condition": "One truthful outcome is recorded from HEYGEN_VERIFIED, HEYGEN_PARTIALLY_VERIFIED, HEYGEN_BLOCKED or HEYGEN_CONTRACT_UNRESOLVED; the contract artifact carries per-field evidence metadata with no documentation-only claim labelled as live verification; an evidence record exists containing no secrets; and the architectural regression test passes with the HeyGen binding disabled.",
+  "execution_status": "blocked",
+  "implementation_result": "pass",
+  "verification_result": "blocked",
+  "canonical_acceptance": "pending",
+  "references": {
+    "outcome": "HEYGEN_BLOCKED",
+    "contract_artifact": "apps/wrayve/src/adapters/heygen-contract.json",
+    "contract_id_before": "heygen-video-generate/declared-v1",
+    "contract_id_after": "heygen-execution-contract/v0.2",
+    "evidence_artifact": "evidence/HEYGEN-CONTRACT-001.json",
+    "adapter_path": "apps/wrayve/src/adapters/heygen-adapter.js",
+    "branch": "arena/01a10c77-wrasal-control",
+    "blocker_1": "CREDENTIAL_UNAVAILABLE — no HEYGEN_API_KEY in the server environment",
+    "blocker_2": "NETWORK_EGRESS_BLOCKED — TLS to every heygen.com host severed by the sandbox egress allowlist",
+    "provider_documentation_root": "https://developers.heygen.com/llms.txt",
+    "legacy_sunset_date": "2026-10-31",
+    "domain_model_changes": "none",
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0013-credential-absent",
+      "type": "environment_inspection",
+      "attribution": "Arena external execution worker",
+      "source": "Inspection of process environment variables, dotenv files under /home/user to depth 3 excluding node_modules, and the repository working tree",
+      "observed_result": "HEYGEN_API_KEY, HEYGEN_AVATAR_ID and HEYGEN_VOICE_ID are absent from every checked location; only the empty-valued apps/wrayve/.env.example exists. No credential was requested from the user in chat, consistent with HeyGen's own agent guidance that API keys must be read from the environment. Per work-order section 2 this alone halts live verification, and no mock result was substituted.",
+      "result": "blocked"
+    },
+    {
+      "id": "wrasal-0013-egress-blocked",
+      "type": "network_probe",
+      "attribution": "Arena external execution worker",
+      "source": "curl and python socket/ssl probes against api.heygen.com, docs.heygen.com and developers.heygen.com, with control probes against registry.npmjs.org and github.com",
+      "observed_result": "DNS resolves api.heygen.com to 16.59.73.17, 3.139.5.224 and 13.59.195.236 (PTR k8s-apiserviceprod-7991f8fc74-1894906590.us-east-2.elb.amazonaws.com) and TCP/443 opens on all three, but the TLS handshake is closed with EOF before any application data is exchanged (curl exit 35; SSLZeroReturnError), on every heygen.com host including the documentation hosts. Control hosts returned HTTP 200, so general egress is functional and the block is host-specific. This blocker is independent of the missing credential: supplying a key alone would not enable verification from this environment.",
+      "result": "blocked"
+    },
+    {
+      "id": "wrasal-0013-no-endpoint-observed",
+      "type": "endpoint_test",
+      "attribution": "Arena external execution worker",
+      "source": "Unauthenticated reachability probes of /v2/avatars, /v2/video/generate, /v3/videos, /v1/video_status.get and /v1/user/remaining_quota; no credential was transmitted in any probe",
+      "observed_result": "Zero HTTP responses were received from any HeyGen endpoint. Every endpoint is recorded with verification_status UNAVAILABLE. No request observation and no response observation exists, and both sections of the evidence record are deliberately empty rather than populated from documentation.",
+      "result": "blocked"
+    },
+    {
+      "id": "wrasal-0013-legacy-surface-sunset",
+      "type": "documentation_review",
+      "attribution": "Arena external execution worker",
+      "source": "https://developers.heygen.com/endpoint-version-comparison.md retrieved through the platform document fetcher",
+      "observed_result": "The endpoints declared by WRAYVE contract v0.1 are documented as legacy with end of life 2026-11-01 and a sunset date of 2026-10-31, twenty-six days after this verification date. POST /v2/video/generate is documented as replaced by POST /v3/videos and GET /v1/video_status.get by GET /v3/videos/{video_id}. Legacy responses are documented to carry Deprecation and Sunset headers plus a warning object naming the replacement operation. Recorded as DOCUMENTED_NOT_OBSERVED; no surface was selected on this basis.",
+      "reference": "heygen-execution-contract/v0.2",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-v3-schema-recorded",
+      "type": "documentation_review",
+      "attribution": "Arena external execution worker",
+      "source": "https://developers.heygen.com/reference/create-video.md, https://developers.heygen.com/reference/get-video.md and https://developers.heygen.com/llms.txt (HeyGen External API OpenAPI 3.1.0)",
+      "observed_result": "Recorded with status DOCUMENTED_NOT_OBSERVED: x-api-key as the apiKey header security scheme; GET /v3/users/me as the documented credential-verification endpoint, correcting the v0.1 assumption that GET /v2/avatars was a suitable preflight; the v3 request body as a discriminated union requiring type and avatar_id; VideoStatus as pending|processing|completed|failed; created_at and completed_at as integer unix seconds rather than ISO-8601; video_url as a presigned and therefore expiring URL; and voice_id as optional when avatar_id is present. No response schema documents a model identifier, so provider_model and provider_model_version remain UNKNOWN; the rendering engine is an input parameter and is recorded as such.",
+      "reference": "heygen-execution-contract/v0.2",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-identity-binding-distinction",
+      "type": "documentation_review",
+      "attribution": "Arena external execution worker",
+      "source": "https://developers.heygen.com/reference/create-avatar-consent.md and the avatar sections of the HeyGen OpenAPI document",
+      "observed_result": "HeyGen operates its own consent primitive: POST /v3/avatars/{group_id}/consent initiates a browser-completed consent flow at avatar-GROUP granularity, required before a private avatar renders, with a URL expiring after 24 hours and valid for one submission. Seven distinct provider object types were catalogued (avatar_group, avatar_look, studio_avatar, digital_twin, photo_avatar, voice, asset), each recorded with its relationship to a WRAYVE IdentitySnapshot and none recorded as equivalent. The conclusion PROVIDER_BINDING_REQUIRED was recorded: no avatar_id, voice_id, group_id or asset_id exists for WRAY-001 in any reachable account, and none was invented. HeyGen consent evaluates no context, is not versioned against a WRASAL snapshot, and neither satisfies nor is satisfied by a WRASAL AuthorityCheck.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-scene-translation-classified",
+      "type": "contract_analysis",
+      "attribution": "Arena external execution worker",
+      "source": "Classification of the canonical WRAY / BLACK ROOM TEST SceneSpec against the documented v3 avatar request body",
+      "observed_result": "No field was classified EXECUTED, because a documented parameter proves only that an instruction can be expressed and no generation was observed. dialogue is MAPPABLE_UNOBSERVED via script; voice_direction, environment and performance_direction are PARTIALLY_MAPPABLE_UNOBSERVED, with performance_direction conditional on avatar type and engine and documented as rejected for video avatars on the default Avatar IV engine; camera_direction and wardrobe are UNSUPPORTED with no documented parameter; duration_seconds is UNSUPPORTED_AS_INPUT because duration is an output of script length rather than a requestable constraint. Each classification travels onto the GenerationEvent with its evidence reference.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-failure-tests",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "node --test \"tests/**/*.test.mjs\" executed in apps/wrayve",
+      "observed_result": "37 tests passed, 0 failed, up from 31. The section 10 failure matrix is covered: missing credential yields PROVIDER_CONTRACT_UNAVAILABLE with itemised missing elements and simulated=false; invalid credential yields the documented 401 unauthorized recorded verbatim with the credential absent from the GenerationEvent; invalid provider binding yields the documented 400 avatar_not_usable; unsupported scene fields are carried with their classification; provider generation failure yields FAILED with one immutable GenerationEvent and one append-only EXECUTION_FAILED entry. A new gate was added: with no surface selected, execution is refused with PROVIDER_SURFACE_UNVERIFIED before any transport call is attempted, confirmed by asserting zero calls on the transport double. Error-shape tests replay HeyGen's documented example payloads through a transport double and are labelled as such; they are not live observations.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-architecture-regression",
+      "type": "test_run",
+      "attribution": "Arena external execution worker",
+      "source": "node --test tests/architecture.test.mjs in apps/wrayve, plus a direct run of the full loop with the HeyGen adapter unregistered",
+      "observed_result": "6 of 6 architecture tests pass. With HeyGen removed from the registry entirely and only MOCK registered, the loop completed end to end: Identity WRAY-001 ACTIVE, IdentitySnapshot SNAP-0001 v0.1 ACTIVE, LikenessPolicy POLICY-0001, SceneSpec SCENE-0001, AuthorityCheck AUTHORIZED, Approval APPROVED, ExecutionRequest REVIEWED, provenance chain IDENTITY to SNAPSHOT to POLICY to SCENE to AUTHORITY to PROVIDER to GENERATION to OUTPUT to FREEBUFF, Freebuff handoff SIMULATED with certified false, ledger hash chain INTACT. Static assertions continue to confirm that no file under src/core names any provider and that the browser bundle contains no endpoint or credential.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-no-false-verification",
+      "type": "artifact_assertion",
+      "attribution": "Arena external execution worker",
+      "source": "Automated assertions over apps/wrayve/src/adapters/heygen-contract.json in tests/provider-contract.test.mjs",
+      "observed_result": "The contract artifact is asserted to contain no entry with status VERIFIED and no entry sourced from observed_live_response, and every endpoint on both surfaces is asserted to carry confirmed=false with source DOCUMENTATION. surfaces.selected is asserted to be null so that no API version is selected on documentation alone. The evidence record contains no credential, token, key fragment or account identifier.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0013-control-plane-unaffected",
+      "type": "validator_run",
+      "attribution": "Arena external execution worker",
+      "source": "npm test at repository root",
+      "observed_result": "Repository-pinned control-plane validation and validator self-tests passed after the addition of this work order and the HEYGEN-CONTRACT-001 evidence record. No control-plane record semantics were changed.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "heygen_contract_verification_state": "changed from UNVERIFIED_IN_THIS_ENVIRONMENT to DOCUMENTED_NOT_OBSERVED; no element reached VERIFIED",
+    "heygen_api_surface_selection": "deliberately left unselected; an operator must set HEYGEN_API_SURFACE after confirming which surface their account answers on",
+    "wrayve_domain_model": "unchanged — Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck, Approval, ExecutionRequest, GenerationEvent, Provenance and Freebuff handoff were not modified",
+    "wrayve_adapter_layer": "HeyGenAdapter revised to be contract-driven, dual-surface and surface-gated; one service-layer fix forwards the opaque adapter handle into normalization so provider-reported facts are not lost between calls",
+    "generation_event_fields_added": "provider_surface, provider_deprecation, output_reference_durability — all provider-reported or UNKNOWN, none inferred",
+    "required_provider_binding": "reduced from [heygen_avatar_id, heygen_voice_id] to [heygen_avatar_id] on documented v3 voice fallback",
+    "control_plane_records": "unchanged except for the addition of this work-order record and evidence/HEYGEN-CONTRACT-001.json",
+    "wrasal_runtime_world_state": "none",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "WRASAL-0014 — unblock live verification by adding api.heygen.com to the execution environment's egress allowlist and supplying HEYGEN_API_KEY through secure secret storage, then re-run WRASAL-0013 to promote contract elements from DOCUMENTED_NOT_OBSERVED to VERIFIED or record the observed divergence. Secondary: durable output archival, since the documented video_url is presigned and expiring and a Freebuff record holding only that URL will eventually dereference to nothing."
+}

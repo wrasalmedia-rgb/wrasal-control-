@@ -8,20 +8,26 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const CONTRACT = JSON.parse(fs.readFileSync(path.join(here, 'heygen-contract.json'), 'utf8'));
 
 /**
- * §9 HeyGenAdapter.
+ * §9 HeyGenAdapter — contract revision v0.2 (work order WRASAL-0013).
  *
  * HeyGen is an execution provider. It is NOT the identity authority.
  *
- * Discipline enforced here, deliberately and loudly:
- *   1. No credential  -> ProviderContractError. No fallback to simulation.
- *   2. No verified provider binding (avatar_id/voice_id) -> ProviderContractError.
- *      WRAYVE will not invent a HeyGen-side identity artefact.
- *   3. Live preflight before every real execution. If the declared endpoint does
- *      not answer as declared, execution stops and the mismatch is reported.
- *   4. Response fields that are absent are recorded as UNKNOWN/null and listed
- *      in unresolved_contract_fields. They are never inferred.
- *   5. SceneSpec direction with no confirmed provider parameter is carried
- *      forward as unexecuted intent, not quietly dropped.
+ * WRASAL-0013 verification outcome: HEYGEN_BLOCKED. No endpoint was observed
+ * live (no credential, and egress to every heygen.com host is severed). The
+ * contract is therefore DOCUMENTED_NOT_OBSERVED throughout, and this adapter
+ * behaves accordingly:
+ *
+ *   1. It will not pick an API surface on documentation alone. HeyGen documents
+ *      v1/v2 as legacy with a 2026-10-31 sunset and v3 as the replacement, but
+ *      neither has been observed from here, so an operator must set
+ *      HEYGEN_API_SURFACE explicitly. Unset => PROVIDER_SURFACE_UNVERIFIED.
+ *   2. No credential or no provider binding => refusal, never simulation.
+ *   3. Live preflight before every real execution.
+ *   4. Absent response fields become UNKNOWN/null and are listed. Never inferred.
+ *   5. A documented request parameter proves only that an instruction can be
+ *      EXPRESSED. It is never recorded as EXECUTED without observation.
+ *   6. Provider-reported deprecation (headers + `warning` body) is captured
+ *      verbatim as provider fact.
  */
 export class HeyGenAdapter extends IdentityExecutionAdapter {
   static provider = 'HEYGEN';
@@ -33,14 +39,22 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
   /**
    * @param {object} options
    * @param {string|null} options.apiKey
-   * @param {object|null} options.binding  { heygen_avatar_id, heygen_voice_id, background_color? }
+   * @param {object|null} options.binding  { heygen_avatar_id, heygen_voice_id?, background_color? }
+   * @param {string|null} options.surface  'v2_legacy' | 'v3' — must be set explicitly by an operator
    * @param {typeof fetch} [options.fetchImpl]
    * @param {string} [options.baseUrl]
    */
-  constructor({ apiKey = null, binding = null, fetchImpl = globalThis.fetch, baseUrl = CONTRACT.base_url } = {}) {
+  constructor({
+    apiKey = null,
+    binding = null,
+    surface = null,
+    fetchImpl = globalThis.fetch,
+    baseUrl = CONTRACT.base_url,
+  } = {}) {
     super();
     this.apiKey = apiKey;
     this.binding = binding;
+    this.surface = surface;
     this.fetchImpl = fetchImpl;
     this.baseUrl = baseUrl;
   }
@@ -49,9 +63,55 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     return { 'x-api-key': this.apiKey, 'content-type': 'application/json' };
   }
 
+  #surfaceSpec() {
+    if (!this.surface) {
+      throw new ProviderContractError(
+        'No HeyGen API surface has been verified or selected for this environment.',
+        {
+          provider: 'HEYGEN',
+          stage: 'surface_selection',
+          reason: 'PROVIDER_SURFACE_UNVERIFIED',
+          available: CONTRACT.surfaces.available,
+          selection_rule: CONTRACT.surfaces.selection_rule,
+          documented_lifecycle: {
+            v2_legacy: `${CONTRACT.v2_legacy.lifecycle}; sunset ${CONTRACT.v2_legacy.sunset_date}`,
+            v3: CONTRACT.v3.lifecycle,
+          },
+          remedy: 'Set HEYGEN_API_SURFACE=v3 (or v2_legacy) after confirming which surface the account answers on. WRAYVE will not choose on documentation alone.',
+        },
+      );
+    }
+    const spec = CONTRACT[this.surface];
+    if (!spec) {
+      throw new ProviderContractError(`Unknown HeyGen API surface "${this.surface}".`, {
+        provider: 'HEYGEN', stage: 'surface_selection', available: CONTRACT.surfaces.available,
+      });
+    }
+    return spec;
+  }
+
+  #endpoint(id) {
+    const endpoint = this.#surfaceSpec().endpoints.find((item) => item.id === id);
+    if (!endpoint) {
+      throw new ProviderContractError(
+        `HeyGen surface "${this.surface}" declares no "${id}" endpoint.`,
+        { provider: 'HEYGEN', stage: 'endpoint_lookup', surface: this.surface, endpoint_id: id },
+      );
+    }
+    return endpoint;
+  }
+
   /** Static, offline readiness report. Used by SETTINGS; no network call. */
   readiness() {
     const missing = [];
+
+    if (!this.surface) {
+      missing.push({
+        contract_element: 'surface:HEYGEN_API_SURFACE',
+        status: 'UNSELECTED',
+        detail: `No API surface selected. HeyGen documents v1/v2 as legacy (sunset ${CONTRACT.v2_legacy.sunset_date}) and v3 as the replacement, but neither has been observed from this environment.`,
+      });
+    }
     if (!this.apiKey) {
       missing.push({
         contract_element: 'credential:HEYGEN_API_KEY',
@@ -75,10 +135,12 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
         detail: 'No HTTP client available in this runtime.',
       });
     }
+
     return {
       provider: 'HEYGEN',
       ready_for_real_execution: missing.length === 0,
       contract_verification_state: CONTRACT.verification_state,
+      selected_surface: this.surface,
       missing_contract_elements: missing,
     };
   }
@@ -90,6 +152,8 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
   async validate() {
     const readiness = this.readiness();
     if (!readiness.ready_for_real_execution) {
+      // Surface selection is the first gate and has its own explicit reason.
+      if (!this.surface) this.#surfaceSpec();
       throw new ProviderContractError(
         'HeyGen execution contract is not available in this environment.',
         {
@@ -101,7 +165,7 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
       );
     }
 
-    const endpoint = CONTRACT.endpoints.find((item) => item.id === 'preflight');
+    const endpoint = this.#endpoint('preflight');
     let response;
     try {
       response = await this.fetchImpl(`${this.baseUrl}${endpoint.path}`, {
@@ -111,7 +175,13 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     } catch (cause) {
       throw new ProviderContractError(
         'HeyGen preflight could not be completed; the declared endpoint was unreachable from this environment.',
-        { provider: 'HEYGEN', stage: 'preflight', endpoint: `${endpoint.method} ${endpoint.path}`, transport_error: String(cause?.message ?? cause) },
+        {
+          provider: 'HEYGEN',
+          stage: 'preflight',
+          surface: this.surface,
+          endpoint: `${endpoint.method} ${endpoint.path}`,
+          transport_error: String(cause?.message ?? cause),
+        },
       );
     }
 
@@ -121,9 +191,10 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
         {
           provider: 'HEYGEN',
           stage: 'preflight',
+          surface: this.surface,
           endpoint: `${endpoint.method} ${endpoint.path}`,
           http_status: response.status,
-          body_excerpt: await safeText(response),
+          provider_error: (await safeJson(response))?.error ?? null,
         },
       );
     }
@@ -131,7 +202,12 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     return {
       ok: true,
       contract: CONTRACT,
-      preflight: { endpoint: `${endpoint.method} ${endpoint.path}`, http_status: response.status, confirmed_at: new Date().toISOString() },
+      surface: this.surface,
+      preflight: {
+        endpoint: `${endpoint.method} ${endpoint.path}`,
+        http_status: response.status,
+        confirmed_at: new Date().toISOString(),
+      },
     };
   }
 
@@ -141,37 +217,67 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
    * not silently discarded.
    */
   compile(order) {
-    if (!this.binding?.heygen_avatar_id || !this.binding?.heygen_voice_id) {
+    const spec = this.#surfaceSpec();
+
+    if (!this.binding?.heygen_avatar_id) {
       throw new ProviderContractError(
         'Cannot compile a HeyGen payload: no verified provider binding for this identity snapshot.',
         {
           provider: 'HEYGEN',
           stage: 'compile',
+          reason: 'PROVIDER_BINDING_REQUIRED',
           required: CONTRACT.required_provider_binding,
           note: CONTRACT.required_provider_binding_note,
+          identity_binding_warning: CONTRACT.identity_binding.critical_distinction,
         },
       );
     }
 
     if (!order.scene.dialogue || !order.scene.dialogue.trim()) {
       throw new ProviderContractError(
-        'Cannot compile a HeyGen payload: the declared contract requires voice.input_text and the SceneSpec has no dialogue.',
-        { provider: 'HEYGEN', stage: 'compile', required_field: 'video_inputs[0].voice.input_text' },
+        'Cannot compile a HeyGen payload: the declared contract requires a script and the SceneSpec has no dialogue.',
+        { provider: 'HEYGEN', stage: 'compile', surface: this.surface, required_field: 'script' },
       );
     }
 
-    const payload = {
+    const payload = this.surface === 'v3'
+      ? this.#compileV3(order)
+      : this.#compileV2Legacy(order);
+
+    return {
+      payload,
+      surface: this.surface,
+      endpoint: `${this.#endpoint('generate').method} ${this.#endpoint('generate').path}`,
+      carried_but_unexecuted: this.#carriedButUnexecuted(order),
+      contract_id: CONTRACT.contract_id,
+      contract_verification_state: spec.status,
+    };
+  }
+
+  #compileV3(order) {
+    return {
+      type: 'avatar',
+      avatar_id: this.binding.heygen_avatar_id,
+      script: order.scene.dialogue,
+      // v3 documents voice_id as optional: the avatar's default voice is used
+      // when it is omitted. WRAYVE sends it only when an operator bound one.
+      ...(this.binding.heygen_voice_id ? { voice_id: this.binding.heygen_voice_id } : {}),
+      ...(this.binding.background_color
+        ? { background: { type: 'color', value: this.binding.background_color } }
+        : {}),
+      title: order.scene.title,
+    };
+  }
+
+  #compileV2Legacy(order) {
+    return {
       video_inputs: [
         {
-          character: {
-            type: 'avatar',
-            avatar_id: this.binding.heygen_avatar_id,
-            avatar_style: 'normal',
-          },
+          character: { type: 'avatar', avatar_id: this.binding.heygen_avatar_id, avatar_style: 'normal' },
           voice: {
             type: 'text',
             input_text: order.scene.dialogue,
-            voice_id: this.binding.heygen_voice_id,
+            ...(this.binding.heygen_voice_id ? { voice_id: this.binding.heygen_voice_id } : {}),
           },
           ...(this.binding.background_color
             ? { background: { type: 'color', value: this.binding.background_color } }
@@ -181,20 +287,35 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
       dimension: { width: 1280, height: 720 },
       title: order.scene.title,
     };
+  }
 
-    const carriedButUnexecuted = CONTRACT.unmapped_scene_fields
-      .filter((field) => {
-        const value = order.scene[field];
+  /**
+   * Scene direction that the documented contract cannot execute.
+   *
+   * Driven by the verified contract's scene_field_translation table, so the
+   * classification travels with its evidence. Note that even a MAPPABLE field
+   * is never asserted to have been EXECUTED — no generation has been observed.
+   */
+  #carriedButUnexecuted(order) {
+    return CONTRACT.scene_field_translation.fields
+      .filter((entry) => entry.classification !== 'MAPPABLE_UNOBSERVED')
+      .filter((entry) => {
+        const value = order.scene[entry.scene_field];
         return value !== null && value !== undefined && String(value).trim() !== '';
       })
-      .map((field) => ({ scene_field: field, value: order.scene[field], provider_parameter: 'NONE_CONFIRMED' }));
-
-    return { payload, carried_but_unexecuted: carriedButUnexecuted, contract_id: CONTRACT.contract_id };
+      .map((entry) => ({
+        scene_field: entry.scene_field,
+        value: order.scene[entry.scene_field],
+        classification: entry.classification,
+        provider_parameter: entry.provider_parameter ?? 'NONE_DOCUMENTED',
+        evidence: entry.source_ref,
+        note: entry.notes,
+      }));
   }
 
   async execute(order) {
     const compiled = this.compile(order);
-    const endpoint = CONTRACT.endpoints.find((item) => item.id === 'generate');
+    const endpoint = this.#endpoint('generate');
 
     let response;
     try {
@@ -206,40 +327,59 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     } catch (cause) {
       throw new ProviderContractError(
         'HeyGen generate endpoint was unreachable from this environment.',
-        { provider: 'HEYGEN', stage: 'execute', endpoint: `${endpoint.method} ${endpoint.path}`, transport_error: String(cause?.message ?? cause) },
+        {
+          provider: 'HEYGEN',
+          stage: 'execute',
+          surface: this.surface,
+          endpoint: `${endpoint.method} ${endpoint.path}`,
+          transport_error: String(cause?.message ?? cause),
+        },
       );
     }
 
     const body = await safeJson(response);
+    const deprecation = readDeprecation(response, body);
 
     if (!response.ok) {
       throw new ProviderExecutionError(
         `HeyGen rejected the generation request with HTTP ${response.status}.`,
-        { provider: 'HEYGEN', stage: 'execute', http_status: response.status, provider_body: body },
-      );
-    }
-
-    const jobId = body?.data?.video_id ?? null;
-    if (!jobId) {
-      // The provider answered, but not with the field the contract requires.
-      throw new ProviderContractError(
-        'HeyGen responded without data.video_id; the declared response contract was not met.',
         {
           provider: 'HEYGEN',
           stage: 'execute',
-          expected_field: 'data.video_id',
+          surface: this.surface,
+          http_status: response.status,
+          provider_error_code: body?.error?.code ?? null,
+          provider_error_message: body?.error?.message ?? null,
+          provider_body: body,
+          provider_deprecation: deprecation,
+        },
+      );
+    }
+
+    // v3 returns data.video_id on create; the detail resource exposes data.id.
+    const jobId = body?.data?.video_id ?? body?.data?.id ?? null;
+    if (!jobId) {
+      throw new ProviderContractError(
+        'HeyGen responded without a job identifier; the declared response contract was not met.',
+        {
+          provider: 'HEYGEN',
+          stage: 'execute',
+          surface: this.surface,
+          expected_field: 'data.video_id (create) or data.id (detail)',
           provider_body: body,
           note: 'WRAYVE will not synthesise a provider_job_id.',
         },
       );
     }
 
-    return { provider_job_id: jobId, raw: body, compiled };
+    return { provider_job_id: jobId, raw: body, compiled, provider_deprecation: deprecation };
   }
 
   async retrieve(handle) {
-    const endpoint = CONTRACT.endpoints.find((item) => item.id === 'status');
-    const url = `${this.baseUrl}/v1/video_status.get?video_id=${encodeURIComponent(handle.provider_job_id)}`;
+    const endpoint = this.#endpoint('status');
+    const url = this.surface === 'v3'
+      ? `${this.baseUrl}/v3/videos/${encodeURIComponent(handle.provider_job_id)}`
+      : `${this.baseUrl}/v1/video_status.get?video_id=${encodeURIComponent(handle.provider_job_id)}`;
 
     let response;
     try {
@@ -247,7 +387,13 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     } catch (cause) {
       throw new ProviderContractError(
         'HeyGen status endpoint was unreachable from this environment.',
-        { provider: 'HEYGEN', stage: 'retrieve', endpoint: `${endpoint.method} ${endpoint.path}`, transport_error: String(cause?.message ?? cause) },
+        {
+          provider: 'HEYGEN',
+          stage: 'retrieve',
+          surface: this.surface,
+          endpoint: `${endpoint.method} ${endpoint.path}`,
+          transport_error: String(cause?.message ?? cause),
+        },
       );
     }
 
@@ -255,16 +401,23 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     if (!response.ok) {
       throw new ProviderExecutionError(
         `HeyGen status check returned HTTP ${response.status}.`,
-        { provider: 'HEYGEN', stage: 'retrieve', http_status: response.status, provider_body: body },
+        {
+          provider: 'HEYGEN',
+          stage: 'retrieve',
+          surface: this.surface,
+          http_status: response.status,
+          provider_error_code: body?.error?.code ?? null,
+          provider_body: body,
+        },
       );
     }
     if (!body?.data?.status) {
       throw new ProviderContractError(
         'HeyGen status response did not contain data.status; the declared response contract was not met.',
-        { provider: 'HEYGEN', stage: 'retrieve', expected_field: 'data.status', provider_body: body },
+        { provider: 'HEYGEN', stage: 'retrieve', surface: this.surface, expected_field: 'data.status', provider_body: body },
       );
     }
-    return body;
+    return { ...body, __deprecation: readDeprecation(response, body) };
   }
 
   /**
@@ -276,15 +429,18 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     const data = raw?.data ?? {};
     const unresolved = [];
 
-    result.provider_job_id = context.provider_job_id ?? data.video_id ?? null;
+    result.provider_job_id = context.provider_job_id ?? data.video_id ?? data.id ?? null;
 
-    // HeyGen's declared avatar-video response carries no model identifier.
+    // No HeyGen response schema documents a model identifier. The rendering
+    // engine is a REQUEST parameter, not a reported output, so it is recorded
+    // as a generation parameter and the model stays UNKNOWN.
     result.provider_model = data.model ?? 'UNKNOWN';
     result.provider_model_version = data.model_version ?? 'UNKNOWN';
     if (result.provider_model === 'UNKNOWN') unresolved.push('provider_model');
     if (result.provider_model_version === 'UNKNOWN') unresolved.push('provider_model_version');
 
-    result.provider_timestamp = data.created_at ?? data.updated_at ?? null;
+    // v3 documents created_at / completed_at as UNIX SECONDS (integers).
+    result.provider_timestamp = unixToIso(data.completed_at) ?? unixToIso(data.created_at) ?? null;
     if (result.provider_timestamp === null) unresolved.push('provider_timestamp');
 
     result.output_reference = data.video_url ?? null;
@@ -300,10 +456,20 @@ export class HeyGenAdapter extends IdentityExecutionAdapter {
     result.raw_provider_payload = raw;
     result.unresolved_contract_fields = unresolved;
     result.carried_but_unexecuted = context.compiled?.carried_but_unexecuted ?? [];
+
+    // Provider-reported facts that WRASAL records but does not interpret.
+    result.provider_surface = context.compiled?.surface ?? this.surface ?? 'UNKNOWN';
+    result.provider_deprecation = context.provider_deprecation ?? raw?.__deprecation ?? null;
+
+    // The documented output URL is PRESIGNED and therefore expiring. Saying so
+    // is a fact about the reference, not a claim about the media.
+    result.output_reference_durability = data.video_url ? 'PRESIGNED_EXPIRING' : 'UNKNOWN';
+
     return result;
   }
 }
 
+/** VideoStatus enum: pending | processing | completed | failed. Nothing else is mapped. */
 function mapHeyGenStatus(status) {
   switch (status) {
     case 'completed': return 'COMPLETED';
@@ -315,10 +481,28 @@ function mapHeyGenStatus(status) {
   }
 }
 
-async function safeJson(response) {
-  try { return await response.json(); } catch { return null; }
+/** Capture provider-reported deprecation verbatim. Never inferred. */
+function readDeprecation(response, body) {
+  const header = (name) => {
+    try { return response.headers?.get?.(name) ?? null; } catch { return null; }
+  };
+  const deprecationHeader = header('deprecation');
+  const sunsetHeader = header('sunset');
+  const warning = body?.warning ?? null;
+  if (!deprecationHeader && !sunsetHeader && !warning) return null;
+  return {
+    reported_by: 'PROVIDER',
+    deprecation_header: deprecationHeader,
+    sunset_header: sunsetHeader,
+    warning,
+  };
 }
 
-async function safeText(response) {
-  try { return (await response.text()).slice(0, 500); } catch { return null; }
+function unixToIso(value) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null;
+  return new Date(value * 1000).toISOString();
+}
+
+async function safeJson(response) {
+  try { return await response.json(); } catch { return null; }
 }

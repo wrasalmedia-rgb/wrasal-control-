@@ -117,14 +117,35 @@ GenerationEvents are frozen on write.
 Server-side environment only — see `.env.example`:
 
 ```sh
+HEYGEN_API_SURFACE=v3    # or v2_legacy. No default: unset means "unverified"
 HEYGEN_API_KEY=...
 HEYGEN_AVATAR_ID=...     # provider binding; WRAYVE will not invent one
-HEYGEN_VOICE_ID=...
+HEYGEN_VOICE_ID=...      # optional on v3 (avatar's default voice is used)
 ```
 
 Keys are never sent to the browser. `SETTINGS` reports presence, never values. With no key
 configured, real HeyGen execution fails truthfully at the adapter boundary — which is the
 intended behaviour, not a bug.
+
+### Contract status (WRASAL-0013)
+
+Verification outcome: **HEYGEN_BLOCKED**. Nothing in `heygen-contract.json` is marked
+`VERIFIED` — the whole artifact is `DOCUMENTED_NOT_OBSERVED`, because this environment has
+neither a credential nor network egress to `api.heygen.com` (TLS is severed at SNI). Two
+findings matter regardless:
+
+- **The v0.1 endpoints are legacy.** HeyGen documents `POST /v2/video/generate` and
+  `GET /v1/video_status.get` as sunset on **2026-10-31**, replaced by `POST /v3/videos` and
+  `GET /v3/videos/{video_id}`. Both surfaces are now implemented, and **neither is
+  pre-selected** — WRAYVE refuses to pick an API version on documentation alone and stops
+  with `PROVIDER_SURFACE_UNVERIFIED` until an operator sets `HEYGEN_API_SURFACE`.
+- **HeyGen has its own consent primitive** (`POST /v3/avatars/{group_id}/consent`, a
+  24-hour browser flow at avatar-*group* granularity). It is a provider-side rendering gate.
+  It evaluates no context, is not versioned against a WRASAL snapshot, and **neither
+  satisfies nor is satisfied by** a WRASAL AuthorityCheck. Both gates must hold
+  independently. An automated test asserts this is never collapsed.
+
+Full record: `evidence/HEYGEN-CONTRACT-001.json`.
 
 ## Tests
 

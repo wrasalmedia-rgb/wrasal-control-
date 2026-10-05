@@ -14,6 +14,9 @@ export function loadConfig(env = process.env) {
     : path.join(appRoot, 'data');
 
   const heygenApiKey = env.HEYGEN_API_KEY?.trim() || null;
+  // WRASAL-0013: WRAYVE refuses to choose an API surface on documentation
+  // alone. Unset means "unverified", not "use the default".
+  const heygenSurface = env.HEYGEN_API_SURFACE?.trim() || null;
   const binding = {
     heygen_avatar_id: env.HEYGEN_AVATAR_ID?.trim() || null,
     heygen_voice_id: env.HEYGEN_VOICE_ID?.trim() || null,
@@ -28,6 +31,7 @@ export function loadConfig(env = process.env) {
     port: Number(env.PORT ?? 4173),
     host: env.HOST ?? '0.0.0.0',
     heygenApiKey,
+    heygenSurface,
     heygenBinding: binding,
     seed: env.WRAYVE_SEED !== 'false',
   };
@@ -47,6 +51,11 @@ export function publicConfigView(config) {
       { name: 'HEYGEN_VOICE_ID', present: Boolean(config.heygenBinding.heygen_voice_id), scope: 'provider binding' },
       { name: 'RUNWAY_API_KEY', present: false, scope: 'provider binding', note: 'No Runway contract established.' },
     ],
+    heygen_api_surface: {
+      selected: config.heygenSurface,
+      available: ['v2_legacy', 'v3'],
+      note: 'WRASAL-0013: no HeyGen surface has been observed from this environment. An operator must select one explicitly before real execution.',
+    },
     data_directory: config.dataDir,
     default_asset_visibility: 'PRIVATE',
   };

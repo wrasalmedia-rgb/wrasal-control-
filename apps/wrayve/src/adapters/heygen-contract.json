@@ -1,81 +1,216 @@
 {
   "provider": "HEYGEN",
-  "contract_id": "heygen-video-generate/declared-v1",
-  "verification_state": "UNVERIFIED_IN_THIS_ENVIRONMENT",
-  "verification_note": "This file records what WRAYVE BELIEVES the HeyGen contract to be. It has not been confirmed against a live HeyGen account from this environment. The adapter performs a live preflight before every real execution and refuses to proceed if the contract cannot be confirmed. WRAYVE never substitutes assumed behaviour for observed behaviour.",
-  "credentials": [
+  "contract_id": "heygen-execution-contract/v0.2",
+  "supersedes": "heygen-video-generate/declared-v1",
+  "work_order": "WRASAL-0013",
+  "verification_state": "DOCUMENTED_NOT_OBSERVED",
+  "verification_date": "2026-10-05",
+  "verification_summary": "No live observation of any HeyGen endpoint was possible from this environment. Two independent blockers were recorded: (1) no HEYGEN_API_KEY is present in the server environment, and (2) network egress to every heygen.com host is severed at the TLS layer by the sandbox egress allowlist. Every statement below is therefore sourced from HeyGen's published OpenAPI documentation and is marked DOCUMENTED_NOT_OBSERVED. Nothing in this file is marked VERIFIED.",
+  "live_observation": {
+    "attempted": true,
+    "succeeded": false,
+    "credential_available": false,
+    "network_reachable": false,
+    "evidence_record": "evidence/HEYGEN-CONTRACT-001.json"
+  },
+
+  "authentication": [
     {
-      "name": "HEYGEN_API_KEY",
-      "transport": "x-api-key request header",
-      "storage": "server-side environment variable only; never sent to the browser"
+      "field": "x-api-key",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/reference/create-video.md — components.securitySchemes.ApiKeyAuth {type: apiKey, in: header, name: x-api-key}",
+      "verified_at": null,
+      "notes": "Primary auth. HeyGen's own agent guidance states an API key must come from the environment and must never be pasted into chat."
+    },
+    {
+      "field": "Authorization: Bearer",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "source": "DOCUMENTATION",
+      "source_ref": "components.securitySchemes.BearerAuth {type: http, scheme: bearer} — OAuth2 bearer token",
+      "verified_at": null,
+      "notes": "Alternative OAuth path, documented as trial-scale. Not used by WRAYVE."
+    },
+    {
+      "field": "credential_verification_endpoint",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/llms.txt — \"API Key ... Verify it with GET /v3/users/me\"",
+      "verified_at": null,
+      "notes": "Documented as the canonical way to confirm a key. Replaces the v0.1 assumption that GET /v2/avatars was an appropriate preflight."
     }
   ],
+
   "base_url": "https://api.heygen.com",
-  "endpoints": [
-    {
-      "id": "preflight",
-      "method": "GET",
-      "path": "/v2/avatars",
-      "purpose": "Confirm credentials are valid and the account exposes the avatar catalogue the compile step depends on.",
-      "confirmed": false
+
+  "surfaces": {
+    "selected": null,
+    "selection_rule": "WRAYVE refuses to select an API surface on documentation alone. An operator must set HEYGEN_API_SURFACE explicitly after verifying which surface their account answers on. Until then the adapter stops with PROVIDER_SURFACE_UNVERIFIED.",
+    "available": ["v2_legacy", "v3"]
+  },
+
+  "v2_legacy": {
+    "status": "DOCUMENTED_NOT_OBSERVED",
+    "lifecycle": "LEGACY_SUNSET_ANNOUNCED",
+    "sunset_date": "2026-10-31",
+    "end_of_life": "2026-11-01",
+    "source": "DOCUMENTATION",
+    "source_ref": "https://developers.heygen.com/endpoint-version-comparison.md",
+    "notes": "This is the surface WRAYVE v0.1 declared. HeyGen documents it as legacy and scheduled for retirement on 2026-10-31. Building new behaviour on it is not advisable.",
+    "deprecation_signals": {
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "response_headers": { "Deprecation": "true", "Sunset": "Sat, 31 Oct 2026 00:00:00 GMT" },
+      "response_body_key": "warning",
+      "warning_shape": { "message": "string", "v3_endpoint": "string", "docs_url": "string", "sunset_date": "string" },
+      "notes": "WRAYVE captures this object verbatim onto the GenerationEvent when present. It is recorded as provider-reported fact, never inferred."
     },
-    {
-      "id": "generate",
-      "method": "POST",
-      "path": "/v2/video/generate",
-      "purpose": "Submit a generation job.",
-      "declared_request_shape": {
-        "video_inputs": [
-          {
-            "character": { "type": "avatar", "avatar_id": "<provider binding>", "avatar_style": "normal" },
-            "voice": { "type": "text", "input_text": "<SceneSpec.dialogue>", "voice_id": "<provider binding>" },
-            "background": { "type": "color", "value": "<provider binding>" }
-          }
-        ],
-        "dimension": { "width": 1280, "height": 720 },
-        "title": "<SceneSpec.title>"
+    "endpoints": [
+      {
+        "id": "preflight",
+        "method": "GET",
+        "path": "/v2/avatars",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "endpoint-version-comparison.md — List Avatars (v2)",
+        "confirmed": false
       },
-      "declared_response_shape": { "data": { "video_id": "string" }, "error": "null | object" },
-      "confirmed": false
-    },
-    {
-      "id": "status",
-      "method": "GET",
-      "path": "/v1/video_status.get?video_id={provider_job_id}",
-      "purpose": "Poll job state and retrieve the output URL.",
-      "declared_response_shape": {
-        "data": {
-          "status": "pending | processing | completed | failed",
-          "video_url": "string | absent",
-          "duration": "number | absent",
-          "error": "object | null"
-        }
+      {
+        "id": "generate",
+        "method": "POST",
+        "path": "/v2/video/generate",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "endpoint-version-comparison.md — Avatar Video Generation (v2); documented replacement is POST /v3/videos",
+        "confirmed": false,
+        "declared_response_shape": { "data": { "video_id": "string" } }
       },
-      "confirmed": false
+      {
+        "id": "status",
+        "method": "GET",
+        "path": "/v1/video_status.get?video_id={provider_job_id}",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "endpoint-version-comparison.md — Poll Video Status (v1); documented replacement is GET /v3/videos/{video_id}",
+        "confirmed": false
+      }
+    ],
+    "required_response_fields": ["generate.data.video_id", "status.data.status"]
+  },
+
+  "v3": {
+    "status": "DOCUMENTED_NOT_OBSERVED",
+    "lifecycle": "CURRENT_RECOMMENDED",
+    "source": "DOCUMENTATION",
+    "source_ref": "https://developers.heygen.com/reference/create-video.md and https://developers.heygen.com/reference/get-video.md (OpenAPI 3.1.0, HeyGen External API v1.0.0)",
+    "notes": "Documented as the current surface and the migration target for all v1/v2 traffic. Unobserved from this environment.",
+    "endpoints": [
+      {
+        "id": "preflight",
+        "method": "GET",
+        "path": "/v3/users/me",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "llms.txt — \"Verify it with GET /v3/users/me\"",
+        "purpose": "Confirm the credential authenticates before any generation is attempted.",
+        "confirmed": false
+      },
+      {
+        "id": "generate",
+        "method": "POST",
+        "path": "/v3/videos",
+        "operation_id": "createVideo",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "reference/create-video.md — paths./v3/videos.post",
+        "confirmed": false,
+        "request_discriminator": { "field": "type", "value_used_by_wrayve": "avatar" },
+        "required_request_fields": ["type", "avatar_id"],
+        "declared_response_shape": { "data": "CreateAvatarVideoResponse" },
+        "documented_error_codes": [
+          { "http": 400, "code": "invalid_parameter" },
+          { "http": 400, "code": "avatar_not_usable" },
+          { "http": 401, "code": "unauthorized" },
+          { "http": 409, "code": "resource_not_ready" },
+          { "http": 409, "code": "request_in_progress" },
+          { "http": 429, "code": "rate_limit_exceeded" }
+        ]
+      },
+      {
+        "id": "status",
+        "method": "GET",
+        "path": "/v3/videos/{video_id}",
+        "operation_id": "getVideoV3",
+        "status": "DOCUMENTED_NOT_OBSERVED",
+        "source": "DOCUMENTATION",
+        "source_ref": "reference/get-video.md — paths./v3/videos/{video_id}.get",
+        "confirmed": false,
+        "declared_response_shape": { "data": "VideoDetail" },
+        "documented_error_codes": [
+          { "http": 401, "code": "unauthorized" },
+          { "http": 404, "code": "not_found" },
+          { "http": 429, "code": "rate_limit_exceeded" }
+        ]
+      }
+    ],
+    "response_fields": [
+      { "field": "data.id", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoDetail.id (example v_abc123def456)", "verified_at": null, "notes": "Provider job identifier on the detail resource." },
+      { "field": "data.status", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoStatus enum", "verified_at": null, "notes": "Enum: pending | processing | completed | failed. No other value is mapped." },
+      { "field": "data.video_url", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoDetail.video_url (string|null)", "verified_at": null, "notes": "Documented as a PRESIGNED download URL. Presigned URLs expire; WRAYVE must not treat it as a durable archival reference." },
+      { "field": "data.created_at", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoDetail.created_at (integer|null, unix timestamp)", "verified_at": null, "notes": "Unix seconds, not ISO-8601. This is the first documented source for provider_timestamp, which v0.1 always recorded as UNKNOWN." },
+      { "field": "data.completed_at", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoDetail.completed_at (integer|null, unix timestamp)", "verified_at": null, "notes": "Provider-side completion clock, distinct from WRASAL's own completed_at." },
+      { "field": "data.duration", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "get-video operation description names duration among returned details; exact type not read from the schema excerpt", "verified_at": null, "notes": "Named in the operation description but its type was not confirmed. Treated as unconfirmed-shape: recorded only if numeric." },
+      { "field": "data.thumbnail_url", "status": "DOCUMENTED_NOT_OBSERVED", "source": "DOCUMENTATION", "source_ref": "VideoDetail.thumbnail_url (string|null)", "verified_at": null, "notes": "Not consumed by WRAYVE." },
+      { "field": "data.error", "status": "UNVERIFIED", "source": "DOCUMENTATION", "source_ref": "operation description mentions 'failure info if applicable'; the concrete field was not located in the retrieved schema excerpt", "verified_at": null, "notes": "WRAYVE will not assume a field name for provider failure detail." },
+      { "field": "provider_model", "status": "UNAVAILABLE", "source": "DOCUMENTATION", "source_ref": "No model identifier is documented on the video create or detail responses", "verified_at": null, "notes": "The rendering engine is an INPUT (engine.type: avatar_iii|avatar_iv|avatar_v), not an output. WRAYVE records the requested engine as a generation parameter and leaves provider_model UNKNOWN unless the provider returns one." },
+      { "field": "provider_model_version", "status": "UNAVAILABLE", "source": "DOCUMENTATION", "source_ref": "Not present in any retrieved response schema", "verified_at": null, "notes": "Remains UNKNOWN." }
+    ]
+  },
+
+  "scene_field_translation": {
+    "status": "DOCUMENTED_NOT_OBSERVED",
+    "note": "Classification of the canonical WRAY / BLACK ROOM TEST SceneSpec against the documented v3 avatar request body. 'EXECUTED' is NOT claimed for any field, because no generation was observed — a documented parameter proves only that the request can be expressed, never that the provider rendered the instruction. Fields with a documented parameter are marked MAPPABLE_UNOBSERVED.",
+    "fields": [
+      { "scene_field": "dialogue", "classification": "MAPPABLE_UNOBSERVED", "provider_parameter": "script", "source_ref": "CreateVideoFromAvatar.script", "notes": "Mutually exclusive with audio_url/audio_asset_id." },
+      { "scene_field": "voice_direction", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "voice_id + voice_settings{speed,pitch,locale}", "source_ref": "CreateVideoFromAvatar.voice_id, VoiceSettingsInput", "notes": "Only numeric speed/pitch/locale are expressible. Prose direction such as 'low register, unhurried, no rhetorical lift' has NO documented parameter and remains carried-but-unexecuted." },
+      { "scene_field": "environment", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "background (BackgroundSetting)", "source_ref": "CreateVideoFromAvatar.background", "notes": "A background colour/image/video can be set. 'Minimal black studio' as a described space is not a documented parameter; only a concrete background value is." },
+      { "scene_field": "performance_direction", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "motion_prompt, expressiveness", "source_ref": "CreateVideoFromAvatar.motion_prompt, CreateVideoFromAvatar.expressiveness", "notes": "CONDITIONAL: motion_prompt is documented as supported for photo avatars, and for video avatars only when engine.type is 'avatar_v'. It is documented as REJECTED for video avatars on the default Avatar IV engine. expressiveness is photo-avatar-only and Avatar IV only. Eligibility is avatar-specific and unverified." },
+      { "scene_field": "camera_direction", "classification": "UNSUPPORTED", "provider_parameter": null, "source_ref": "No camera, lens, focal-length or dolly parameter appears in CreateVideoFromAvatar", "notes": "'85mm portrait, subtle dolly-in' has no documented provider parameter. aspect_ratio/resolution/fit control the canvas, not the camera." },
+      { "scene_field": "wardrobe", "classification": "UNSUPPORTED", "provider_parameter": null, "source_ref": "No wardrobe or costume parameter appears in CreateVideoFromAvatar", "notes": "Wardrobe is a property of the avatar look chosen at avatar-creation time, not a per-request parameter. 'Black structured jacket' is only achievable by binding to an avatar look that already has it." },
+      { "scene_field": "duration_seconds", "classification": "UNSUPPORTED_AS_INPUT", "provider_parameter": null, "source_ref": "No duration input in CreateVideoFromAvatar; duration appears only on the response", "notes": "Duration is an OUTPUT of script length and delivery, not a requestable constraint. WRASAL's 12s intent cannot be enforced provider-side." }
+    ]
+  },
+
+  "identity_binding": {
+    "status": "DOCUMENTED_NOT_OBSERVED",
+    "critical_distinction": "A HeyGen avatar_id is NOT equivalent to a WRAYVE IdentitySnapshot. HeyGen operates its own identity and consent primitives, at its own granularity, under its own lifecycle. WRASAL authority and HeyGen consent are two separate gates and neither satisfies the other.",
+    "provider_object_types": [
+      { "provider_object_type": "avatar_group", "provider_object_id_field": "group_id", "source_ref": "POST /v3/avatars/{group_id}/consent; GET /v3/avatars (list avatar groups)", "relationship_to_identity_snapshot": "CLOSEST ANALOGUE, NOT EQUIVALENT. A group is the provider-side subject. Consent is granted at this level.", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "avatar_look", "provider_object_id_field": "avatar_id", "source_ref": "CreateVideoFromAvatar.avatar_id — 'video avatar or photo avatar look ID'", "relationship_to_identity_snapshot": "A LOOK, not an identity. One provider subject may own many looks. This is what a generation request actually binds to.", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "studio_avatar", "provider_object_id_field": "avatar_id", "source_ref": "CreateVideoFromAvatar description — 'Supports all avatar types: studio_avatar, digital_twin, and photo_avatar'", "relationship_to_identity_snapshot": "Stock/studio subject. Must never be bound to a WRASAL identity.", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "digital_twin", "provider_object_id_field": "avatar_id", "source_ref": "CreateVideoFromAvatar description", "relationship_to_identity_snapshot": "The only type plausibly corresponding to a real person's likeness. Documented as requiring the consent flow before it renders.", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "photo_avatar", "provider_object_id_field": "avatar_id", "source_ref": "CreateVideoFromAvatar description", "relationship_to_identity_snapshot": "Derived from a still image. Distinct capability profile (motion_prompt and expressiveness behave differently).", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "voice", "provider_object_id_field": "voice_id", "source_ref": "CreateVideoFromAvatar.voice_id", "relationship_to_identity_snapshot": "Separately identified. A voice is not bound to an avatar; v3 documents falling back to the avatar's default voice when voice_id is omitted.", "status": "DOCUMENTED_NOT_OBSERVED" },
+      { "provider_object_type": "asset", "provider_object_id_field": "asset_id", "source_ref": "POST /v3/assets", "relationship_to_identity_snapshot": "Raw file. No identity semantics.", "status": "DOCUMENTED_NOT_OBSERVED" }
+    ],
+    "provider_consent_primitive": {
+      "endpoint": "POST /v3/avatars/{group_id}/consent",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/reference/create-avatar-consent.md",
+      "documented_behaviour": "Initiates a consent flow for an avatar GROUP and returns a browser URL for the subject to complete approval by recording. Required before a private avatar can be used for video generation. The URL expires 24 hours after creation and is valid for one successful submission; the group remains in pending-consent status if unused.",
+      "wrasal_interpretation": "This is a PROVIDER-SIDE gate on provider-side rendering. It is not a WRASAL LikenessPolicy, it does not evaluate context (commercial/political/sexualized/deceptive/alteration/distribution), it is not versioned against a WRASAL IdentitySnapshot, and it cannot be read as WRASAL authority. WRAYVE must never treat HeyGen consent as satisfying AuthorityCheck, nor AuthorityCheck as satisfying HeyGen consent. Both must hold independently."
     }
-  ],
-  "required_response_fields": [
-    "generate.data.video_id",
-    "status.data.status"
-  ],
+  },
+
+  "required_provider_binding": ["heygen_avatar_id"],
+  "optional_provider_binding": ["heygen_voice_id"],
+  "required_provider_binding_note": "An avatar_id is a HeyGen-side identity artefact. WRAYVE will not invent one. v3 documents voice_id as optional when avatar_id is present (the avatar's default voice is used), so voice_id is no longer treated as mandatory — this is the one binding change this work order makes, and it is documentation-sourced, not observed.",
+
   "fields_wrayve_will_not_infer": [
     "provider_model",
     "provider_model_version",
-    "provider_timestamp",
-    "output_duration_seconds"
-  ],
-  "unmapped_scene_fields": [
-    "environment",
-    "wardrobe",
-    "performance_direction",
-    "camera_direction",
-    "voice_direction",
-    "duration_seconds"
-  ],
-  "unmapped_scene_fields_note": "WRAYVE holds these as creative intent. The declared HeyGen avatar-video contract exposes no confirmed parameter for them, so the adapter refuses to silently drop or re-interpret them: it records them as carried-but-unexecuted direction on the GenerationEvent.",
-  "required_provider_binding": [
-    "heygen_avatar_id",
-    "heygen_voice_id"
-  ],
-  "required_provider_binding_note": "An avatar_id/voice_id is a HeyGen-side identity artefact. WRAYVE will not invent one. Until an operator records a verified binding in SETTINGS, real HeyGen execution is refused at the adapter boundary."
+    "whether a carried SceneSpec instruction was actually rendered",
+    "equivalence between a HeyGen avatar and a WRASAL identity",
+    "equivalence between HeyGen consent and WRASAL authority"
+  ]
 }

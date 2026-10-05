@@ -1,0 +1,339 @@
+{
+  "verification_id": "HEYGEN-CONTRACT-001",
+  "work_order": "WRASAL-0013",
+  "provider": "HeyGen",
+  "verification_date": "2026-10-05",
+  "verified_by": "Arena external execution worker",
+  "conclusion": "HEYGEN_BLOCKED",
+  "conclusion_statement": "No HeyGen endpoint was observed live from this environment. Two independent blockers were recorded, either of which alone is sufficient to block verification. No live generation was attempted or simulated. No contract element is marked VERIFIED. All contract content in apps/wrayve/src/adapters/heygen-contract.json is sourced from HeyGen's published OpenAPI documentation and is marked DOCUMENTED_NOT_OBSERVED.",
+
+  "account_scope": {
+    "credential_present": false,
+    "credential_source_checked": [
+      "process environment variable HEYGEN_API_KEY",
+      "process environment variables matching /heygen|runway|avatar/i",
+      "dotenv files under /home/user (maxdepth 3, excluding node_modules)",
+      "repository working tree"
+    ],
+    "observed_result": "No HeyGen credential is present in any checked location. Only apps/wrayve/.env.example exists, and its HEYGEN_API_KEY value is empty by design.",
+    "account_identified": null,
+    "account_plan_tier": "UNKNOWN",
+    "note": "No credential was requested from the user in chat. HeyGen's own agent guidance states an API key must be read from the environment and never pasted into chat."
+  },
+
+  "blockers": [
+    {
+      "id": "BLOCKER-01",
+      "code": "CREDENTIAL_UNAVAILABLE",
+      "severity": "BLOCKING",
+      "observed_result": "HEYGEN_API_KEY is absent from the server environment. HEYGEN_AVATAR_ID and HEYGEN_VOICE_ID are also absent, so no provider identity binding exists either.",
+      "resolution_required": "An operator must supply HEYGEN_API_KEY through the environment's secure secret mechanism, plus a provider binding for an avatar the account is authorized to render."
+    },
+    {
+      "id": "BLOCKER-02",
+      "code": "NETWORK_EGRESS_BLOCKED",
+      "severity": "BLOCKING",
+      "observed_result": "Egress to every heygen.com host is severed at the TLS layer. DNS resolves correctly and TCP/443 completes, but the TLS handshake is closed with EOF before any application data is exchanged — the signature of an SNI-based egress allowlist. This affects api.heygen.com, docs.heygen.com and developers.heygen.com alike.",
+      "resolution_required": "api.heygen.com must be added to the sandbox egress allowlist before any live verification is possible.",
+      "note": "This blocker is independent of BLOCKER-01. Supplying a credential alone would NOT enable verification from this environment."
+    }
+  ],
+
+  "endpoint_tests": [
+    {
+      "endpoint": "https://api.heygen.com/",
+      "method": "GET",
+      "authentication": "none (reachability probe only; no credential was sent)",
+      "response_status": null,
+      "observed_behavior": "curl exit 35 — OpenSSL SSL_connect: SSL_ERROR_SYSCALL. No HTTP response.",
+      "verification_status": "UNAVAILABLE"
+    },
+    {
+      "endpoint": "https://api.heygen.com/v2/avatars",
+      "method": "GET",
+      "authentication": "none",
+      "response_status": null,
+      "observed_behavior": "No HTTP response. TLS terminated.",
+      "verification_status": "UNAVAILABLE"
+    },
+    {
+      "endpoint": "https://api.heygen.com/v2/video/generate",
+      "method": "POST",
+      "authentication": "none",
+      "response_status": null,
+      "observed_behavior": "No HTTP response. TLS terminated.",
+      "verification_status": "UNAVAILABLE"
+    },
+    {
+      "endpoint": "https://api.heygen.com/v3/videos",
+      "method": "POST",
+      "authentication": "none",
+      "response_status": null,
+      "observed_behavior": "No HTTP response. TLS terminated.",
+      "verification_status": "UNAVAILABLE"
+    },
+    {
+      "endpoint": "https://api.heygen.com/v1/video_status.get",
+      "method": "GET",
+      "authentication": "none",
+      "response_status": null,
+      "observed_behavior": "No HTTP response. TLS terminated.",
+      "verification_status": "UNAVAILABLE"
+    },
+    {
+      "endpoint": "https://api.heygen.com/v1/user/remaining_quota",
+      "method": "GET",
+      "authentication": "none",
+      "response_status": null,
+      "observed_behavior": "No HTTP response. TLS terminated.",
+      "verification_status": "UNAVAILABLE"
+    }
+  ],
+
+  "transport_diagnostics": {
+    "dns_resolution": {
+      "api.heygen.com": ["16.59.73.17", "3.139.5.224", "13.59.195.236"],
+      "ptr_observed": "k8s-apiserviceprod-7991f8fc74-1894906590.us-east-2.elb.amazonaws.com",
+      "result": "RESOLVED"
+    },
+    "tcp_443": "OPEN on all three A records",
+    "tls_handshake": "FAILED on all three A records — SSLZeroReturnError: TLS/SSL connection has been closed (EOF)",
+    "control_hosts_reachable": {
+      "registry.npmjs.org": "HTTP 200",
+      "github.com": "HTTP 200"
+    },
+    "interpretation": "General egress works. The block is host-specific to heygen.com, not a general network failure. Recorded as observed fact; the allowlist configuration itself was not inspected."
+  },
+
+  "request_observations": [],
+  "request_observations_note": "Empty by necessity. No authenticated request was ever transmitted, so no request behavior was observed. Documented request schemas are recorded in the contract artifact under DOCUMENTED_NOT_OBSERVED and must not be read as observations.",
+
+  "response_observations": [],
+  "response_observations_note": "Empty by necessity. No provider response was received. The documented response fields (data.video_id, data.id, data.status, data.video_url, data.created_at, data.completed_at, data.duration) are recorded in the contract artifact with status DOCUMENTED_NOT_OBSERVED.",
+
+  "documentation_findings": [
+    {
+      "id": "DOC-01",
+      "finding": "The endpoints declared in WRAYVE contract v0.1 are legacy and scheduled for retirement.",
+      "detail": "HeyGen documents v1/v2 endpoints as fully operational only until 2026-10-31, with end of life 2026-11-01. POST /v2/video/generate is documented as replaced by POST /v3/videos, and GET /v1/video_status.get by GET /v3/videos/{video_id}.",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/endpoint-version-comparison.md",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "HIGH — the v0.1 contract targeted a surface with 26 days of documented life remaining as of the verification date.",
+      "action_taken": "Both surfaces are now recorded in the contract. Neither is pre-selected; an operator must choose explicitly."
+    },
+    {
+      "id": "DOC-02",
+      "finding": "The v0.1 preflight endpoint choice was an assumption and has been corrected.",
+      "detail": "WRAYVE v0.1 used GET /v2/avatars as its credential preflight. HeyGen documents GET /v3/users/me as the endpoint for verifying an API key.",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/llms.txt — \"API Key ... Verify it with GET /v3/users/me\"",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "MEDIUM",
+      "action_taken": "The v3 surface uses GET /v3/users/me for preflight. The legacy surface retains GET /v2/avatars."
+    },
+    {
+      "id": "DOC-03",
+      "finding": "Authentication header name confirmed in the OpenAPI security scheme.",
+      "detail": "ApiKeyAuth is {type: apiKey, in: header, name: x-api-key}. A BearerAuth OAuth2 scheme also exists and is documented as trial-scale; WRAYVE does not use it.",
+      "source": "DOCUMENTATION",
+      "source_ref": "components.securitySchemes in the HeyGen External API OpenAPI 3.1.0 document",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "LOW — matches what v0.1 already sent."
+    },
+    {
+      "id": "DOC-04",
+      "finding": "voice_id is documented as optional on v3 when avatar_id is present.",
+      "detail": "v3 documents a fallback to the avatar's default voice when voice_id is omitted. v1/v2 documented voice_id as always required.",
+      "source": "DOCUMENTATION",
+      "source_ref": "CreateVideoFromAvatar.voice_id; endpoint-version-comparison.md platform improvements table",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "LOW",
+      "action_taken": "required_provider_binding reduced to [heygen_avatar_id]; heygen_voice_id moved to optional_provider_binding."
+    },
+    {
+      "id": "DOC-05",
+      "finding": "Legacy responses self-identify as deprecated.",
+      "detail": "v1/v2 responses are documented to carry a Deprecation: true header, a Sunset header, and a `warning` object naming the replacement v3 operation.",
+      "source": "DOCUMENTATION",
+      "source_ref": "endpoint-version-comparison.md — \"Find your own legacy calls\"",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "MEDIUM",
+      "action_taken": "The adapter captures this object and both headers verbatim onto the GenerationEvent as provider-reported fact."
+    },
+    {
+      "id": "DOC-06",
+      "finding": "The documented output URL is presigned and therefore expiring.",
+      "detail": "VideoDetail.video_url is documented as \"Presigned URL to download the video file\".",
+      "source": "DOCUMENTATION",
+      "source_ref": "VideoDetail.video_url",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "HIGH for provenance — a presigned URL is not a durable archival reference. A Freebuff record that stores only this URL will eventually point at nothing.",
+      "action_taken": "GenerationEvent now records output_reference_durability = PRESIGNED_EXPIRING. No archival copy is made; that is out of scope for this work order and is flagged as a follow-up."
+    },
+    {
+      "id": "DOC-07",
+      "finding": "No model identifier is returned by HeyGen's video endpoints.",
+      "detail": "The rendering engine (Avatar III / IV / V) is a REQUEST parameter (engine.type), not a reported output field. No create or detail response schema contains a model or model-version field.",
+      "source": "DOCUMENTATION",
+      "source_ref": "CreateVideoFromAvatar.engine; VideoDetail schema",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "MEDIUM",
+      "action_taken": "provider_model and provider_model_version remain UNKNOWN and are listed in unresolved_contract_fields. The requested engine, when set, is recorded as a generation parameter instead — an input, labelled as an input."
+    },
+    {
+      "id": "DOC-08",
+      "finding": "created_at and completed_at are UNIX SECONDS, not ISO-8601.",
+      "detail": "VideoDetail.created_at and VideoDetail.completed_at are documented as integer unix timestamps.",
+      "source": "DOCUMENTATION",
+      "source_ref": "VideoDetail.created_at, VideoDetail.completed_at",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "MEDIUM — v0.1 would have mis-read these as strings.",
+      "action_taken": "The adapter converts unix seconds to ISO-8601 for provider_timestamp, and records null when absent rather than substituting WRASAL's own clock."
+    },
+    {
+      "id": "DOC-09",
+      "finding": "HeyGen operates its own consent primitive, at a different granularity from WRASAL's.",
+      "detail": "POST /v3/avatars/{group_id}/consent initiates a browser-completed consent flow for an avatar GROUP, required before a private avatar renders. The consent URL expires after 24 hours and is valid for one successful submission.",
+      "source": "DOCUMENTATION",
+      "source_ref": "https://developers.heygen.com/reference/create-avatar-consent.md",
+      "status": "DOCUMENTED_NOT_OBSERVED",
+      "impact": "ARCHITECTURALLY SIGNIFICANT",
+      "action_taken": "Recorded in the contract with an explicit non-equivalence statement, and asserted by an automated test."
+    }
+  ],
+
+  "identity_binding_observations": [
+    {
+      "provider_object_type": "avatar_group",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "CLOSEST ANALOGUE, NOT EQUIVALENT — the provider-side subject, and the level at which HeyGen consent is granted.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    },
+    {
+      "provider_object_type": "avatar_look",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "NOT EQUIVALENT — a look, not an identity. One subject may own many looks. This is what avatar_id actually binds to in a generation request.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    },
+    {
+      "provider_object_type": "digital_twin",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "The only avatar type plausibly corresponding to a real person's likeness. Documented as requiring the consent flow before rendering.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    },
+    {
+      "provider_object_type": "studio_avatar",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "NOT AN IDENTITY — stock subject. Must never be bound to a WRASAL identity.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    },
+    {
+      "provider_object_type": "photo_avatar",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "Derived from a still image. Distinct capability profile from video avatars.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    },
+    {
+      "provider_object_type": "voice",
+      "provider_object_id": null,
+      "human_readable_label": null,
+      "relationship_to_wrayve_identity_snapshot": "Separately identified from the avatar. Not a WRASAL voice_reference.",
+      "verification_source": "DOCUMENTATION",
+      "status": "DOCUMENTED_NOT_OBSERVED"
+    }
+  ],
+
+  "identity_binding_conclusion": "PROVIDER_BINDING_REQUIRED. No avatar_id, voice_id, group_id or asset_id exists for the WRAY-001 identity in any HeyGen account reachable from this environment, and none was invented. The distinction between a HeyGen avatar and a WRAYVE IdentitySnapshot is preserved: HeyGen's consent flow is a provider-side rendering gate that evaluates no context and is not versioned against a WRASAL snapshot, and it neither satisfies nor is satisfied by a WRASAL AuthorityCheck.",
+
+  "scene_field_classification": {
+    "scene": "WRAY / BLACK ROOM TEST",
+    "classification_note": "EXECUTED is not claimed for any field. A documented request parameter proves only that an instruction can be EXPRESSED; without an observed generation, execution cannot be asserted. Fields with a documented parameter are therefore MAPPABLE_UNOBSERVED.",
+    "fields": [
+      { "field": "dialogue", "classification": "MAPPABLE_UNOBSERVED", "provider_parameter": "script" },
+      { "field": "voice_direction", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "voice_id + voice_settings{speed,pitch,locale}", "note": "Numeric tuning only. Prose direction has no documented parameter." },
+      { "field": "environment", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "background", "note": "A concrete background value is expressible; a described space is not." },
+      { "field": "performance_direction", "classification": "PARTIALLY_MAPPABLE_UNOBSERVED", "provider_parameter": "motion_prompt / expressiveness", "note": "CONDITIONAL on avatar type and engine; documented as rejected for video avatars on the default Avatar IV engine." },
+      { "field": "camera_direction", "classification": "UNSUPPORTED", "provider_parameter": null, "note": "No camera, lens or movement parameter exists. aspect_ratio/resolution/fit control the canvas, not the camera." },
+      { "field": "wardrobe", "classification": "UNSUPPORTED", "provider_parameter": null, "note": "A property of the avatar look chosen at avatar-creation time, not a per-request parameter." },
+      { "field": "duration_seconds", "classification": "UNSUPPORTED_AS_INPUT", "provider_parameter": null, "note": "Duration is an output of script length, not a requestable constraint." }
+    ]
+  },
+
+  "unsupported_fields": ["camera_direction", "wardrobe", "duration_seconds"],
+  "unknown_fields": ["provider_model", "provider_model_version", "data.error (failure-detail field name not located in the retrieved schema)", "data.duration (named in the operation description; exact type unconfirmed)"],
+
+  "failures": [
+    {
+      "test": "§10 missing credential",
+      "expected": "PROVIDER_CONTRACT_UNAVAILABLE",
+      "observed": "PROVIDER_CONTRACT_UNAVAILABLE with missing_contract_elements listing credential:HEYGEN_API_KEY and provider_binding:heygen_avatar_id; GenerationEvent recorded with simulated=false and output_reference=null",
+      "result": "pass",
+      "evidence_type": "automated_test"
+    },
+    {
+      "test": "§10 invalid credential",
+      "expected": "truthful provider authentication failure",
+      "observed": "HTTP 401 with provider error code 'unauthorized' recorded verbatim; service stage 'validate', adapter stage 'preflight'; the credential does not appear anywhere in the GenerationEvent",
+      "result": "pass",
+      "evidence_type": "automated_test_with_documented_error_shape",
+      "caveat": "The 401 shape is HeyGen's documented example, replayed through a transport double. It was not observed from a live account."
+    },
+    {
+      "test": "§10 invalid provider binding",
+      "expected": "truthful provider failure",
+      "observed": "HTTP 400 'avatar_not_usable' recorded verbatim; execution_status FAILED; provider_job_id null",
+      "result": "pass",
+      "evidence_type": "automated_test_with_documented_error_shape",
+      "caveat": "Documented error shape replayed through a transport double."
+    },
+    {
+      "test": "§10 unsupported scene field",
+      "expected": "carried_but_unexecuted or appropriate verified classification",
+      "observed": "camera_direction=UNSUPPORTED, wardrobe=UNSUPPORTED, duration_seconds=UNSUPPORTED_AS_INPUT, performance_direction=PARTIALLY_MAPPABLE_UNOBSERVED, each carried onto the GenerationEvent with its evidence reference",
+      "result": "pass",
+      "evidence_type": "automated_test"
+    },
+    {
+      "test": "§10 provider generation failure",
+      "expected": "FAILED with an append-only event",
+      "observed": "HTTP 500 produced execution_status FAILED, one immutable GenerationEvent, and one EXECUTION_FAILED ledger entry; no simulated success substituted",
+      "result": "pass",
+      "evidence_type": "automated_test"
+    },
+    {
+      "test": "WRASAL-0013 surface selection gate",
+      "expected": "refusal when no surface has been verified",
+      "observed": "PROVIDER_SURFACE_UNVERIFIED raised before any network call was attempted (0 transport calls made)",
+      "result": "pass",
+      "evidence_type": "automated_test"
+    }
+  ],
+
+  "architecture_regression": {
+    "performed": true,
+    "method": "HeyGen unregistered entirely from the adapter registry, then the full loop executed through a different adapter.",
+    "observed_result": "6/6 architecture tests pass. With only MOCK registered, the loop completed: Identity WRAY-001 ACTIVE, IdentitySnapshot SNAP-0001 v0.1 ACTIVE, LikenessPolicy POLICY-0001, SceneSpec SCENE-0001, AuthorityCheck AUTHORIZED, Approval APPROVED, ExecutionRequest REVIEWED, provenance chain IDENTITY -> SNAPSHOT -> POLICY -> SCENE -> AUTHORITY -> PROVIDER -> GENERATION -> OUTPUT -> FREEBUFF, Freebuff handoff SIMULATED with certified=false, ledger chain INTACT.",
+    "result": "pass"
+  },
+
+  "test_suite": {
+    "command": "node --test \"tests/**/*.test.mjs\"",
+    "tests": 37,
+    "passed": 37,
+    "failed": 0
+  },
+
+  "secrets_included": false,
+  "secrets_statement": "This record contains no credential, no token, no key fragment and no account identifier. No credential existed in the environment to redact."
+}

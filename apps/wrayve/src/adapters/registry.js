@@ -73,6 +73,7 @@ export function buildDefaultRegistry({ mediaStore, config }) {
   registry.register(PROVIDER.HEYGEN, new HeyGenAdapter({
     apiKey: config.heygenApiKey,
     binding: config.heygenBinding,
+    surface: config.heygenSurface,
   }));
   registry.register(PROVIDER.RUNWAY, new RunwayAdapter());
   return registry;

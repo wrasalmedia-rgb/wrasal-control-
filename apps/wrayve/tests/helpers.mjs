@@ -38,6 +38,8 @@ export function makeService({ heygen = null, withRunway = false } = {}) {
   registry.register(PROVIDER.HEYGEN, new HeyGenAdapter({
     apiKey: heygen?.apiKey ?? null,
     binding: heygen?.binding ?? null,
+    // Surface must be named explicitly — exactly as an operator must in production.
+    surface: heygen?.surface ?? null,
     fetchImpl: heygen?.fetchImpl ?? (() => { throw new Error('network disabled in tests'); }),
   }));
   if (withRunway) registry.register(PROVIDER.RUNWAY, new RunwayAdapter());
@@ -90,16 +92,18 @@ export function fakeFetch(routes) {
     if (!key) return jsonResponse(404, { error: { message: `no fake route for ${method} ${path}` } });
     const spec = routes[key];
     if (typeof spec === 'function') return spec({ method, path, url });
-    return jsonResponse(spec.status ?? 200, spec.body ?? {});
+    return jsonResponse(spec.status ?? 200, spec.body ?? {}, spec.headers ?? {});
   };
   impl.calls = calls;
   return impl;
 }
 
-export function jsonResponse(status, body) {
+export function jsonResponse(status, body, headers = {}) {
+  const lower = new Map(Object.entries(headers).map(([k, v]) => [k.toLowerCase(), v]));
   return {
     ok: status >= 200 && status < 300,
     status,
+    headers: { get: (name) => lower.get(String(name).toLowerCase()) ?? null },
     json: async () => body,
     text: async () => JSON.stringify(body),
   };

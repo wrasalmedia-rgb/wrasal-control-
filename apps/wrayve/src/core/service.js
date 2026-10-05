@@ -540,10 +540,11 @@ export class WrayveService {
       return this.#recordFailure(requestId, order, error, { actor, requestedAt, stage: 'retrieve' });
     }
 
-    const result = adapter.normalize(raw, order, {
-      provider_job_id: handle.provider_job_id,
-      compiled: handle.compiled,
-    });
+    // The handle is opaque to WRASAL. It is forwarded verbatim so that facts the
+    // adapter captured at submission time (job id, compiled payload, any
+    // provider-reported notice) survive into normalization rather than being
+    // silently lost between the two calls.
+    const result = adapter.normalize(raw, order, handle);
 
     if (result.execution_status === 'IN_PROGRESS') {
       // Truthful intermediate state: the job exists, the output does not yet.
@@ -653,6 +654,10 @@ export class WrayveService {
       output_media_type: result.output_media_type ?? UNKNOWN,
       output_duration_seconds: result.output_duration_seconds ?? null,
       execution_status: 'COMPLETED',
+      // Provider-reported facts, recorded verbatim and never interpreted.
+      provider_surface: result.provider_surface ?? UNKNOWN,
+      provider_deprecation: result.provider_deprecation ?? null,
+      output_reference_durability: result.output_reference_durability ?? UNKNOWN,
       unresolved_contract_fields: result.unresolved_contract_fields ?? [],
       carried_but_unexecuted: result.carried_but_unexecuted ?? [],
       requested_at: requestedAt,

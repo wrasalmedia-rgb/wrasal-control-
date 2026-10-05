@@ -55,13 +55,22 @@ test('a REAL execution may not be served by the simulation adapter', async () =>
   await assert.rejects(() => service.execute(request.id), ValidationError);
 });
 
-test('TEST 07 — real HeyGen execution records provider=HEYGEN with a non-null provider_job_id', async () => {
+test('TEST 07 — real HeyGen execution on the v3 surface records provider=HEYGEN with a non-null provider_job_id', async () => {
   const fetchImpl = fakeFetch({
-    'GET /v2/avatars': { status: 200, body: { data: { avatars: [] } } },
-    'POST /v2/video/generate': { status: 200, body: { error: null, data: { video_id: 'vid_live_123' } } },
-    'GET /v1/video_status.get': {
+    'GET /v3/users/me': { status: 200, body: { data: { username: 'acct' } } },
+    'POST /v3/videos': { status: 200, body: { data: { video_id: 'v_live_123' } } },
+    'GET /v3/videos/': {
       status: 200,
-      body: { data: { status: 'completed', video_url: 'https://files.heygen.ai/vid_live_123.mp4', duration: 11.8 } },
+      body: {
+        data: {
+          id: 'v_live_123',
+          status: 'completed',
+          video_url: 'https://files.heygen.ai/video/v_live_123.mp4',
+          duration: 11.8,
+          created_at: 1711929600,
+          completed_at: 1711930200,
+        },
+      },
     },
   });
 
@@ -69,6 +78,7 @@ test('TEST 07 — real HeyGen execution records provider=HEYGEN with a non-null 
     heygen: {
       apiKey: 'test-key',
       binding: { heygen_avatar_id: 'avatar_abc', heygen_voice_id: 'voice_abc' },
+      surface: 'v3',
       fetchImpl,
     },
   });
@@ -82,33 +92,101 @@ test('TEST 07 — real HeyGen execution records provider=HEYGEN with a non-null 
   assert.equal(result.status, 'GENERATED');
   assert.equal(result.generation_event.provider, 'HEYGEN');
   assert.notEqual(result.generation_event.provider_job_id, null);
-  assert.equal(result.generation_event.provider_job_id, 'vid_live_123');
+  assert.equal(result.generation_event.provider_job_id, 'v_live_123');
   assert.equal(result.generation_event.simulated, false);
-  assert.equal(result.generation_event.output_reference, 'https://files.heygen.ai/vid_live_123.mp4');
+  assert.equal(result.generation_event.provider_surface, 'v3');
+  assert.equal(result.generation_event.output_reference, 'https://files.heygen.ai/video/v_live_123.mp4');
 
-  // The API key goes out in a server-side header and nowhere else.
-  assert.equal(fetchImpl.calls[0].headers['x-api-key'], 'test-key');
+  // The documented v3 request body is a discriminated union on `type`.
+  const createCall = fetchImpl.calls.find((call) => call.path === '/v3/videos' && call.method === 'POST');
+  assert.equal(createCall.body.type, 'avatar');
+  assert.equal(createCall.body.avatar_id, 'avatar_abc');
+  assert.equal(createCall.body.script, scene.dialogue);
+  assert.equal(createCall.headers['x-api-key'], 'test-key');
 
-  // Fields HeyGen did not return are UNKNOWN/null — never invented.
+  // created_at/completed_at are documented as UNIX SECONDS, not ISO strings.
+  assert.equal(result.generation_event.provider_timestamp, '2024-04-01T00:10:00.000Z');
+  assert.equal(result.generation_event.output_duration_seconds, 11.8);
+
+  // Still UNKNOWN, because no HeyGen response documents a model identifier.
   assert.equal(result.generation_event.provider_model, 'UNKNOWN');
   assert.equal(result.generation_event.provider_model_version, 'UNKNOWN');
-  assert.equal(result.generation_event.provider_timestamp, null);
   assert.ok(result.generation_event.unresolved_contract_fields.includes('provider_model'));
 
-  // Direction the declared contract cannot express is carried, not dropped.
-  const carried = result.generation_event.carried_but_unexecuted.map((item) => item.scene_field);
-  assert.ok(carried.includes('camera_direction'));
-  assert.ok(carried.includes('wardrobe'));
+  // The documented output URL is presigned; WRASAL records that it expires.
+  assert.equal(result.generation_event.output_reference_durability, 'PRESIGNED_EXPIRING');
+
+  // Direction the documented contract cannot execute is carried, not dropped.
+  const carried = Object.fromEntries(
+    result.generation_event.carried_but_unexecuted.map((item) => [item.scene_field, item.classification]),
+  );
+  assert.equal(carried.camera_direction, 'UNSUPPORTED');
+  assert.equal(carried.wardrobe, 'UNSUPPORTED');
+  assert.equal(carried.duration_seconds, 'UNSUPPORTED_AS_INPUT');
+  assert.equal(carried.performance_direction, 'PARTIALLY_MAPPABLE_UNOBSERVED');
+  // dialogue is the one field with a direct documented parameter.
+  assert.equal(carried.dialogue, undefined);
+});
+
+test('WRASAL-0013 — the legacy v2 surface still works and its deprecation warning is captured verbatim', async () => {
+  const fetchImpl = fakeFetch({
+    'GET /v2/avatars': { status: 200, body: { data: { avatars: [] } } },
+    'POST /v2/video/generate': {
+      status: 200,
+      headers: { Deprecation: 'true', Sunset: 'Sat, 31 Oct 2026 00:00:00 GMT' },
+      body: {
+        error: null,
+        data: { video_id: 'vid_legacy_1' },
+        warning: {
+          message: 'This v2 endpoint is Legacy and will be removed on 2026-10-31.',
+          v3_endpoint: 'POST /v3/videos',
+          docs_url: 'https://developers.heygen.com/reference/create-video',
+          sunset_date: '2026-10-31',
+        },
+      },
+    },
+    'GET /v1/video_status.get': {
+      status: 200,
+      body: { data: { status: 'completed', video_url: 'https://files.heygen.ai/legacy.mp4' } },
+    },
+  });
+
+  const { service } = makeService({
+    heygen: {
+      apiKey: 'k',
+      binding: { heygen_avatar_id: 'a', heygen_voice_id: 'v' },
+      surface: 'v2_legacy',
+      fetchImpl,
+    },
+  });
+  const { snapshot } = seedWray(service);
+  const scene = blackRoomScene(service, snapshot.id);
+  const request = service.requestExecution({ scene_spec_id: scene.id, provider: PROVIDER.HEYGEN });
+  service.approve(request.id);
+  const result = await service.execute(request.id);
+
+  assert.equal(result.status, 'GENERATED');
+  assert.equal(result.generation_event.provider_surface, 'v2_legacy');
+
+  // Provider-reported deprecation is recorded as provider fact, not inferred.
+  const dep = result.generation_event.provider_deprecation;
+  assert.equal(dep.reported_by, 'PROVIDER');
+  assert.equal(dep.sunset_header, 'Sat, 31 Oct 2026 00:00:00 GMT');
+  assert.equal(dep.warning.v3_endpoint, 'POST /v3/videos');
+
+  // The legacy body shape is still what v2 expects.
+  const createCall = fetchImpl.calls.find((call) => call.method === 'POST');
+  assert.equal(createCall.body.video_inputs[0].character.avatar_id, 'a');
 });
 
 test('TEST 08 — provider failure => FAILED with an auditable failure event', async () => {
   const fetchImpl = fakeFetch({
-    'GET /v2/avatars': { status: 200, body: { data: { avatars: [] } } },
-    'POST /v2/video/generate': { status: 500, body: { error: { code: 'internal', message: 'upstream failure' } } },
+    'GET /v3/users/me': { status: 200, body: { data: {} } },
+    'POST /v3/videos': { status: 500, body: { error: { code: 'internal', message: 'upstream failure' } } },
   });
 
   const { service } = makeService({
-    heygen: { apiKey: 'test-key', binding: { heygen_avatar_id: 'a', heygen_voice_id: 'v' }, fetchImpl },
+    heygen: { apiKey: 'test-key', binding: { heygen_avatar_id: 'a' }, surface: 'v3', fetchImpl },
   });
   const { snapshot } = seedWray(service);
   const scene = blackRoomScene(service, snapshot.id);
@@ -131,13 +209,13 @@ test('TEST 08 — provider failure => FAILED with an auditable failure event', a
 
 test('a provider job still processing is reported as IN_PROGRESS, never as GENERATED', async () => {
   const fetchImpl = fakeFetch({
-    'GET /v2/avatars': { status: 200, body: { data: {} } },
-    'POST /v2/video/generate': { status: 200, body: { data: { video_id: 'vid_slow' } } },
-    'GET /v1/video_status.get': { status: 200, body: { data: { status: 'processing' } } },
+    'GET /v3/users/me': { status: 200, body: { data: {} } },
+    'POST /v3/videos': { status: 200, body: { data: { video_id: 'vid_slow' } } },
+    'GET /v3/videos/': { status: 200, body: { data: { status: 'processing' } } },
   });
 
   const { service } = makeService({
-    heygen: { apiKey: 'k', binding: { heygen_avatar_id: 'a', heygen_voice_id: 'v' }, fetchImpl },
+    heygen: { apiKey: 'k', binding: { heygen_avatar_id: 'a' }, surface: 'v3', fetchImpl },
   });
   const { snapshot } = seedWray(service);
   const scene = blackRoomScene(service, snapshot.id);
