@@ -1,0 +1,118 @@
+{
+  "work_order_id": "WRASAL-0012",
+  "project": "WRASAL",
+  "record_authority": "WRASAL-0012",
+  "recorded_on": "2026-10-07",
+  "recorded_by": "Arena construction-lab worker",
+  "objective": "Construct WRASAL V0.1 Reality Graph as a quarantined construction-lab build under apps/wrasal-reality-graph, proving the CREATE to TRACE to UNDERSTAND to GENERATE to ARCHIVE vertical slice without altering control-plane records or the implementation-neutral boundary of this repository.",
+  "success_condition": "A running PostgreSQL-backed application exists under apps/ that can represent an entity, preserve its context, trace lineage, distinguish evidence from inference, enforce the Authority Boundary, expose relationships, and return UNKNOWN for unsupported questions; the root control-plane validator continues to pass unchanged; no project semantics, priorities, dependencies, or canonical acceptance states are modified.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "branch": "arena/01a107d4-wrasal-control",
+    "base_commit": "bc21b1a7cdff35d9346e38cb8f7f22b86985c9c9",
+    "application_path": "apps/wrasal-reality-graph",
+    "application_readme": "apps/wrasal-reality-graph/README.md",
+    "schema": "apps/wrasal-reality-graph/src/persistence/schema.sql",
+    "test_suite": "apps/wrasal-reality-graph/tests/vertical-slice.test.mjs",
+    "database_engine": "PostgreSQL 18.3 executed via PGlite 0.5.8 embedded WASM build",
+    "operator_decisions": "Build location quarantined under apps/ (operator choice); PGlite behind a driver port (operator choice); substrate-only scope with deterministic non-LLM Ask WRASAL (operator choice).",
+    "control_plane_changes": "none",
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "wrasal-0012-repository-boundary",
+      "type": "repository_inspection",
+      "attribution": "Arena construction-lab worker",
+      "source": "README.md, projects.yml, scripts/validate-control-plane.mjs inspected before any file was written",
+      "observed_result": "This repository declares itself implementation-neutral S2/S3 control surface containing no product or runtime code, and projects.yml records the WRASAL runtime repo as 'wrasal'. The conflict was raised with the operator before construction and resolved by quarantining the build under apps/ with control-plane records left untouched.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-control-plane-unaffected",
+      "type": "validator_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm ci && npm test at repository root after the application was written",
+      "observed_result": "Repository-pinned control-plane validator passed and validator self-tests passed. The validator discovers only projects.yml, priorities.yml, dependencies.yml and work_orders/WRASAL-NNNN.json, so the apps/ directory is outside its surface; no control-plane record was modified by this work order other than the addition of this record.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-database-substrate",
+      "type": "schema_execution",
+      "attribution": "Arena construction-lab worker",
+      "source": "apps/wrasal-reality-graph/src/persistence/schema.sql applied through src/persistence/db.js migrate()",
+      "observed_result": "Standard PostgreSQL DDL created users, entity_types, entities, worlds, relationships, memories, evidence, claims, claim_evidence, provenance_records, artifacts, artifact_versions, media_assets, stories, specifications, decisions, canonical_states, releases, archive_records, events and authority_events, plus five enumerated vocabularies, under PostgreSQL 18.3 reported by select version().",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-authority-boundary-executable",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test in apps/wrasal-reality-graph; assertions A1 through A6 and Z4",
+      "observed_result": "An AI actor was refused declare_canonical, accept_decision, release and archive at the application layer; a contributor was refused declare_canonical for insufficient authority; a mutation lacking an explicit source and reason was refused; a directly forged authority_events insert naming an AI actor behind declare_canonical was rejected by CHECK constraint ai_may_not_declare_canon; and an attempt to store an AI user at steward authority was rejected by CHECK constraint ai_may_not_be_steward.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-evidence-inference-separation",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test in apps/wrasal-reality-graph; assertions 5, 5b, 6, 6b, Q1, Q2, Q13",
+      "observed_result": "Evidence carrying epistemic_status generated_interpretation was rejected by CHECK constraint evidence_is_not_generated. Claim status is recomputed from explicit claim_evidence links only, moving to supported, disputed or refuted as links are added. The unsupported claim that Miss Celia wrote the second hand in the ledger never appeared among established facts in the Ask WRASAL answer, and a machine-proposed relationship remained marked generated_interpretation and non-canonical.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-unknown-is-a-result",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test assertions Q3, Q4, Q6, Q7; and live POST /api/ask against the running server",
+      "observed_result": "Asking about a non-existent entity returned UNKNOWN with reason 'No entity in the Reality Graph matches the subject of the question.' An unanswerable generative request returned UNKNOWN rather than prose. Provenance for a subject with no records returned UNKNOWN. The reasoning layer performs no model inference: every emitted sentence is a fixed structural phrase or a verbatim record value carried with its record id.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-lineage-not-ownership",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test assertions 7, 8, 9, Q5",
+      "observed_result": "Lineage is traversable in both directions across artifact and artifact_version subjects including a supersedes edge from the human correction to the machine render. Every lineage response returned ownership UNKNOWN together with the standing note that lineage relationships describe derivation and context and do not establish ownership, licence, or rights.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-archive-preservation",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test assertions Z1, Z2, Z3",
+      "observed_result": "Archiving the Porch Portrait preserved artifact, three versions, provenance records, supporting evidence, decisions, canonical status, creation timestamp and archive timestamp in a single JSONB snapshot with a 64-character sha256 hash; repeated capture of unchanged input produced an identical stable serialisation; and the archive action itself recorded an authority event with previous and new state.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-vertical-slice-end-to-end",
+      "type": "test_run",
+      "attribution": "Arena construction-lab worker",
+      "source": "npm test in apps/wrasal-reality-graph",
+      "observed_result": "38 assertions executed, 38 passed, 0 failed, covering all fourteen required V0.1 capabilities from entity creation through relationship, memory, evidence, claim, provenance, artifact, versioning, graph projection, question answering, UNKNOWN handling, archiving, and complete lineage and event history.",
+      "result": "pass"
+    },
+    {
+      "id": "wrasal-0012-running-application",
+      "type": "http_probe",
+      "attribution": "Arena construction-lab worker",
+      "source": "node src/http/main.js bound to 0.0.0.0:4310; curl against /api/bootstrap, /api/graph, /api/ask, /api/canonical, and the static web surface",
+      "observed_result": "Server reported substrate online. /api/graph returned 4 nodes, 5 links and 4 satellite record groupings. /api/ask returned 8 established statements, 2 not-established statements and 15 citations for Miss Celia, and UNKNOWN for Captain Nemo. A POST to /api/canonical as the AI actor returned HTTP 403 with the Authority Boundary message. The index, stylesheet and client script each returned HTTP 200.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "repository_remote_branch": "none; work performed on arena/01a107d4-wrasal-control only",
+    "wrasal_runtime_world_state": "none",
+    "project_semantics": "unchanged",
+    "status_vocabulary": "unchanged",
+    "projects_priorities_dependencies": "unchanged",
+    "control_plane_scaffold": "unchanged apart from the addition of this work-order record",
+    "new_construction_artifact": "apps/wrasal-reality-graph added as a quarantined construction-lab build; not declared a WRASAL concept and not referenced by projects.yml",
+    "canonical_acceptance_promotion": "not performed"
+  },
+  "next_candidate": "WRASAL-0013 — DISPOSITION: a separate S5 decision on whether the V0.1 Reality Graph substrate is promoted into a product repository, retained in the construction lab, or discarded; executor PASS does not establish canonical acceptance."
+}

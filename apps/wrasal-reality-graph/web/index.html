@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WRASAL — Reality Graph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div id="grain"></div>
+
+<header class="topbar">
+  <div class="mark">
+    <span class="glyph">&#128705;</span>
+    <span class="wordmark">WRASAL</span>
+    <span class="version">V0.1 · REALITY GRAPH</span>
+  </div>
+  <div class="doctrine">REALITY FIRST. TECHNOLOGY SECOND.</div>
+  <div class="actorbox">
+    <label>ACTING AS</label>
+    <select id="actor-select"></select>
+    <span id="actor-authority" class="authority-chip"></span>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail">
+    <section>
+      <h2>REALITY</h2>
+      <button data-view="graph" class="active">Graph</button>
+      <button data-view="entities">Entities</button>
+      <button data-view="memory">Memory</button>
+      <button data-view="evidence">Evidence</button>
+    </section>
+    <section>
+      <h2>CREATE</h2>
+      <button data-view="story">Story</button>
+      <button data-view="specification">Specification</button>
+      <button data-view="media">Media</button>
+    </section>
+    <section>
+      <h2>OPERATE</h2>
+      <button data-view="simulation">Simulation</button>
+      <button data-view="release">Release</button>
+      <button data-view="archive">Archive</button>
+    </section>
+    <section>
+      <h2>GOVERN</h2>
+      <button data-view="provenance">Provenance</button>
+      <button data-view="decisions">Decisions</button>
+      <button data-view="authority">Authority</button>
+    </section>
+    <footer class="railfoot">
+      <div class="stat"><span id="stat-entities">—</span> entities</div>
+      <div class="stat"><span id="stat-events">—</span> authority events</div>
+    </footer>
+  </nav>
+
+  <main id="stage"></main>
+
+  <aside class="inspector" id="inspector">
+    <div class="empty-inspector">
+      <p class="eyebrow">INSPECTOR</p>
+      <p class="muted">Select a node in the Reality Graph.</p>
+    </div>
+  </aside>
+</div>
+
+<button id="ask-open" class="ask-fab">ASK WRASAL</button>
+
+<div id="ask-panel" class="ask-panel" hidden>
+  <div class="ask-head">
+    <div>
+      <p class="eyebrow">ASK WRASAL</p>
+      <h3>Ask the Reality Graph</h3>
+    </div>
+    <button id="ask-close" class="ghost">CLOSE</button>
+  </div>
+  <form id="ask-form">
+    <input id="ask-input" autocomplete="off" placeholder="What do I actually know about Miss Celia?">
+    <button type="submit">ASK</button>
+  </form>
+  <div id="ask-suggestions" class="suggestions"></div>
+  <div id="ask-result" class="ask-result"></div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
