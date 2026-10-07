@@ -5,8 +5,8 @@
   "recorded_by": "Arena external execution worker",
   "attribution": "ENVIRONMENT",
   "verification_state": "OBSERVED",
-  "observation_count": 3,
-  "statement": "Across three consecutive sessions the git directory was rolled back to an older commit while the working tree persisted intact. Repository continuity cannot be assumed from the presence of files.",
+  "observation_count": 4,
+  "statement": "Across four consecutive sessions the git directory was rolled back to an older commit while the working tree persisted intact. Repository continuity cannot be assumed from the presence of files.",
   "why_this_is_recorded": "WRASAL-0015 established that WRASAL cannot substantiate its own durability claims about generated artifacts. This finding is the same failure shape applied to WRASAL's own development history. It is recorded as environmental evidence and deliberately NOT folded into WRASAL-0016's architecture, which must answer its epistemic question first. No work order is opened for it yet.",
   "observations": [
     {
@@ -26,6 +26,12 @@
       "observed_result": ".git rolled back to bc21b1a again; origin was 5 commits ahead with 0 local-only commits. Detected before staging, by comparing local HEAD against origin as the first action of the session.",
       "consequence": "Re-anchored before any commit was attempted. No corrupted commit was ever created.",
       "result": "pass"
+    },
+    {
+      "session": 4,
+      "observed_result": ".git rolled back to bc21b1a a third consecutive time; origin was 6 commits ahead with 0 local-only commits. Detected by the step-1 inspection before staging. The recovery procedure recorded in this file was itself applied, in the same session in which it was being written into an overlay for a different system.",
+      "consequence": "Re-anchored before any commit was attempted. No corrupted commit created.",
+      "result": "pass"
     }
   ],
   "root_cause": "UNKNOWN. The sandbox snapshot mechanism excludes certain paths and appears not to restore .git consistently with the working tree. WRASAL has not observed the mechanism directly and does not infer it.",
@@ -39,12 +45,12 @@
     "constitutional": false,
     "note": "This is operational discipline, not a constitutional principle. It constrains how the work is done, not what the system may claim.",
     "procedure": [
-      "1. INSPECT — `git log --oneline -1` before touching anything",
-      "2. COMPARE — `git fetch origin <branch>` and `git rev-list --left-right --count HEAD...origin/<branch>`",
-      "3. RE-ANCHOR — if local is behind with 0 local-only commits, `git reset --mixed origin/<branch>` (keeps the working tree)",
-      "4. STAGE DELTA — `git status --short` must show only the current session's changes before staging",
-      "5. COMMIT — only after the delta is confirmed to be the intended one",
-      "6. VERIFY REMOTE — confirm the push landed and history is linear"
+      "1. INSPECT \u2014 `git log --oneline -1` before touching anything",
+      "2. COMPARE \u2014 `git fetch origin <branch>` and `git rev-list --left-right --count HEAD...origin/<branch>`",
+      "3. RE-ANCHOR \u2014 if local is behind with 0 local-only commits, `git reset --mixed origin/<branch>` (keeps the working tree)",
+      "4. STAGE DELTA \u2014 `git status --short` must show only the current session's changes before staging",
+      "5. COMMIT \u2014 only after the delta is confirmed to be the intended one",
+      "6. VERIFY REMOTE \u2014 confirm the push landed and history is linear"
     ],
     "never": [
       "Never force-push to recover from this.",
