@@ -1,0 +1,80 @@
+{
+  "system": "WRASAL // WISH MACHINE AGENT STACK v0.2 - Redacted Public Repo Version",
+  "version": "0.2.0",
+  "redaction_policy": "Governor placeholder, [REDACTED] identifiers, templates only, no real evidence in public repo",
+  "repo_visibility": "public - isPrivate: false",
+  "governor": "Governor - full identity held outside repo",
+  "orchestrator": "WRASAL",
+  "waves": {
+    "wave_1": [
+      "01_anchor",
+      "02_forensic",
+      "03_reconciliation"
+    ],
+    "wave_1_gate": "AUDIT_REPORT = SYSTEM INTEGRITY VERIFIED + Governor acknowledgment signed in EXECUTION_QUEUE",
+    "wave_2": [
+      "04_legal",
+      "05_resource",
+      "06_revenue"
+    ],
+    "wave_3": [
+      "07_opportunity",
+      "08_execution",
+      "09_auditor"
+    ]
+  },
+  "evidence_locker": {
+    "public_repo_path": "concepts/wish-machine/evidence-locker-templates/ - EMPTY templates only",
+    "real_evidence_path": "local encrypted folder outside repo - never committed",
+    "existing_evidence_folder_note": "Repo already has evidence/ for S3 validator (WRASAL-0005-validation.json) - NOT SLB personal evidence - keep separate to avoid collision"
+  },
+  "files": {
+    "agents": [
+      "agents/00_orchestrator.md",
+      "agents/01_anchor.md",
+      "agents/02_forensic.md",
+      "agents/03_reconciliation.md",
+      "agents/04_legal.md",
+      "agents/05_resource.md",
+      "agents/06_revenue.md",
+      "agents/07_opportunity.md",
+      "agents/08_execution.md",
+      "agents/09_auditor.md"
+    ],
+    "templates": [
+      "evidence-locker-templates/AUDIT_REPORT_001.md",
+      "evidence-locker-templates/EXECUTION_QUEUE_001.md",
+      "evidence-locker-templates/LEGAL_OPTIONS_001.md",
+      "evidence-locker-templates/OPPORTUNITY_FIELD_001.md",
+      "evidence-locker-templates/REALITY_SNAPSHOT_001.md",
+      "evidence-locker-templates/RECONCILIATION_001.md",
+      "evidence-locker-templates/RESOURCE_MAP_001.md",
+      "evidence-locker-templates/REVENUE_PATHS_001.md",
+      "evidence-locker-templates/SLB_LEDGER_001.csv"
+    ],
+    "work_orders": [
+      "work-orders/FORENSIC-001.md"
+    ]
+  },
+  "principles": [
+    "No agent does another agent's job",
+    "No prediction in Wave 1",
+    "Every conclusion needs source + date accessed + quote",
+    "POTENTIAL ≠ AVAILABLE",
+    "Governor authorizes consequential actions - signed line in EXECUTION_QUEUE",
+    "Auditor favorite: CLAIM NOT ESTABLISHED",
+    "Public repo: templates + prompts only, never real financial evidence"
+  ],
+  "fixes_applied_from_review": [
+    "Fixed filenames: REALITY_SNAPSHOT_001.md etc (removed markdown artifact)",
+    "Added Wave 1 complete gate definition",
+    "Bounded hypothesis period placeholder [PERIOD TO BE SET] + exhausted evidence definition",
+    "Added GOVERNOR DECISION REQUIRED TODOs for compounding, rate-change, day-count, rounding in reconciliation",
+    "Flagged Debt Reset and rescheduling as UNVERIFIED LEADS requiring live source verification",
+    "Repaired Resource truncation + added basis requirement",
+    "Defined Revenue scoring: FIT*SPEED*EVIDENCE 1-10 scale with calc",
+    "Fixed Opportunity scoring: product rule FIT*VALUE*ACCESS*TIME*RISK with calc",
+    "Defined consequential vs non-consequential + authorization recording location",
+    "Defined Auditor integrity rubric with deduction rules"
+  ]
+}
