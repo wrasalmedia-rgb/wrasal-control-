@@ -1,0 +1,61 @@
+{
+  "evidence_id": "ENVIRONMENT-001",
+  "title": "The working environment is not necessarily the archive",
+  "recorded_on": "2026-10-07",
+  "recorded_by": "Arena external execution worker",
+  "attribution": "ENVIRONMENT",
+  "verification_state": "OBSERVED",
+  "observation_count": 3,
+  "statement": "Across three consecutive sessions the git directory was rolled back to an older commit while the working tree persisted intact. Repository continuity cannot be assumed from the presence of files.",
+  "why_this_is_recorded": "WRASAL-0015 established that WRASAL cannot substantiate its own durability claims about generated artifacts. This finding is the same failure shape applied to WRASAL's own development history. It is recorded as environmental evidence and deliberately NOT folded into WRASAL-0016's architecture, which must answer its epistemic question first. No work order is opened for it yet.",
+  "observations": [
+    {
+      "session": 1,
+      "observed_result": "data/ (gitignored) was destroyed between sessions, taking events.jsonl with 49 hash-chained records and the SVG whose bytes hashed to sha256:c48ba670. This was the first artifact WRASAL ever labelled ARCHIVED.",
+      "consequence": "Became the origin finding for WRASAL-0015.",
+      "result": "pass"
+    },
+    {
+      "session": 2,
+      "observed_result": ".git rolled back to commit bc21b1a (pre-WRASAL-0012) while the working tree retained all files from 0012 through 0015. `git add -A` therefore staged 41 already-published files as new, squashing four work orders into a single commit. The push was rejected as non-fast-forward.",
+      "consequence": "Recovered by re-anchoring to origin and committing only the delta. Remote history preserved; nothing force-pushed.",
+      "result": "pass"
+    },
+    {
+      "session": 3,
+      "observed_result": ".git rolled back to bc21b1a again; origin was 5 commits ahead with 0 local-only commits. Detected before staging, by comparing local HEAD against origin as the first action of the session.",
+      "consequence": "Re-anchored before any commit was attempted. No corrupted commit was ever created.",
+      "result": "pass"
+    }
+  ],
+  "root_cause": "UNKNOWN. The sandbox snapshot mechanism excludes certain paths and appears not to restore .git consistently with the working tree. WRASAL has not observed the mechanism directly and does not infer it.",
+  "failure_mode_prevented": {
+    "shape": "working tree survives + .git disappears + agent assumes repository continuity = false historical continuity",
+    "severity": "HIGH",
+    "detail": "An agent that runs `git add -A && git commit` without first comparing local HEAD to origin will silently collapse published history into a single new commit. The content may survive; the sequence, the attribution and the per-work-order evidence boundaries do not. For a system whose entire value is the integrity of its record, this is the most dangerous failure mode yet observed in the environment."
+  },
+  "operational_discipline": {
+    "status": "MANDATORY for every session, until a work order supersedes it",
+    "constitutional": false,
+    "note": "This is operational discipline, not a constitutional principle. It constrains how the work is done, not what the system may claim.",
+    "procedure": [
+      "1. INSPECT — `git log --oneline -1` before touching anything",
+      "2. COMPARE — `git fetch origin <branch>` and `git rev-list --left-right --count HEAD...origin/<branch>`",
+      "3. RE-ANCHOR — if local is behind with 0 local-only commits, `git reset --mixed origin/<branch>` (keeps the working tree)",
+      "4. STAGE DELTA — `git status --short` must show only the current session's changes before staging",
+      "5. COMMIT — only after the delta is confirmed to be the intended one",
+      "6. VERIFY REMOTE — confirm the push landed and history is linear"
+    ],
+    "never": [
+      "Never force-push to recover from this.",
+      "Never assume file presence implies commit presence.",
+      "Never run `git add -A` before step 4."
+    ]
+  },
+  "also_observed": {
+    "node_modules": "Root node_modules is excluded from snapshots and is wiped each session. `npm install` is required before the control-plane validator can run. Harmless, but it masks validator failures as module-resolution errors if not noticed.",
+    "running_processes": "Background servers do not survive between sessions and must be restarted."
+  },
+  "secrets_included": false,
+  "secrets_statement": "This record contains no credentials, tokens or secret-shaped values."
+}

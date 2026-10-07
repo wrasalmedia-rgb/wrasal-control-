@@ -4,15 +4,15 @@
   "record_authority": "WRASAL-0016",
   "recorded_on": "2026-10-07",
   "recorded_by": "Arena external execution worker",
-  "objective": "Determine what conditions must exist before WRASAL may legitimately assert DURABLE. This is not a mandate to build a storage system. The architecture must be derived from the claim, rather than the claim weakened until the existing architecture qualifies. WRASAL-0015 established that WRASAL cannot currently substantiate its own durability claims; this work order must answer what would make such a claim legitimate, and only then propose what to build.",
-  "success_condition": "A defensible answer exists to each open question recorded below, grounded in reasoning rather than assumption; the conditions under which an artifact claim may move from UNSUBSTANTIATED to SUBSTANTIATED are stated explicitly with the evidence each transition requires; and any proposed architecture is shown to follow from those conditions rather than preceding them. A conclusion that no available architecture can legitimately support DURABLE is an acceptable and complete outcome.",
+  "objective": "Determine what conditions must exist before WRASAL may legitimately assert DURABLE. This is not a mandate to build a storage system. THE PROHIBITION ABOVE ALL OTHERS: do not design the answer before determining what the claim requires. Work backwards \u2014 what would make DURABLE true, then what observations establish that, then what conditions permit those observations, then what architecture (if any) can satisfy them. Never forwards from the storage that happens to exist to a definition of DURABLE that it happens to satisfy. WRASAL-0015 established that WRASAL cannot currently substantiate its own durability claims; this work order must answer what would make such a claim legitimate, and only then propose what to build.",
+  "success_condition": "A defensible answer exists to each open question recorded below, grounded in reasoning rather than assumption; the conditions under which an artifact claim may move from UNSUBSTANTIATED to SUBSTANTIATED are stated explicitly with the evidence each transition requires; the four claim-types below are kept distinct throughout; and any proposed architecture is shown to follow from those conditions rather than preceding them. THE CONCLUSION MAY BE ARCHITECTURAL, CONDITIONAL, OR NULL. If the chain terminates in 'no defensible architecture, therefore DURABLE cannot be asserted', then removing or narrowing the claim is a VALID SUCCESS, not a failed work order.",
   "execution_status": "requested",
   "implementation_result": "unknown",
   "verification_result": "unknown",
   "canonical_acceptance": "pending",
   "references": {
-    "permission_to_exist": "WRASAL-0015 — the finding that DURABLE was inferred from the reference class and never measured",
-    "predecessor": "WRASAL-0015 — Archive Steward, custody over time",
+    "permission_to_exist": "WRASAL-0015 \u2014 the finding that DURABLE was inferred from the reference class and never measured",
+    "predecessor": "WRASAL-0015 \u2014 Archive Steward, custody over time",
     "predecessor_acceptance": "decisions/WRASAL-0014-ACCEPTANCE.md",
     "constitutional_principles": "decisions/CONSTITUTIONAL-PRINCIPLES.md",
     "governing_principle": "V. The claim determines the architecture, not the reverse",
@@ -22,7 +22,11 @@
     "branch": "arena/01a10c77-wrasal-control",
     "assumed_architecture": null,
     "successor_defined": null,
-    "canonical_acceptance_record": null
+    "canonical_acceptance_record": null,
+    "prohibition": "Do not design the answer before determining what the claim requires",
+    "reasoning_direction": "backwards from the claim: what would make DURABLE true -> what observations establish that -> what conditions permit those observations -> what architecture, if any, can satisfy them",
+    "forbidden_inversion": "storage exists -> therefore DURABLE must mean this",
+    "permitted_conclusions": "architectural | conditional | null"
   },
   "evidence": [
     {
@@ -48,13 +52,31 @@
       "source": "canonical ruling 2026-10-07",
       "observed_result": "Unanswered on purpose, to be encountered rather than pre-answered: What does durable mean? Durable against what? For how long? Under whose control? With what failure assumptions? How is survival demonstrated? How is restoration demonstrated? What happens when storage itself fails? Can durability be independently re-established? What evidence is sufficient to move UNSUBSTANTIATED to SUBSTANTIATED? And the dangerous one: does redundancy create durability, or merely increase the probability of survival?",
       "result": "unknown"
+    },
+    {
+      "id": "E-0016-04",
+      "type": "boundary",
+      "attribution": "WRASAL",
+      "source": "canonical ruling 2026-10-07",
+      "observed_result": "Four claims that must not be collapsed, and whose separation belongs to the investigation rather than to its answer: DURABILITY CLAIM is not SURVIVAL OBSERVATION is not RECOVERY CAPABILITY is not INDEFINITE PERSISTENCE. A system may demonstrate that bytes survived one failure without demonstrating indefinite persistence. Redundancy may demonstrate resilience under tested conditions without demonstrating durability in any universal sense. The central open question \u2014 does redundancy create durability or merely increase the probability of survival \u2014 turns entirely on holding these four apart.",
+      "result": "unknown"
+    },
+    {
+      "id": "E-0016-05",
+      "type": "environmental_finding",
+      "attribution": "ENVIRONMENT",
+      "source": "evidence/ENVIRONMENT-001.json",
+      "observed_result": "Three consecutive sessions observed the git directory rolled back to an older commit while the working tree persisted intact. This establishes that the working environment is not necessarily the archive. It is recorded as environmental evidence and is deliberately NOT folded into this work order's architecture \u2014 but a work order about what makes possession durable cannot pretend it did not happen.",
+      "result": "pass"
     }
   ],
   "canonical_state_impact": {
     "status": "none \u2014 this work order is requested and has not executed",
     "architecture_assumed": "none \u2014 deliberately. The next agent is given the claim to justify, not a design to implement",
     "successor": "deliberately undefined. WRASAL-0017 must not be specified until WRASAL-0016 reports what architecture it actually produces",
-    "wrasal_runtime_world_state": "none"
+    "wrasal_runtime_world_state": "none",
+    "execution": "not begun",
+    "permitted_conclusions": "architectural, conditional, or null \u2014 a null conclusion that DURABLE cannot be honestly asserted is a success"
   },
   "next_candidate": "Deliberately undefined. Do not define WRASAL-0017 until WRASAL-0016 has reported; the successor must follow from the architecture 0016 produces rather than being assumed in advance."
 }

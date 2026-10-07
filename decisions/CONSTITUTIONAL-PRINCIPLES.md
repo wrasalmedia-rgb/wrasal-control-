@@ -123,8 +123,48 @@ the evidence that gives WRASAL-0016 permission to exist.
 Accordingly WRASAL-0016 asks *what conditions must exist before WRASAL may
 legitimately assert `DURABLE`* — not *how do we build storage*.
 
-*Enforced by:* nothing yet. This principle governs how work orders are
-scoped, and is held by the control layer rather than by a test.
+Accordingly WRASAL-0016 may legitimately conclude that no defensible
+architecture supports the claim, and that `DURABLE` must be narrowed or
+removed. **Removing a claim reality never authorized is a success, not a
+failed work order.**
+
+*Enforcement:* **unenforced by design.**
+
+This is not a gap awaiting a test. Not every constitutional rule should become
+executable code — some rules constrain the *system*, others constrain *the way
+the system is developed*, and Principle V is of the second kind. Attempting to
+make every principle testable would eventually create the illusion that
+anything not testable is not constitutional. The explicit marker
+`unenforced by design` is itself evidence, and is to be preserved rather than
+resolved.
+
+---
+
+---
+
+## Operational discipline — explicitly NOT constitutional
+
+Recorded here only because this is the document a new agent reads first.
+These constrain how the work is done, not what the system may claim, and they
+are expected to be superseded rather than preserved.
+
+**The working environment is not necessarily the archive.**
+`evidence/ENVIRONMENT-001.json` records three consecutive sessions in which
+the git directory was rolled back while the working tree persisted intact.
+File presence does not imply commit presence.
+
+Before any commit, every session:
+
+```
+inspect → compare with origin → re-anchor → stage delta → commit → verify remote
+```
+
+Never force-push to recover from this. Never run `git add -A` before the
+delta has been confirmed. Root `node_modules` is wiped each session and must
+be reinstalled before the control-plane validator will run.
+
+No work order is open for this. WRASAL-0016 must finish its epistemic
+question first.
 
 ---
 
