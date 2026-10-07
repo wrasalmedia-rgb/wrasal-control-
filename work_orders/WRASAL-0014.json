@@ -9,7 +9,7 @@
   "execution_status": "passed",
   "implementation_result": "pass",
   "verification_result": "pass",
-  "canonical_acceptance": "pending",
+  "canonical_acceptance": "accepted",
   "references": {
     "origin_finding": "WRASAL-0013 established that the documented provider output URL is presigned and expiring",
     "predecessor_acceptance": "decisions/WRASAL-0013-ACCEPTANCE.md",
@@ -23,7 +23,7 @@
     "branch": "arena/01a10c77-wrasal-control",
     "archival_downloader": null,
     "new_provider_added": null,
-    "canonical_acceptance_record": null
+    "canonical_acceptance_record": "decisions/WRASAL-0014-ACCEPTANCE.md"
   },
   "evidence": [
     {
@@ -119,7 +119,7 @@
     "ui_surface": "Identity screen gains a provider-bindings table with DECLARED/VERIFIED/REVOKED status; Provenance screen gains an artefact-custody panel that banners an expiring reference as not-possessed",
     "heygen_status": "unchanged \u2014 still an adapter, still DOCUMENTED_NOT_OBSERVED, still no credential and no verified binding",
     "wrasal_runtime_world_state": "none",
-    "canonical_acceptance_promotion": "WRASAL-0013 promoted to accepted via decisions/WRASAL-0013-ACCEPTANCE.md"
+    "canonical_acceptance_promotion": "WRASAL-0013 promoted to accepted via decisions/WRASAL-0013-ACCEPTANCE.md; WRASAL-0014 itself accepted 2026-10-07 via decisions/WRASAL-0014-ACCEPTANCE.md, and deliberately NOT amended in light of the infrastructure weakness WRASAL-0015 later exposed"
   },
   "next_candidate": "WRASAL-0015 \u2014 artifact retention: given that the epistemic model is now correct, decide and implement what WRASAL actually does about expiring references (retrieve-and-archive policy, retention windows, re-verification of ARCHIVED artefacts against their hashes)."
 }

@@ -1,0 +1,60 @@
+{
+  "work_order_id": "WRASAL-0016",
+  "project": "WRAYVE",
+  "record_authority": "WRASAL-0016",
+  "recorded_on": "2026-10-07",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Determine what conditions must exist before WRASAL may legitimately assert DURABLE. This is not a mandate to build a storage system. The architecture must be derived from the claim, rather than the claim weakened until the existing architecture qualifies. WRASAL-0015 established that WRASAL cannot currently substantiate its own durability claims; this work order must answer what would make such a claim legitimate, and only then propose what to build.",
+  "success_condition": "A defensible answer exists to each open question recorded below, grounded in reasoning rather than assumption; the conditions under which an artifact claim may move from UNSUBSTANTIATED to SUBSTANTIATED are stated explicitly with the evidence each transition requires; and any proposed architecture is shown to follow from those conditions rather than preceding them. A conclusion that no available architecture can legitimately support DURABLE is an acceptable and complete outcome.",
+  "execution_status": "requested",
+  "implementation_result": "unknown",
+  "verification_result": "unknown",
+  "canonical_acceptance": "pending",
+  "references": {
+    "permission_to_exist": "WRASAL-0015 — the finding that DURABLE was inferred from the reference class and never measured",
+    "predecessor": "WRASAL-0015 — Archive Steward, custody over time",
+    "predecessor_acceptance": "decisions/WRASAL-0014-ACCEPTANCE.md",
+    "constitutional_principles": "decisions/CONSTITUTIONAL-PRINCIPLES.md",
+    "governing_principle": "V. The claim determines the architecture, not the reverse",
+    "custody_module": "apps/wrayve/src/core/custody.js",
+    "artifact_module": "apps/wrayve/src/core/artifact.js",
+    "open_question_central": "Does redundancy create durability, or merely increase the probability of survival?",
+    "branch": "arena/01a10c77-wrasal-control",
+    "assumed_architecture": null,
+    "successor_defined": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "E-0016-01",
+      "type": "inherited_finding",
+      "attribution": "WRASAL",
+      "source": "work_orders/WRASAL-0015.json",
+      "observed_result": "WRASAL cannot currently substantiate its own claim of durability. DURABILITY.DURABLE is asserted from a static lookup on the reference class and has never been measured. The claim was left standing and reported as UNSUBSTANTIATED_DURABILITY_CLAIM rather than downgraded, specifically so that this work order would have evidence giving it permission to exist.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0016-02",
+      "type": "inherited_finding",
+      "attribution": "ENVIRONMENT",
+      "source": "sandbox reset, recorded as WRASAL-0015 evidence E-0015-01",
+      "observed_result": "The first artifact WRASAL ever labelled ARCHIVED was destroyed by an environment reset, together with its hash-chained ledger, because storage was an untracked local directory with no retention guarantee. The failure mode is demonstrated, not hypothesised.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0016-03",
+      "type": "open_question",
+      "attribution": "WRASAL",
+      "source": "canonical ruling 2026-10-07",
+      "observed_result": "Unanswered on purpose, to be encountered rather than pre-answered: What does durable mean? Durable against what? For how long? Under whose control? With what failure assumptions? How is survival demonstrated? How is restoration demonstrated? What happens when storage itself fails? Can durability be independently re-established? What evidence is sufficient to move UNSUBSTANTIATED to SUBSTANTIATED? And the dangerous one: does redundancy create durability, or merely increase the probability of survival?",
+      "result": "unknown"
+    }
+  ],
+  "canonical_state_impact": {
+    "status": "none \u2014 this work order is requested and has not executed",
+    "architecture_assumed": "none \u2014 deliberately. The next agent is given the claim to justify, not a design to implement",
+    "successor": "deliberately undefined. WRASAL-0017 must not be specified until WRASAL-0016 reports what architecture it actually produces",
+    "wrasal_runtime_world_state": "none"
+  },
+  "next_candidate": "Deliberately undefined. Do not define WRASAL-0017 until WRASAL-0016 has reported; the successor must follow from the architecture 0016 produces rather than being assumed in advance."
+}
