@@ -52,6 +52,13 @@ export function buildRoutes({ service, config }) {
     route('POST', /^\/api\/provider-bindings\/([^/]+)\/revoke$/, ([id], body) =>
       service.revokeProviderBinding(id, body)),
 
+    route('GET', /^\/api\/custody$/, () => service.custodyReport()),
+
+    route('GET', /^\/api\/custody\/([^/]+)$/, ([id]) => service.custodyFor(id)),
+
+    route('POST', /^\/api\/custody\/([^/]+)\/observe$/, ([id], body) =>
+      service.observeCustody(id, body)),
+
     route('GET', /^\/api\/provenance\/([^/]+)$/, ([id]) => service.provenanceChain(id)),
 
     route('POST', /^\/api\/freebuff\/([^/]+)$/, ([id], body) => service.createFreebuffHandoff(id, body)),
@@ -82,6 +89,7 @@ export function fullState(service, config) {
     generation_events: service.listGenerationEvents(),
     handoffs: service.listHandoffs(),
     provider_bindings: service.listProviderBindings(),
+    custody: service.custodyReport(),
     events: service.events({ limit: 400 }),
     integrity: service.integrity(),
     providers: service.registry.describe(),

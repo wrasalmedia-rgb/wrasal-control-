@@ -19,6 +19,7 @@ export function project(records) {
     media: new Map(),
     handoffs: new Map(),
     bindings: new Map(),
+    custodyObservations: new Map(),
   };
 
   for (const record of records) {
@@ -92,6 +93,14 @@ export function project(records) {
             revocation_reason: p.reason ?? null,
           });
         }
+        break;
+      }
+
+      case EVENT.CUSTODY_OBSERVED: {
+        // Append-only by construction: observations accumulate beside the
+        // historical record and never overwrite it or each other.
+        const existing = state.custodyObservations.get(p.generation_event_id) ?? [];
+        state.custodyObservations.set(p.generation_event_id, [...existing, { ...p.observation }]);
         break;
       }
 

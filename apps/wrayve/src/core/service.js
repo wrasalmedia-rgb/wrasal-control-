@@ -3,6 +3,8 @@ import { project } from './projection.js';
 import { authorityCheck, policySummary } from './authority.js';
 import { buildFreebuffPayload, deliverToMockFreebuff } from './freebuff.js';
 import { buildArtifactRecord, REFERENCE_CLASS } from './artifact.js';
+import { ArchiveSteward } from './archive-steward.js';
+import { foldCustody, substantiationGap, assertNoRetroactiveRewrite, CUSTODY_STATE } from './custody.js';
 import {
   AUTHORITY_STATUS,
   BINDING_STATUS,
@@ -49,6 +51,10 @@ export class WrayveService {
     this.registry = registry;
     this.mediaStore = mediaStore;
     this.clock = clock;
+    // WRASAL-0015. The Steward is given a read path and a clock. It is given
+    // no fetch implementation, no credential and no service reference, so it
+    // cannot reach a provider or mutate the ledger.
+    this.steward = new ArchiveSteward({ mediaStore, clock });
     this.state = project(this.log.all());
     this.counters = this.#rebuildCounters();
   }
@@ -287,6 +293,74 @@ export class WrayveService {
 
   listScenes() {
     return [...this.state.scenes.values()];
+  }
+
+  // --------------------------------------------- WRASAL-0015 Archive custody
+
+  /**
+   * Take one custody observation of a generation event's artefact and append
+   * it to the ledger.
+   *
+   * The historical record is NOT touched. The observation is appended beside
+   * it. Past informs; future cannot rewrite.
+   */
+  observeCustody(generationEventId, { actor = 'archive.steward' } = {}) {
+    const generationEvent = this.getGenerationEvent(generationEventId);
+    const artifact = generationEvent.artifact ?? null;
+
+    const before = artifact ? { ...artifact } : null;
+    const observation = this.steward.observe(artifact, { actor });
+    // Belt and braces: prove the Steward did not mutate what it was shown.
+    if (before) assertNoRetroactiveRewrite(before, generationEvent.artifact, { generation_event_id: generationEventId });
+
+    this.#emit(
+      EVENT.CUSTODY_OBSERVED,
+      { generation_event_id: generationEventId, observation },
+      { actor, subject: generationEventId },
+    );
+    return this.custodyFor(generationEventId);
+  }
+
+  /** Fold the immutable claim and every appended observation into current state. */
+  custodyFor(generationEventId) {
+    const generationEvent = this.getGenerationEvent(generationEventId);
+    const observations = this.state.custodyObservations.get(generationEventId) ?? [];
+    const folded = foldCustody(generationEvent.artifact, observations, {
+      event_time: generationEvent.completed_at ?? generationEvent.requested_at,
+      evidence_time: generationEvent.created_at ?? generationEvent.completed_at ?? null,
+    });
+    return {
+      generation_event_id: generationEventId,
+      ...folded,
+      substantiation_gaps: substantiationGap(generationEvent.artifact, folded),
+    };
+  }
+
+  /**
+   * System-wide custody report. This is the WRASAL-0015 deliverable: it states
+   * plainly how much of what WRASAL claims it can currently substantiate.
+   */
+  custodyReport() {
+    const events = this.listGenerationEvents();
+    const entries = events.map((event) => this.custodyFor(event.id));
+    const gaps = entries.flatMap((entry) => entry.substantiation_gaps);
+    const substantiated = entries.filter((e) => e.current_epistemic_state === CUSTODY_STATE.INTEGRITY_OK).length;
+    const contradicted = entries.filter((e) => e.current_epistemic_state === CUSTODY_STATE.INTEGRITY_FAILED).length;
+
+    return {
+      generated_at: this.clock(),
+      artifact_count: entries.length,
+      substantiated,
+      unverified: entries.length - substantiated - contradicted,
+      contradicted,
+      never_observed: entries.filter((e) => e.observation_count === 0).length,
+      substantiation_gap_count: gaps.length,
+      gap_codes: [...new Set(gaps.map((gap) => gap.code))],
+      statement: gaps.length === 0 && entries.length > 0
+        ? 'Every artefact claim WRASAL currently makes has been substantiated by observation.'
+        : 'WRASAL cannot currently substantiate every claim it has recorded. The gaps below are reported, not repaired.',
+      entries,
+    };
   }
 
   // ------------------------------------------- WRASAL-0014 ProviderBinding
@@ -946,6 +1020,9 @@ export class WrayveService {
       events,
       media,
       handoff,
+      // WRASAL-0015: the chain now carries what WRASAL can currently prove
+      // about the artefact, not only what it once recorded.
+      custody: this.custodyFor(generationEventId),
     };
   }
 

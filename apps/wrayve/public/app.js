@@ -503,6 +503,51 @@ function artifactCustodyPanel(event) {
     ${artifact.missing_for_next_level?.length ? h`<p class="note"><strong>To rise one rung on the evidence ladder, WRASAL still needs:</strong> ${esc(artifact.missing_for_next_level.join(', '))}</p>` : ''}`;
 }
 
+/**
+ * WRASAL-0015. Three things, kept visually apart on purpose:
+ * what was claimed, what was later observed, and what can be known now.
+ */
+function custodyObservationPanel(custody, event) {
+  if (!custody) return '';
+  const state = custody.current_epistemic_state;
+  const tone = state === 'INTEGRITY_OK' ? 'ok' : state === 'INTEGRITY_FAILED' ? 'deny' : 'gold';
+  const clocks = custody.clocks ?? {};
+  return h`
+    <div class="spacer"></div>
+    <p class="section-title">Custody over time — what can WRASAL still prove?</p>
+    ${state === 'INTEGRITY_FAILED' ? '<div class="banner deny">INTEGRITY CONTRADICTED — THE BYTES DIFFER FROM THOSE RECORDED</div>' : ''}
+    <div class="grid-3">
+      <dl class="kv"><dt>Current state</dt><dd><span class="state ${tone}">${esc(state)}</span></dd></dl>
+      <dl class="kv"><dt>Last result</dt><dd class="mono">${esc(custody.last_result)}</dd></dl>
+      <dl class="kv"><dt>Observations</dt><dd class="mono">${esc(custody.observation_count)}</dd></dl>
+      <dl class="kv"><dt>Event time</dt><dd class="mono small">${esc(shortTime(clocks.event_time))}</dd></dl>
+      <dl class="kv"><dt>Evidence time</dt><dd class="mono small">${esc(shortTime(clocks.evidence_time))}</dd></dl>
+      <dl class="kv"><dt>Custody time</dt><dd class="mono small">${esc(shortTime(clocks.custody_time) || 'NEVER SUBSTANTIATED')}</dd></dl>
+    </div>
+    ${custody.state_note ? h`<p class="note">${esc(custody.state_note)}</p>` : ''}
+    ${custody.substantiation_gaps?.length ? h`
+      <div class="spacer"></div>
+      <p class="note"><strong>WRASAL cannot currently substantiate:</strong></p>
+      ${custody.substantiation_gaps.map((gap) => h`<p class="note mono small">${esc(gap.code)} — ${esc(gap.detail)}</p>`).join('')}` : ''}
+    ${custody.observations?.length ? h`
+      <div class="spacer"></div>
+      <table class="data">
+        <thead><tr><th>OBSERVED AT</th><th>METHOD</th><th>RESULT</th><th>NOTE</th></tr></thead>
+        <tbody>${custody.observations.map((observation) => h`<tr>
+          <td class="mono small">${esc(shortTime(observation.observed_at))}</td>
+          <td class="mono small">${esc(observation.method)}</td>
+          <td><span class="state ${observation.result === 'PRESENT_HASH_MATCH' ? 'ok' : observation.result === 'PRESENT_HASH_MISMATCH' ? 'deny' : 'gold'}">${esc(observation.result)}</span></td>
+          <td class="small">${esc(observation.note ?? '')}</td>
+        </tr>`).join('')}</tbody>
+      </table>` : '<p class="note">No custody observation has ever been taken of this artefact. Its durability claim is therefore unsubstantiated.</p>'}
+    <div class="spacer"></div>
+    <button class="act" data-observe-custody="${esc(event.id)}">OBSERVE CUSTODY NOW</button>`;
+}
+
+function shortTime(value) {
+  return value ? String(value).slice(0, 19).replace('T', ' ') : '';
+}
+
 function chainPlaceholder(id) {
   queueMicrotask(() => loadChain(id));
   return h`<div class="empty">LOADING CHAIN ${esc(id)}</div>`;
@@ -552,6 +597,7 @@ function renderChain(chain) {
           <dl class="kv"><dt>Status</dt><dd><span class="state ${stateClass(event.execution_status)}">${esc(event.execution_status)}</span></dd></dl>
         </div>
         ${artifactCustodyPanel(event)}
+        ${custodyObservationPanel(chain.custody, event)}
         ${event.unresolved_contract_fields?.length ? h`
           <p class="note"><strong>Not returned by the provider — recorded as UNKNOWN/null rather than inferred:</strong><br />${esc(event.unresolved_contract_fields.join(', '))}</p>` : ''}
         ${event.carried_but_unexecuted?.length ? h`
@@ -784,6 +830,13 @@ function bind() {
   all('[data-handoff]', (button) => button.addEventListener('click', () => guard(async () => {
     await api('POST', `/api/freebuff/${button.dataset.handoff}`, {});
     toast('FREEBUFF_HANDOFF_CREATED — SIMULATED, not certified');
+    await refresh();
+  })));
+
+  all('[data-observe-custody]', (button) => button.addEventListener('click', () => guard(async () => {
+    const custody = await api('POST', `/api/custody/${button.dataset.observeCustody}/observe`, {});
+    toast(`CUSTODY_OBSERVED — ${custody.last_result} → ${custody.current_epistemic_state}`,
+      custody.current_epistemic_state === 'INTEGRITY_FAILED');
     await refresh();
   })));
 }

@@ -1,0 +1,123 @@
+{
+  "work_order_id": "WRASAL-0015",
+  "project": "WRAYVE",
+  "record_authority": "WRASAL-0015",
+  "recorded_on": "2026-10-07",
+  "recorded_by": "Arena external execution worker",
+  "objective": "Introduce ARCHIVE STEWARD: a narrowly-scoped custodian of time whose entire mandate is observe, append, fold, report. It must measure whether WRASAL can still substantiate its own custody claims, separate the immutable historical proposition from the mutable current epistemic state, and keep event time, evidence time and custody time as three distinct clocks. It must not fetch remote references, build durable storage, repair evidence, or rewrite history.",
+  "success_condition": "Custody observations are append-only and provably cannot alter a historical record; the five observation results are modelled with ABSENT and INACCESSIBLE folding to INTEGRITY_UNVERIFIED rather than to falsehood; a presigned provider reference remains NOT_ATTEMPTED because the Steward is structurally incapable of fetching it; the three clocks are never collapsed and custody time advances only on substantiation; and the system reports, without repairing, that it cannot substantiate durability claims it previously recorded.",
+  "execution_status": "passed",
+  "implementation_result": "pass",
+  "verification_result": "pass",
+  "canonical_acceptance": "pending",
+  "references": {
+    "origin_finding": "The sandbox reset destroyed the first ARCHIVED artifact WRASAL ever minted, together with its 49-record ledger, while the frozen possession statement still read in the present tense",
+    "predecessor": "WRASAL-0014 — Durable Output & Provider Evidence",
+    "custody_module": "apps/wrayve/src/core/custody.js",
+    "steward_module": "apps/wrayve/src/core/archive-steward.js",
+    "service_module": "apps/wrayve/src/core/service.js",
+    "test_suite": "apps/wrayve/tests/custody.test.mjs",
+    "constitutional_rule": "Past informs. Future cannot rewrite.",
+    "branch": "arena/01a10c77-wrasal-control",
+    "durable_storage_built": null,
+    "remote_fetch_implemented": null,
+    "historical_records_modified": null,
+    "canonical_acceptance_record": null
+  },
+  "evidence": [
+    {
+      "id": "E-0015-01",
+      "type": "environmental_finding",
+      "attribution": "ENVIRONMENT",
+      "source": "sandbox reset between sessions",
+      "observed_result": "data/ is gitignored and nothing in it was ever tracked by git. The sandbox reset destroyed events.jsonl (49 hash-chained records) and the SVG whose bytes hashed to sha256:c48ba670. The first artifact WRASAL ever labelled ARCHIVED did not survive the week — not because a provider withdrew a reference, but because WRASAL's own storage was ephemeral and nothing re-checked. This is the empirical origin of the work order.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-02",
+      "type": "finding",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/artifact.js",
+      "observed_result": "DURABILITY.DURABLE was never measured. It is asserted from a static lookup on the reference class, so DURABLE has meant 'this kind of thing is usually durable' — a documented property presented as an observed one, inside the very module built to prevent that error. WRASAL-0015 reports this gap and deliberately does NOT redefine DURABLE to make the implementation pass.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-03",
+      "type": "model",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/custody.js",
+      "observed_result": "Five observation results modelled: PRESENT_HASH_MATCH, PRESENT_HASH_MISMATCH, ABSENT, INACCESSIBLE, NOT_ATTEMPTED. Only PRESENT_HASH_MISMATCH is dispositive. ABSENT, INACCESSIBLE and NOT_ATTEMPTED all fold to INTEGRITY_UNVERIFIED, which is asserted by test never to mean falsehood. Each result additionally names the inference it does NOT license — ABSENT explicitly does not establish that the artefact ceased to exist.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-04",
+      "type": "boundary",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/archive-steward.js",
+      "observed_result": "The Steward takes no fetch implementation, no credential and no service reference, and its source is asserted by test to contain no reference to fetch, node:http, node:https, node:net, node:tls or XMLHttpRequest. It exposes exactly one verb, observe(). A presigned reference therefore returns NOT_ATTEMPTED with reason REMOTE_REFERENCE_FETCH_FORBIDDEN and bytes_present null — presence is not guessed for a reference never examined.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-05",
+      "type": "invariant",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/tests/custody.test.mjs",
+      "observed_result": "Past informs, future cannot rewrite. The Steward returns an observation and never persists it; the service appends it beside the record. After deleting the bytes and observing twice, the serialized GenerationEvent is byte-identical to its original and the hash chain remains intact. assertNoRetroactiveRewrite() throws RETROACTIVE_REWRITE on any attempted field change.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-06",
+      "type": "model",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/custody.js",
+      "observed_result": "Three clocks kept distinct: event time (when it happened), evidence time (when WRASAL recorded it) and custody time (when WRASAL could last substantiate possession). Custody time advances only on PRESENT_HASH_MATCH — a failed look does not refresh it, asserted by test. Verified live: after the bytes were deleted, last_observed_at advanced while custody_time stayed frozen at the moment of last substantiation.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-07",
+      "type": "live_verification",
+      "attribution": "WRASAL",
+      "source": "http://127.0.0.1:4173 custody API",
+      "observed_result": "A fresh ARCHIVED claim with zero observations reports INTEGRITY_UNVERIFIED, custody_time null, and gaps UNSUBSTANTIATED_POSSESSION_CLAIM + UNSUBSTANTIATED_DURABILITY_CLAIM. After observation: PRESENT_HASH_MATCH, INTEGRITY_OK, no gaps. After deleting the bytes: ABSENT, INTEGRITY_UNVERIFIED, ever_substantiated still true, historical statement reproduced verbatim, ledger intact at length 16.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-08",
+      "type": "report",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve/src/core/service.js",
+      "observed_result": "custodyReport() states plainly how much WRASAL can substantiate, counting substantiated, unverified, contradicted and never_observed artefacts with their gap codes. Its statement switches to 'WRASAL cannot currently substantiate every claim it has recorded. The gaps below are reported, not repaired.' Reporting is the deliverable; repair is explicitly out of scope.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-09",
+      "type": "test",
+      "attribution": "WRASAL",
+      "source": "apps/wrayve",
+      "observed_result": "node --test over the suite: 67 tests, 67 pass, 0 fail, up from 56. The §28 architecture regression remains green; custody.js and archive-steward.js name no provider.",
+      "result": "pass"
+    },
+    {
+      "id": "E-0015-10",
+      "type": "scope_discipline",
+      "attribution": "WRASAL",
+      "source": "work order constraints",
+      "observed_result": "No durable storage was built. No remote reference was fetched. No provider was contacted, selected or bound. No historical record was altered or repaired. No DOCUMENTED claim was promoted to OBSERVED. DURABLE was not redefined to make the current implementation pass. The Steward measures; it does not fix.",
+      "result": "pass"
+    }
+  ],
+  "canonical_state_impact": {
+    "temporal_model": "new \u2014 three clocks (event time, evidence time, custody time) are modelled as distinct and asserted by test never to be collapsed; custody time advances only on substantiation",
+    "custody_model": "new \u2014 CustodyObservation is an append-only entity folded at read time into a current epistemic state of INTEGRITY_OK, INTEGRITY_UNVERIFIED or INTEGRITY_FAILED",
+    "epistemic_rule_enforced": "INTEGRITY_UNVERIFIED is not falsehood; absence of substantiation is reported as absence of substantiation, preserving the constitutional rule that uncertainty may remain uncertainty",
+    "immutability": "strengthened \u2014 the historical proposition is reproduced verbatim beside later observations, and the ledger can now contain claims later discovered to be unsubstantiable without becoming dishonest",
+    "headline_finding": "WRASAL currently cannot substantiate its own claim of durability; DURABLE was inferred from the reference class and never measured. Reported, not repaired.",
+    "wrayve_domain_model": "otherwise unchanged \u2014 Identity, IdentitySnapshot, LikenessPolicy, SceneSpec, AuthorityCheck, Approval, ExecutionRequest, GenerationEvent, ProviderBinding and the adapter interface were not redesigned",
+    "event_vocabulary_added": "CUSTODY_OBSERVED",
+    "ui_surface": "Provenance screen gains a custody panel showing the three clocks, the observation history, the current epistemic state and any substantiation gaps, with an OBSERVE CUSTODY NOW action",
+    "heygen_status": "unchanged \u2014 still an adapter, still DOCUMENTED_NOT_OBSERVED, still never contacted",
+    "wrasal_runtime_world_state": "none",
+    "canonical_acceptance_promotion": "none \u2014 WRASAL-0014 remains pending canonical acceptance"
+  },
+  "next_candidate": "WRASAL-0016 — Archive Infrastructure: WRASAL-0015 is the evidence that gives 0016 permission to exist. Answer the engineering question it exposed — what storage architecture is sufficient for WRASAL to legitimately make a durability claim — and only then allow ARCHIVED to mean what the word implies."
+}

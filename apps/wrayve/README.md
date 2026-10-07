@@ -247,3 +247,75 @@ unavailable.
 
 No archival downloader. Modelling the epistemic state correctly comes first;
 deciding what WRASAL *does* about expiring references is WRASAL-0015.
+
+## Custody over time (WRASAL-0015)
+
+WRASAL-0014 modelled what WRASAL possesses at the instant a record is written.
+It did not model what happens afterwards. The environment then demonstrated
+the gap by destroying the first artefact WRASAL ever called `ARCHIVED` — whose
+frozen statement still read, in the present tense, *"WRASAL durably holds the
+artefact bytes."*
+
+**The constitutional rule:**
+
+> **Past informs. Future cannot rewrite.**
+
+A later observation never falsifies an earlier record. It is appended beside
+it. What decays is not the claim but its *verifiability* — so the immutable
+historical proposition and the mutable current state are two separate objects,
+folded only at read time.
+
+### Three clocks, never collapsed
+
+| Clock | Question |
+| --- | --- |
+| **Event time** | When did the thing happen? |
+| **Evidence time** | When did WRASAL observe or record it? |
+| **Custody time** | When could WRASAL last substantiate possession/integrity? |
+
+Custody time advances **only** on substantiation. Looking and failing does not
+refresh it.
+
+### Observation results
+
+| Result | Folds to | Dispositive? |
+| --- | --- | --- |
+| `PRESENT_HASH_MATCH` | `INTEGRITY_OK` | establishes integrity, **not** authenticity |
+| `PRESENT_HASH_MISMATCH` | `INTEGRITY_FAILED` | **yes** — the only positive finding of corruption |
+| `ABSENT` | `INTEGRITY_UNVERIFIED` | no — does **not** establish the artefact ceased to exist |
+| `INACCESSIBLE` | `INTEGRITY_UNVERIFIED` | no |
+| `NOT_ATTEMPTED` | `INTEGRITY_UNVERIFIED` | no — establishes nothing whatsoever |
+
+> `INTEGRITY_UNVERIFIED` **does not mean false.** It means WRASAL cannot
+> presently substantiate the claim. Uncertainty may remain uncertainty.
+
+Artifact *existence* and artifact *accessibility* are different facts. A hash
+surviving does not prove the bytes are still possessed.
+
+### ARCHIVE STEWARD
+
+Its constitutional role is narrow: it protects the distinction between what
+WRASAL **once** possessed, what WRASAL **currently** possesses, and what
+WRASAL **can currently prove**. Its whole mandate is `observe → append → fold
+→ report`.
+
+It may read bytes from storage WRASAL already controls. It may **not** fetch a
+provider URL, refresh a presigned reference, poll provider storage, or
+establish provider liveness — and is structurally incapable of doing so: the
+module takes no fetch implementation, imports no network module, and is never
+handed a credential. A remote reference therefore stays `NOT_ATTEMPTED`
+forever. That is not a useless state. It is an honest one.
+
+It also never persists anything. It returns an observation; the service
+appends it. The Steward cannot rewrite history even by accident.
+
+### The finding this work order exists to report
+
+> **WRASAL currently cannot substantiate its own claim of durability.**
+
+`DURABLE` was inferred from the reference class and never measured. That is
+reported as `UNSUBSTANTIATED_DURABILITY_CLAIM` and **deliberately not
+repaired** — `DURABLE` was not redefined to make the implementation pass. If
+the implementation is not durable, the system is forced to admit it.
+
+Making `ARCHIVED` worthy of the word is **WRASAL-0016**.
