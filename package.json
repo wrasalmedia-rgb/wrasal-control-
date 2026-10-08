@@ -5,9 +5,12 @@
   "description": "Repository-pinned validation tooling for WRASAL portfolio-control records.",
   "type": "module",
   "scripts": {
+    "build-mode": "node scripts/build-mode.mjs",
+    "validate:build-mode": "node scripts/build-mode.mjs validate --file builds/BUILD-001-TEST.json",
+    "test:build-mode": "node tests/build-mode.test.mjs",
     "validate:control-plane": "node scripts/validate-control-plane.mjs",
     "test:control-plane-validator": "node tests/control-plane-validator.test.mjs",
-    "test": "npm run validate:control-plane && npm run test:control-plane-validator"
+    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run validate:build-mode && npm run test:build-mode"
   },
   "dependencies": {
     "js-yaml": "4.3.2"

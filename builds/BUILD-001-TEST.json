@@ -1,0 +1,169 @@
+{
+  "schema_version": "wrasal-build-mode-v1",
+  "build": {
+    "id": "BUILD-001-TEST",
+    "target": "Create a minimal artifact demonstrating the Build Mode loop itself.",
+    "state": "DECIDED",
+    "created_at": "2026-10-08T17:46:14.241Z"
+  },
+  "build_spec": {
+    "id": "BUILD-001-TEST-SPEC",
+    "build_id": "BUILD-001-TEST",
+    "summary": "Record one complete file-backed Build Mode loop for the stated target.",
+    "acceptance_criteria": "A Build Target links to a Build Spec, Artifact, Test, classified Evidence, Decision, and ordered Build Events."
+  },
+  "artifact": {
+    "id": "BUILD-001-TEST-ARTIFACT",
+    "build_id": "BUILD-001-TEST",
+    "build_spec_id": "BUILD-001-TEST-SPEC",
+    "path": "artifacts/BUILD-001-TEST.md",
+    "description": "Minimal readable artifact that demonstrates each stage of the Build Mode loop."
+  },
+  "test": {
+    "id": "BUILD-001-TEST-TEST",
+    "build_id": "BUILD-001-TEST",
+    "artifact_id": "BUILD-001-TEST-ARTIFACT",
+    "command": "node scripts/build-mode.mjs validate --file builds/BUILD-001-TEST.json",
+    "result": "PASS",
+    "exit_code": 0,
+    "output": "PASS BUILD-001-TEST validation (TESTING)\n",
+    "started_at": "2026-10-08T17:46:14.437Z",
+    "completed_at": "2026-10-08T17:46:14.480Z"
+  },
+  "evidence": {
+    "id": "BUILD-001-TEST-EVIDENCE",
+    "build_id": "BUILD-001-TEST",
+    "test_id": "BUILD-001-TEST-TEST",
+    "evidence_class": "OBSERVED",
+    "claim": "The completed test command observed a valid BUILD-001-TEST record through its TESTING stage.",
+    "source": "Captured output from the BUILD-001-TEST Test command.",
+    "route": "REVIEWABLE",
+    "recorded_at": "2026-10-08T17:46:14.520Z"
+  },
+  "decision": {
+    "id": "BUILD-001-TEST-DECISION",
+    "build_id": "BUILD-001-TEST",
+    "state": "SHIP",
+    "rationale": "The passing Test and OBSERVED evidence support shipping this minimal test build.",
+    "evidence_id": "BUILD-001-TEST-EVIDENCE",
+    "established_evidence_id": "BUILD-001-TEST-EVIDENCE",
+    "recorded_at": "2026-10-08T17:46:14.558Z"
+  },
+  "deferred_capabilities": [
+    {
+      "id": "DEFER-001-VISUAL-POLISH",
+      "description": "Visual interface polish",
+      "reason": "Not required for the core Build Mode loop.",
+      "disposition": "DEFERRED",
+      "recorded_at": "2026-10-08T17:46:14.282Z"
+    },
+    {
+      "id": "DEFER-002-EXPANDED-ARCHITECTURE",
+      "description": "Multi-build orchestration and expanded architecture",
+      "reason": "Not required for the first end-to-end test build.",
+      "disposition": "DEFERRED",
+      "recorded_at": "2026-10-08T17:46:14.321Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "BUILD-001-TEST-EVENT-001",
+      "sequence": 1,
+      "at": "2026-10-08T17:46:14.241Z",
+      "type": "BUILD_DEFINED",
+      "from_state": null,
+      "to_state": "DRAFT",
+      "object_type": "Build",
+      "object_id": "BUILD-001-TEST",
+      "detail": "Build target defined."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-002",
+      "sequence": 2,
+      "at": "2026-10-08T17:46:14.283Z",
+      "type": "CAPABILITY_DEFERRED",
+      "from_state": "DRAFT",
+      "to_state": "DRAFT",
+      "object_type": "Deferred Capability",
+      "object_id": "DEFER-001-VISUAL-POLISH",
+      "detail": "Non-core capability recorded as DEFERRED rather than implemented."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-003",
+      "sequence": 3,
+      "at": "2026-10-08T17:46:14.321Z",
+      "type": "CAPABILITY_DEFERRED",
+      "from_state": "DRAFT",
+      "to_state": "DRAFT",
+      "object_type": "Deferred Capability",
+      "object_id": "DEFER-002-EXPANDED-ARCHITECTURE",
+      "detail": "Non-core capability recorded as DEFERRED rather than implemented."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-004",
+      "sequence": 4,
+      "at": "2026-10-08T17:46:14.358Z",
+      "type": "BUILD_SPECIFIED",
+      "from_state": "DRAFT",
+      "to_state": "SPECIFIED",
+      "object_type": "Build Spec",
+      "object_id": "BUILD-001-TEST-SPEC",
+      "detail": "Build specification recorded."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-005",
+      "sequence": 5,
+      "at": "2026-10-08T17:46:14.398Z",
+      "type": "ARTIFACT_RECORDED",
+      "from_state": "SPECIFIED",
+      "to_state": "BUILDING",
+      "object_type": "Artifact",
+      "object_id": "BUILD-001-TEST-ARTIFACT",
+      "detail": "Artifact recorded for the build."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-006",
+      "sequence": 6,
+      "at": "2026-10-08T17:46:14.437Z",
+      "type": "TEST_STARTED",
+      "from_state": "BUILDING",
+      "to_state": "TESTING",
+      "object_type": "Test",
+      "object_id": "BUILD-001-TEST-TEST",
+      "detail": "Test command started."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-007",
+      "sequence": 7,
+      "at": "2026-10-08T17:46:14.480Z",
+      "type": "TEST_COMPLETED",
+      "from_state": "TESTING",
+      "to_state": "TESTING",
+      "object_type": "Test",
+      "object_id": "BUILD-001-TEST-TEST",
+      "detail": "Test command completed with result PASS."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-008",
+      "sequence": 8,
+      "at": "2026-10-08T17:46:14.520Z",
+      "type": "EVIDENCE_RECORDED",
+      "from_state": "TESTING",
+      "to_state": "EVIDENCE_REVIEW",
+      "object_type": "Evidence",
+      "object_id": "BUILD-001-TEST-EVIDENCE",
+      "detail": "Evidence classified as OBSERVED and routed as REVIEWABLE."
+    },
+    {
+      "id": "BUILD-001-TEST-EVENT-009",
+      "sequence": 9,
+      "at": "2026-10-08T17:46:14.558Z",
+      "type": "DECISION_RECORDED",
+      "from_state": "EVIDENCE_REVIEW",
+      "to_state": "DECIDED",
+      "object_type": "Decision",
+      "object_id": "BUILD-001-TEST-DECISION",
+      "detail": "Decision recorded: SHIP."
+    }
+  ]
+}
