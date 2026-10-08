@@ -1,0 +1,123 @@
+{
+  "evidence_ledger_id": "BUILD-002-HUMAN-LAYER-EXECUTION-001",
+  "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+  "record_authority": "WRASAL-0008",
+  "recorded_on": "2026-10-08",
+  "recorded_by": "Arena facilitator with one consenting participant",
+  "source": "WRASAL-0008 human-layer activation conversation and existing BUILD-002 encounter artifacts",
+  "participant_data_boundary": "No participant name, contact detail, situation detail, before/after content, or action detail was retained in this ledger.",
+  "pre_encounter_check": {
+    "participant_consent": "YES",
+    "participant_eligibility": "YES",
+    "low_stakes_situation_selected": "YES",
+    "facilitator_ready": "YES",
+    "participant_artifact_available": "YES"
+  },
+  "encounter": {
+    "participant_count": 1,
+    "executed": true,
+    "completion": {
+      "class": "USER_SUPPLIED",
+      "value": "completed_privately"
+    },
+    "observed_chat_interval": "approximately 4 minutes 45 seconds from recorded pre-encounter check to close",
+    "participant_reported_duration": "5–19 minutes",
+    "exact_duration": "UNKNOWN",
+    "hard_maximum_exceeded": "UNKNOWN"
+  },
+  "evidence": [
+    {
+      "id": "build-002-human-observed-precheck",
+      "class": "OBSERVED",
+      "route": "REVIEWABLE",
+      "claim": "The consent, eligibility, low-stakes, facilitator-readiness, and participant-artifact pre-checks were each affirmed before the encounter prompts were delivered.",
+      "source": "Pre-encounter selection record in the WRASAL-0008 conversation.",
+      "established_reality": false
+    },
+    {
+      "id": "build-002-human-observed-process",
+      "class": "OBSERVED",
+      "route": "REVIEWABLE",
+      "claim": "One participant proceeded through the approved prompt sequence, no raw before-state text was retained, a consented follow-up was initiated, and no personal or situation details were collected in this ledger.",
+      "source": "Facilitator interaction record in the WRASAL-0008 conversation.",
+      "established_reality": false
+    },
+    {
+      "id": "build-002-human-user-supplied-completion",
+      "class": "USER_SUPPLIED",
+      "route": "REVIEWABLE",
+      "claim": "The participant reported completing the working, after, and overall encounter privately.",
+      "source": "Participant selections in the WRASAL-0008 conversation.",
+      "established_reality": false
+    },
+    {
+      "id": "build-002-human-user-supplied-difference",
+      "class": "USER_SUPPLIED",
+      "route": "REVIEWABLE",
+      "claim": "The participant reported that something was different but chose not to disclose the content.",
+      "source": "Participant after-state selection in the WRASAL-0008 conversation.",
+      "established_reality": false
+    },
+    {
+      "id": "build-002-human-user-supplied-usability",
+      "class": "USER_SUPPLIED",
+      "route": "REVIEWABLE",
+      "claim": "The participant reported no instruction as unclear and no need for explanation beyond the stated prompts.",
+      "source": "Participant usability selection in the WRASAL-0008 conversation.",
+      "established_reality": false
+    },
+    {
+      "id": "build-002-human-user-supplied-duration",
+      "class": "USER_SUPPLIED",
+      "route": "REVIEWABLE",
+      "claim": "The participant reported an encounter duration of 5–19 minutes.",
+      "source": "Participant duration selection in the WRASAL-0008 conversation.",
+      "established_reality": false
+    }
+  ],
+  "evidence_class_status": {
+    "THIRD_PARTY_SUPPORTED": {
+      "captured": false,
+      "note": "No third-party-supported evidence was supplied."
+    },
+    "INFERRED": {
+      "captured": false,
+      "note": "No interpretation is promoted from the captured material. The privacy boundary is a question for later investigation, not a design principle."
+    },
+    "UNVERIFIED": {
+      "captured": true,
+      "route": "NON_ESTABLISHING",
+      "claims": [
+        "What specifically differed for the participant.",
+        "Whether perception, interpretation, decision, or action changed.",
+        "Whether the encounter caused any reported difference.",
+        "The exact encounter duration and whether the hard maximum was exceeded.",
+        "Whether any effect persists after the encounter."
+      ]
+    }
+  },
+  "unknowns": [
+    "Participant before-state and after-state content.",
+    "Specific nature of the reported difference.",
+    "Exact duration.",
+    "Any chosen action or later action.",
+    "Persistence after follow-up.",
+    "Mechanism efficacy and causation."
+  ],
+  "follow_up": {
+    "consent": "YES",
+    "mechanism": "One non-automated follow-up in the existing conversation at approximately 2026-10-09T18:14Z.",
+    "questions": [
+      "Did you take the action, choose not to take it, or change it?",
+      "What did you directly notice afterward?",
+      "What remains unknown?"
+    ],
+    "status": "PENDING"
+  },
+  "implementation_need_identified": "NONE",
+  "deferred_scope": [
+    "Recruitment, scheduling, messaging, analytics, dashboard, accounts, participant database, and automated follow-up.",
+    "Platform UI, new ontology, new governance, new measurement framework, visual polish, and scale optimization."
+  ],
+  "interpretation_boundary": "A participant report is not proof that WRAYvolution caused a change or that transformation occurred. Unknown remains Unknown."
+}

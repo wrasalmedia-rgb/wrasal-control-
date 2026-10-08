@@ -1,0 +1,23 @@
+{
+  "decision_id": "BUILD-002-HUMAN-LAYER-ITERATE-001",
+  "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+  "record_authority": "WRASAL-0008",
+  "recorded_on": "2026-10-08",
+  "recorded_by": "WRASAL decision authority",
+  "previous_state": "BLOCKED",
+  "decision": "ITERATE",
+  "decision_basis": "evidence/BUILD-002-HUMAN-LAYER-EXECUTION.json",
+  "rationale": "One real, consented participant completed the encounter privately and reported that something was different without disclosing its content. The encounter did not establish a specific change, causal mechanism, persistence, or exact duration. The participant-reported duration was shorter than the planned 25-minute protocol. These facts justify another investigation and evidence review, not shipment or a mechanism claim.",
+  "current_reality": {
+    "human_evidence": "1 encounter",
+    "mechanism_efficacy": "UNKNOWN",
+    "persistence": "PENDING",
+    "implementation_need": "NONE",
+    "architecture": "FROZEN",
+    "code": "FROZEN",
+    "scope": "FROZEN",
+    "freebuff": "NOT ACTIVATED"
+  },
+  "next_valid_action": "Receive the consented follow-up; do not begin another participant, implementation effort, protocol rewrite, or architecture work before evidence review.",
+  "authority_boundary": "This decision does not establish what changed, whether the encounter caused it, whether transformation occurred, or whether any effect persists."
+}
