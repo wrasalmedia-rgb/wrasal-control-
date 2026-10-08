@@ -1,0 +1,43 @@
+{
+  "evidence_record_id": "BUILD-002-FOLLOW-UP-CHANNEL-STATUS-001",
+  "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+  "record_authority": "WRASAL follow-up channel correction",
+  "recorded_on": "2026-10-08",
+  "supersedes_interpretation_of": "evidence/BUILD-002-HUMAN-LAYER-EXECUTION.json#follow_up",
+  "correction": "The earlier phrase 'existing conversation' does not establish a private, participant-facing, consented follow-up channel and must not be read as authorization to use Arena for participant follow-up.",
+  "follow_up_status": "BLOCKED",
+  "blocker": "NO ESTABLISHED CONSENTED NON-ARENA CHANNEL RECORDED",
+  "observed_facts": [
+    "The human evidence ledger contains no identifier or record of an external consented follow-up channel.",
+    "No follow-up message was sent through Arena after this correction.",
+    "No account, messaging system, participant portal, database, or automated follow-up was created."
+  ],
+  "classification": {
+    "OBSERVED": [
+      "No external consented channel is recorded in the existing human evidence ledger.",
+      "No post-correction follow-up message has been sent."
+    ],
+    "USER_SUPPLIED": [],
+    "THIRD_PARTY_SUPPORTED": [],
+    "INFERRED": [
+      {
+        "claim": "A private channel may exist outside the recorded evidence.",
+        "route": "NON_ESTABLISHING",
+        "established_reality": false
+      }
+    ],
+    "UNVERIFIED": [
+      {
+        "claim": "Any presumed private conversation is an active, consented follow-up channel.",
+        "route": "NON_ESTABLISHING",
+        "established_reality": false
+      }
+    ]
+  },
+  "privacy_boundary": "Do not ask the participant to enter a WRASAL or Arena system. Do not collect channel identifiers, names, or contact details in this repository.",
+  "implementation_need_identified": "NONE",
+  "deferred_scope": [
+    "Participant portal, accounts, automated messaging, recruitment, scheduling, and contact database."
+  ],
+  "next_valid_action": "Only if the facilitator already knows an existing, consented, non-Arena channel may the approved three-question follow-up be sent there. Otherwise, retain FOLLOW-UP: BLOCKED and do not invent a channel."
+}

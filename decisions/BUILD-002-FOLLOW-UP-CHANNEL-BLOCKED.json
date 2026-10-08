@@ -1,0 +1,19 @@
+{
+  "decision_id": "BUILD-002-FOLLOW-UP-CHANNEL-BLOCKED-001",
+  "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+  "record_authority": "WRASAL follow-up channel correction",
+  "recorded_on": "2026-10-08",
+  "parent_decision": "decisions/BUILD-002-HUMAN-LAYER-ITERATE.json",
+  "build_decision": "ITERATE",
+  "follow_up_state": "BLOCKED",
+  "decision_basis": "evidence/BUILD-002-FOLLOW-UP-CHANNEL-STATUS.json",
+  "rationale": "BUILD-002 remains ITERATE based on the human encounter evidence. Follow-up is separately BLOCKED because no existing consented non-Arena channel is recorded. The prior reference to an 'existing conversation' is not sufficient evidence of such a channel.",
+  "next_valid_action": "Use the approved three follow-up questions only through an already-established, consented, non-Arena channel known to the facilitator. If none is known, wait; do not build, recruit, message, automate, or create infrastructure.",
+  "frozen_boundaries": {
+    "architecture": "FROZEN",
+    "code": "FROZEN",
+    "scope": "FROZEN",
+    "freebuff": "NOT ACTIVATED"
+  },
+  "authority_boundary": "This record does not infer that any private channel exists, does not authorize contact through Arena, and does not change the participant evidence or mechanism-efficacy status."
+}
