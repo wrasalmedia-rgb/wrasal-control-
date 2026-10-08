@@ -1,0 +1,26 @@
+{
+  "test_id": "TEST-0-ARCHIVE-TRUTH-001",
+  "record_authority": "WRASAL test plan",
+  "recorded_at": "2026-10-08T18:35:51Z",
+  "test_type": "SYNTHETIC_ARCHIVE_TRUTH_TEST",
+  "fixture": "tests/fixtures/synthetic/BUILD-002-LOOP-001-FOLLOW-UP.json",
+  "fixture_status": "SYNTHETIC_TEST_FIXTURE",
+  "fixture_is_not_human_evidence": true,
+  "objective": "Verify that the archive can preserve a reported modified action without promoting it to independently established action, persistence, or causation.",
+  "result": "PASS",
+  "assertions": [
+    "The fixture is explicitly marked synthetic and prohibited from merging into the human evidence ledger.",
+    "Synthetic reported action and direct notice remain USER_SUPPLIED and REVIEWABLE.",
+    "Synthetic causal and persistence claims remain INFERRED or UNVERIFIED, NON_ESTABLISHING, and not established reality.",
+    "No third-party-supported evidence is invented.",
+    "The human evidence ledger contains no synthetic fixture identifier or synthetic status marker.",
+    "No independent observation, action verification, persistence, or causation claim is promoted."
+  ],
+  "human_ledger_integrity": {
+    "path": "evidence/BUILD-002-HUMAN-LAYER-EXECUTION.json",
+    "sha256_before_and_after_test": "0e9613e472c7bf968b608e0df2ea21398ebc9d130c507610e46045d9e4507bb5",
+    "synthetic_contamination_detected": false
+  },
+  "execution_source": "One-off Node assertion run using only repository files; no implementation code, protocol artifact, human evidence, or human decision record was modified.",
+  "next_valid_action": "Receive the already-consented real Loop 001 follow-up and classify it separately from this fixture."
+}

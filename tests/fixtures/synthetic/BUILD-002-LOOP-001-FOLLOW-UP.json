@@ -1,0 +1,60 @@
+{
+  "fixture_id": "SYNTHETIC-BUILD-002-LOOP-001-FOLLOW-UP-001",
+  "fixture_status": "SYNTHETIC_TEST_FIXTURE",
+  "not_human_evidence": true,
+  "must_not_be_merged_into": "evidence/BUILD-002-HUMAN-LAYER-EXECUTION.json",
+  "purpose": "TEST 0 — verify that WRASAL can preserve a reported follow-up action without promoting it to independently established action, persistence, or causation.",
+  "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+  "synthetic_follow_up": {
+    "raw_user_supplied_response": {
+      "action": "I sent a short request for clarification instead of acting on my first assumption.",
+      "direct_notice": "I noticed less uncertainty about my immediate next step.",
+      "remaining_unknown": "I do not know whether the message will change the situation or whether the encounter caused my choice."
+    }
+  },
+  "expected_evidence": [
+    {
+      "class": "USER_SUPPLIED",
+      "claim": "A participant reported sending a clarification request rather than acting on an initial assumption.",
+      "route": "REVIEWABLE",
+      "established_reality": false
+    },
+    {
+      "class": "USER_SUPPLIED",
+      "claim": "A participant reported less uncertainty about an immediate next step.",
+      "route": "REVIEWABLE",
+      "established_reality": false
+    },
+    {
+      "class": "USER_SUPPLIED",
+      "claim": "The participant explicitly left situation change and causation unknown.",
+      "route": "REVIEWABLE",
+      "established_reality": false
+    },
+    {
+      "class": "INFERRED",
+      "claim": "The encounter caused the reported action or reduced uncertainty.",
+      "route": "NON_ESTABLISHING",
+      "established_reality": false
+    },
+    {
+      "class": "UNVERIFIED",
+      "claim": "The clarification request was independently delivered, changed the situation, persisted, or was caused by the encounter.",
+      "route": "NON_ESTABLISHING",
+      "established_reality": false
+    }
+  ],
+  "third_party_supported_evidence": {
+    "captured": false,
+    "note": "No independent third-party evidence is present in this fixture."
+  },
+  "expected_archive_behavior": {
+    "preserve_raw_report_as_user_supplied": true,
+    "keep_causation_unknown": true,
+    "keep_persistence_unknown": true,
+    "keep_independent_action_verification_unknown": true,
+    "leave_human_evidence_ledger_unchanged": true,
+    "reject_or_flag_inferred_or_unverified_establishment": true
+  },
+  "pass_condition": "The fixture can be recorded and classified without adding it to human evidence, inventing independent observation, or promoting inference or unverified claims."
+}
