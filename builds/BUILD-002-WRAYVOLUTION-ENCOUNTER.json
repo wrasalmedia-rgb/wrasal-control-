@@ -1,0 +1,187 @@
+{
+  "schema_version": "wrasal-build-mode-v1",
+  "build": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "target": "Produce one 25-minute participant-facing encounter for one real participant using one unresolved situation.",
+    "state": "DECIDED",
+    "created_at": "2026-10-08T18:04:34.236Z"
+  },
+  "build_spec": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-SPEC",
+    "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "summary": "Prepare a plain-language 25-minute encounter, facilitator runsheet, capture fields, and follow-up prompt for one consenting participant.",
+    "acceptance_criteria": "One participant can receive a bounded encounter without architecture explanation; before, during, after, and follow-up capture fields exist; evidence classes and Unknown are preserved; no participant result is invented."
+  },
+  "artifact": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-PACKET",
+    "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "build_spec_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-SPEC",
+    "path": "artifacts/BUILD-002-ENCOUNTER-SPEC.md",
+    "description": "Encounter specification linked to a participant-facing worksheet and facilitator runsheet with blank capture fields."
+  },
+  "test": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-TEST",
+    "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "artifact_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-PACKET",
+    "command": "node tests/build-002-encounter.test.mjs",
+    "result": "PASS",
+    "exit_code": 0,
+    "output": "PASS BUILD-002 encounter packet tests\n",
+    "started_at": "2026-10-08T18:04:34.538Z",
+    "completed_at": "2026-10-08T18:04:34.581Z"
+  },
+  "evidence": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVIDENCE",
+    "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "test_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-TEST",
+    "evidence_class": "OBSERVED",
+    "claim": "The packet test observed the required plain-language participant sheet, facilitator capture instructions, 25-minute bound, follow-up prompt, and absence of pre-recorded participant outcomes. It did not observe a human encounter or mechanism outcome.",
+    "source": "Captured output from BUILD-002-WRAYVOLUTION-ENCOUNTER-TEST.",
+    "route": "REVIEWABLE",
+    "recorded_at": "2026-10-08T18:04:34.629Z"
+  },
+  "decision": {
+    "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-DECISION",
+    "build_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+    "state": "BLOCKED",
+    "rationale": "The structural packet test passed, but no real participant has completed the encounter. Primary-test usability, any perception/interpretation/decision/action information, and the mechanism outcome remain Unknown pending consented human execution and capture.",
+    "evidence_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVIDENCE",
+    "established_evidence_id": null,
+    "recorded_at": "2026-10-08T18:04:34.683Z"
+  },
+  "deferred_capabilities": [
+    {
+      "id": "DEFER-001-PLATFORM-AND-INFRASTRUCTURE",
+      "description": "Platform, accounts, participant database, recruitment, scheduling, messaging, and analytics infrastructure",
+      "reason": "One facilitator can run one encounter through existing consented channels without this capability.",
+      "disposition": "DEFERRED",
+      "recorded_at": "2026-10-08T18:04:34.294Z"
+    },
+    {
+      "id": "DEFER-002-ONTOLOGY-AND-GOVERNANCE",
+      "description": "New ontology, governance process, or measurement framework",
+      "reason": "The encounter only needs plain-language prompts and the existing evidence classes.",
+      "disposition": "DEFERRED",
+      "recorded_at": "2026-10-08T18:04:34.340Z"
+    },
+    {
+      "id": "DEFER-003-VISUAL-POLISH-AND-SCALE",
+      "description": "Visual polish, scale optimization, and multi-participant comparison",
+      "reason": "These are not required for one human-usable encounter.",
+      "disposition": "DEFERRED",
+      "recorded_at": "2026-10-08T18:04:34.392Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-001",
+      "sequence": 1,
+      "at": "2026-10-08T18:04:34.236Z",
+      "type": "BUILD_DEFINED",
+      "from_state": null,
+      "to_state": "DRAFT",
+      "object_type": "Build",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER",
+      "detail": "Build target defined."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-002",
+      "sequence": 2,
+      "at": "2026-10-08T18:04:34.294Z",
+      "type": "CAPABILITY_DEFERRED",
+      "from_state": "DRAFT",
+      "to_state": "DRAFT",
+      "object_type": "Deferred Capability",
+      "object_id": "DEFER-001-PLATFORM-AND-INFRASTRUCTURE",
+      "detail": "Non-core capability recorded as DEFERRED rather than implemented."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-003",
+      "sequence": 3,
+      "at": "2026-10-08T18:04:34.340Z",
+      "type": "CAPABILITY_DEFERRED",
+      "from_state": "DRAFT",
+      "to_state": "DRAFT",
+      "object_type": "Deferred Capability",
+      "object_id": "DEFER-002-ONTOLOGY-AND-GOVERNANCE",
+      "detail": "Non-core capability recorded as DEFERRED rather than implemented."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-004",
+      "sequence": 4,
+      "at": "2026-10-08T18:04:34.392Z",
+      "type": "CAPABILITY_DEFERRED",
+      "from_state": "DRAFT",
+      "to_state": "DRAFT",
+      "object_type": "Deferred Capability",
+      "object_id": "DEFER-003-VISUAL-POLISH-AND-SCALE",
+      "detail": "Non-core capability recorded as DEFERRED rather than implemented."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-005",
+      "sequence": 5,
+      "at": "2026-10-08T18:04:34.434Z",
+      "type": "BUILD_SPECIFIED",
+      "from_state": "DRAFT",
+      "to_state": "SPECIFIED",
+      "object_type": "Build Spec",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-SPEC",
+      "detail": "Build specification recorded."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-006",
+      "sequence": 6,
+      "at": "2026-10-08T18:04:34.492Z",
+      "type": "ARTIFACT_RECORDED",
+      "from_state": "SPECIFIED",
+      "to_state": "BUILDING",
+      "object_type": "Artifact",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-PACKET",
+      "detail": "Artifact recorded for the build."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-007",
+      "sequence": 7,
+      "at": "2026-10-08T18:04:34.538Z",
+      "type": "TEST_STARTED",
+      "from_state": "BUILDING",
+      "to_state": "TESTING",
+      "object_type": "Test",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-TEST",
+      "detail": "Test command started."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-008",
+      "sequence": 8,
+      "at": "2026-10-08T18:04:34.581Z",
+      "type": "TEST_COMPLETED",
+      "from_state": "TESTING",
+      "to_state": "TESTING",
+      "object_type": "Test",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-TEST",
+      "detail": "Test command completed with result PASS."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-009",
+      "sequence": 9,
+      "at": "2026-10-08T18:04:34.629Z",
+      "type": "EVIDENCE_RECORDED",
+      "from_state": "TESTING",
+      "to_state": "EVIDENCE_REVIEW",
+      "object_type": "Evidence",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVIDENCE",
+      "detail": "Evidence classified as OBSERVED and routed as REVIEWABLE."
+    },
+    {
+      "id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-EVENT-010",
+      "sequence": 10,
+      "at": "2026-10-08T18:04:34.684Z",
+      "type": "DECISION_RECORDED",
+      "from_state": "EVIDENCE_REVIEW",
+      "to_state": "DECIDED",
+      "object_type": "Decision",
+      "object_id": "BUILD-002-WRAYVOLUTION-ENCOUNTER-DECISION",
+      "detail": "Decision recorded: BLOCKED."
+    }
+  ]
+}

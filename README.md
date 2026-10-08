@@ -120,3 +120,21 @@ Evidence is classified as `OBSERVED`, `USER_SUPPLIED`, `THIRD_PARTY_SUPPORTED`, 
 The supported decision states are `SHIP`, `ITERATE`, `ARCHIVE`, `ABANDON`, and `BLOCKED`. A `SHIP` decision requires a passing Test and eligible established evidence.
 
 A non-core proposal is recorded with the `defer` command and fixed disposition `DEFERRED`; no implementation command exists for such capabilities. `BUILD-001-TEST` records visual polish and expanded architecture this way.
+
+### BUILD-002 — one-participant encounter packet
+
+`BUILD-002-WRAYVOLUTION-ENCOUNTER` is a deliberately small, 25-minute, facilitator-led encounter packet for one consenting participant and one low-stakes unresolved situation:
+
+- `artifacts/BUILD-002-ENCOUNTER-SPEC.md` — bounded encounter specification;
+- `artifacts/BUILD-002-PARTICIPANT-ENCOUNTER.md` — plain-language participant worksheet, with no WRASAL or WRAYvolution explanation;
+- `artifacts/BUILD-002-FACILITATOR-RUNSHEET.md` — timing, blank before/during/after/follow-up capture fields, and evidence-classification instructions;
+- `builds/BUILD-002-WRAYVOLUTION-ENCOUNTER.json` — Build Mode record and event ledger.
+
+Validate the packet with:
+
+```sh
+npm run validate:build-002
+npm run test:build-002
+```
+
+The repository contains no participant data and does not claim a participant outcome. The packet's Build decision is `BLOCKED` pending a consented real-participant run and captured evidence; perception, interpretation, decision, action, and mechanism outcomes remain **Unknown** until then.

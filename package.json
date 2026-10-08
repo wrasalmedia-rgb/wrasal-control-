@@ -8,9 +8,11 @@
     "build-mode": "node scripts/build-mode.mjs",
     "validate:build-mode": "node scripts/build-mode.mjs validate --file builds/BUILD-001-TEST.json",
     "test:build-mode": "node tests/build-mode.test.mjs",
+    "validate:build-002": "node scripts/build-mode.mjs validate --file builds/BUILD-002-WRAYVOLUTION-ENCOUNTER.json",
+    "test:build-002": "node tests/build-002-encounter.test.mjs",
     "validate:control-plane": "node scripts/validate-control-plane.mjs",
     "test:control-plane-validator": "node tests/control-plane-validator.test.mjs",
-    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run validate:build-mode && npm run test:build-mode"
+    "test": "npm run validate:control-plane && npm run test:control-plane-validator && npm run validate:build-mode && npm run test:build-mode && npm run validate:build-002 && npm run test:build-002"
   },
   "dependencies": {
     "js-yaml": "4.3.2"
